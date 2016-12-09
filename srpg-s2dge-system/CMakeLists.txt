@@ -1,0 +1,44 @@
+project(srpg-s2dge-system)
+cmake_minimum_required(VERSION 3.1)
+set (CMAKE_CXX_STANDARD 14)
+#sources
+aux_source_directory(. SRC_LIST)
+aux_source_directory(./src GENERAL_LIST)
+#headers
+FILE(GLOB_RECURSE HEADERS *.hpp)
+#add_custom_target(headers SOURCES ${HEADERS} )
+#include
+include_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/include)
+include_directories(include)
+#linking-directory
+link_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/bin/)
+#targets
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${GENERAL_LIST} ${HEADERS})
+add_library(${PROJECT_NAME}-lib SHARED ${SRC_LIST} ${GENERAL_LIST} ${HEADERS})
+
+# Detect and add SFML
+set(CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/sfml/cmake/Modules" ${CMAKE_MODULE_PATH})
+#Find any version 2.X of SFML
+#See the FindSFML.cmake file for additional details and instructions
+set (SFML_ROOT ${CMAKE_INSTALL_PREFIX}/sfml)
+message(SFMLROOT ${CMAKE_INSTALL_PREFIX}/sfml)
+find_package(SFML 2 REQUIRED system window graphics network audio)
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
+  target_link_libraries(${PROJECT_NAME}-lib ${SFML_LIBRARIES})
+endif()
+
+#linking-phase
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} srpg-engine-lib)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}-lib srpg-engine-lib)
+
+#install
+install(TARGETS ${PROJECT_NAME}-lib EXPORT ${PROJECT_NAME}Config
+            RUNTIME DESTINATION ${PROJECT_NAME}/bin
+            LIBRARY DESTINATION ${PROJECT_NAME}/lib
+            ARCHIVE DESTINATION ${PROJECT_NAME}/lib/static)
+FILE(GLOB_RECURSE LibFiles *.hpp)
+install (FILES ${LibFiles} DESTINATION ${PROJECT_NAME}/include)
+install(EXPORT ${PROJECT_NAME}Config DESTINATION ${PROJECT_NAME}/cmake)
+

@@ -1,0 +1,18 @@
+"test" =
+{
+	"statistics" = 
+	[
+		{"x" = 100},
+		{"y"=150},
+		{"heigt"=50},
+		{"width"=100}
+	]
+	"dictionary" = 
+	[
+		{"texture"="none"}
+	]
+	"systems" = 
+	[
+		{"S2DGE"}
+	]
+}

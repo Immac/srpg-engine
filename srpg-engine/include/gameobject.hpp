@@ -16,6 +16,7 @@ public:
 	Repository<string> Dictionary;
 	Vector<GameObject*> Objects;
 	Vector<string> Tags;
+	Set<string> Systems;
 	Repository<GameObject*> Properties;
 };
 

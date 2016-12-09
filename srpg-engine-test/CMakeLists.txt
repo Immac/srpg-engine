@@ -5,14 +5,15 @@ set (CMAKE_CXX_STANDARD 14)
 aux_source_directory(. SRC_LIST)
 #include
 include_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/include)
-include_directories(${CMAKE_INSTALL_PREFIX}/sfml/include)
+include_directories(${CMAKE_INSTALL_PREFIX}/srpg-s2dge-system/include)
 #linking-directory
 link_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/bin/)
-link_directories(${CMAKE_INSTALL_PREFIX}/sfml/bin/)
+link_directories(${CMAKE_INSTALL_PREFIX}/srpg-s2dge-system/bin/)
 #targets
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/sfml/cmake/Modules" ${CMAKE_MODULE_PATH})
+message("${CMAKE_INSTALL_PREFIX}/sfml/cmake/Modules")
 #Find any version 2.X of SFML
 #See the FindSFML.cmake file for additional details and instructions
 set (SFML_ROOT ${CMAKE_INSTALL_PREFIX}/sfml)
@@ -23,4 +24,4 @@ if(SFML_FOUND)
 endif()
 #linking-phase
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} srpg-engine-lib)
-
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} srpg-s2dge-system-lib)

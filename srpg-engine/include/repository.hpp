@@ -16,6 +16,11 @@ public:
 		return _map[key];
 	}
 
+	T Set(string key, T value)
+	{
+		_map[key] = value;
+	}
+
 	void Add(string key,T value)
 	{
 		this->_map.insert(make_pair(key,value));
@@ -24,6 +29,10 @@ public:
 	T Remove(string key)
 	{
 		this->_map.erase(key);
+	}
+
+	T& operator[](string key) {
+		return this->_map[key];
 	}
 
 private:
