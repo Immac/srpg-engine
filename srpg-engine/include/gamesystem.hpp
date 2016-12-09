@@ -10,8 +10,9 @@ class GameSystem
 {
 public:
 	virtual void Initialize() = 0;
-	virtual void Update(Vector<GameObject*> gameObject) = 0;
+	virtual void Update() = 0;
 	virtual string GetSystemCode() = 0;
+	Map<string,GameObject*> GameObjects;
 };
 
 

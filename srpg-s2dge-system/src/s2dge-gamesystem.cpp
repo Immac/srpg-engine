@@ -2,11 +2,11 @@
 
 void SrpgEngine::S2dge::Simple2DGraphicsEngine::Initialize()
 {
-	auto videomode = sf::VideoMode(500, 500);
+	auto videomode = sf::VideoMode(800, 600);
 	this->window = new sf::RenderWindow(videomode, "SFML works!");
 }
 
-void SrpgEngine::S2dge::Simple2DGraphicsEngine::Update(Framework::Vector<SrpgEngine::Game::GameObject *> gameObjects)
+void SrpgEngine::S2dge::Simple2DGraphicsEngine::Update()
 {
 	this->window->clear(sf::Color::Black);
 	this->window->setFramerateLimit(60);
@@ -22,8 +22,9 @@ void SrpgEngine::S2dge::Simple2DGraphicsEngine::Update(Framework::Vector<SrpgEng
 
 	sf::RectangleShape sp;
 	window->clear(sf::Color::Black);
-	for(Game::GameObject *obj : gameObjects)
+	for(auto pair : this->GameObjects)
 	{
+		auto obj = pair.second;
 		int cx = obj->Properties["position"]->Statistics["x"];
 		int cy = obj->Properties["position"]->Statistics["y"];
 		auto dx = obj->Properties["destination"]->Statistics["x"];

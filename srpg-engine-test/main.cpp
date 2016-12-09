@@ -15,6 +15,7 @@ int main(){
 
 	core.Objects["item"] = &item;
 	core.Systems[s2dge->GetSystemCode()] = s2dge;
+	core.Init();
 	core.Run();
 	return 0;
 }

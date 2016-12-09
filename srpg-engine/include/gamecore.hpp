@@ -13,6 +13,7 @@ class Core {
 private:
 	enum Status{
 		Stopped,
+		Initializing,
 		Running
 	};
 
@@ -20,6 +21,7 @@ private:
 public:
 	Map<string,GameSystem*> Systems;
 	Map<string,GameObject*> Objects;
+	int Init();
 	int Run();
 };
 

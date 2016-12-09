@@ -14,7 +14,7 @@ private:
 	sf::RenderWindow *window;
 public:
 	void Initialize();
-	void Update(Framework::Vector<Game::GameObject *> object);
+	void Update();
 	Framework::string GetSystemCode();
 };
 
