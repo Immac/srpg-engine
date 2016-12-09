@@ -9,11 +9,18 @@ using std::cin;
 int SrpgEngine::Game::Core::Init()
 {
 	this->_status = Status::Initializing;
-	for(auto system : this->Systems)
+	for(auto systemPair : this->Systems)
 	{
-		system.second->GameObjects = this->Objects;
+		GameSystem *system = systemPair.second;
+		for(auto objectPair : this->Objects)
+		{
+			auto systems = objectPair.second->Systems;
+			if(Util::Find(systems ,system->GetSystemCode()))
+				system->GameObjects.insert(objectPair);
+		}
+
 	}
-	//this->Systems
+
 }
 
 int SrpgEngine::Game::Core::Run()

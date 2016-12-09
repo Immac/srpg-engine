@@ -29,7 +29,7 @@ SrpgEngine::Game::GameObject SrpgEngine::S2dge::DrawableTestObjectFactory::Creat
 	property->Statistics["y"] = 5;
 	object.Properties["speed"] = property;
 	//
-
+	object.Tags.push_back("S2DGE");
 
 	object.Dictionary.Add("texture","none");
 	if(!Util::Find<Framework::string>(object.Systems,"S2DGE")) {
