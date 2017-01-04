@@ -210,7 +210,7 @@ static int math_rad (lua_State *L) {
 
 
 static int math_min (lua_State *L) {
-  int n = lua_gettop(L);  /* number of arguments */
+  int n = LuaGetTop(L);  /* number of arguments */
   int imin = 1;  /* index of current minimum value */
   int i;
   luaL_argcheck(L, n >= 1, 1, "value expected");
@@ -224,7 +224,7 @@ static int math_min (lua_State *L) {
 
 
 static int math_max (lua_State *L) {
-  int n = lua_gettop(L);  /* number of arguments */
+  int n = LuaGetTop(L);  /* number of arguments */
   int imax = 1;  /* index of current maximum value */
   int i;
   luaL_argcheck(L, n >= 1, 1, "value expected");
@@ -244,7 +244,7 @@ static int math_max (lua_State *L) {
 static int math_random (lua_State *L) {
   lua_Integer low, up;
   double r = (double)l_rand() * (1.0 / ((double)L_RANDMAX + 1.0));
-  switch (lua_gettop(L)) {  /* check number of arguments */
+  switch (LuaGetTop(L)) {  /* check number of arguments */
     case 0: {  /* no arguments */
       lua_pushnumber(L, (lua_Number)r);  /* Number between 0 and 1 */
       return 1;

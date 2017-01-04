@@ -79,7 +79,7 @@ static int maxn (lua_State *L) {
 static int tinsert (lua_State *L) {
   lua_Integer e = aux_getn(L, 1, TAB_RW) + 1;  /* first empty element */
   lua_Integer pos;  /* where to insert new element */
-  switch (lua_gettop(L)) {
+  switch (LuaGetTop(L)) {
     case 2: {  /* called with only 2 arguments */
       pos = e;  /* insert new element at the end */
       break;
@@ -193,7 +193,7 @@ static int tconcat (lua_State *L) {
 
 static int pack (lua_State *L) {
   int i;
-  int n = lua_gettop(L);  /* number of elements to pack */
+  int n = LuaGetTop(L);  /* number of elements to pack */
   lua_createtable(L, n, 1);  /* create result table */
   lua_insert(L, 1);  /* put it at index 1 */
   for (i = n; i >= 1; i--)  /* assign elements */

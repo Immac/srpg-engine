@@ -23,6 +23,7 @@ template<class Key, class Value>
 using MultiMap = std::multimap<Key,Value>;
 template<class Key, class Value>
 using UnorderedMultiMap = std::unordered_multimap<Key,Value>;
+using byte = uint8_t;
 
 } // Framework
 

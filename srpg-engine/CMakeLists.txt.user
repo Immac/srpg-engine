@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.0.3, 2016-12-08T23:50:41. -->
+<!-- Written by QtCreator 4.0.3, 2016-12-20T16:36:02. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -394,6 +394,7 @@
     </valuelist>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">srpg-engine</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
+    <value type="bool" key="CMakeProjectManager.CMakeRunConfiguration.UseTerminal">true</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">D:/workspace/proyecto-de-graduacion/build/srpg-engine-Desktop_mingw_32-Install</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>

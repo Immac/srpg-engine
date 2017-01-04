@@ -11,11 +11,12 @@ namespace S2dge {
 
 class Simple2DGraphicsEngine : public Game::GameSystem{
 private:
-	sf::RenderWindow *window;
+	sf::RenderWindow *_window;
 public:
 	void Initialize();
 	void Update();
 	Framework::string GetSystemCode();
+	~Simple2DGraphicsEngine();
 };
 
 }

@@ -156,7 +156,7 @@ LUA_API const lua_Number *(lua_version) (lua_State *L);
 ** basic stack manipulation
 */
 LUA_API int   (lua_absindex) (lua_State *L, int idx);
-LUA_API int   (lua_gettop) (lua_State *L);
+LUA_API int   (LuaGetTop) (lua_State *L);
 LUA_API void  (lua_settop) (lua_State *L, int idx);
 LUA_API void  (lua_pushvalue) (lua_State *L, int idx);
 LUA_API void  (lua_rotate) (lua_State *L, int idx, int n);

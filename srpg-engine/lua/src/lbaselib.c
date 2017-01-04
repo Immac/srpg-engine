@@ -22,7 +22,7 @@
 
 
 static int luaB_print (lua_State *L) {
-  int n = lua_gettop(L);  /* number of arguments */
+  int n = LuaGetTop(L);  /* number of arguments */
   int i;
   lua_getglobal(L, "tostring");
   for (i=1; i<=n; i++) {
@@ -355,7 +355,7 @@ static int luaB_load (lua_State *L) {
 
 static int dofilecont (lua_State *L, int d1, lua_KContext d2) {
   (void)d1;  (void)d2;  /* only to match 'lua_Kfunction' prototype */
-  return lua_gettop(L) - 1;
+  return LuaGetTop(L) - 1;
 }
 
 
@@ -371,7 +371,7 @@ static int luaB_dofile (lua_State *L) {
 
 static int luaB_assert (lua_State *L) {
   if (lua_toboolean(L, 1))  /* condition is true? */
-    return lua_gettop(L);  /* return all arguments */
+    return LuaGetTop(L);  /* return all arguments */
   else {  /* error */
     luaL_checkany(L, 1);  /* there must be a condition */
     lua_remove(L, 1);  /* remove it */
@@ -383,7 +383,7 @@ static int luaB_assert (lua_State *L) {
 
 
 static int luaB_select (lua_State *L) {
-  int n = lua_gettop(L);
+  int n = LuaGetTop(L);
   if (lua_type(L, 1) == LUA_TSTRING && *lua_tostring(L, 1) == '#') {
     lua_pushinteger(L, n-1);
     return 1;
@@ -412,7 +412,7 @@ static int finishpcall (lua_State *L, int status, lua_KContext extra) {
     return 2;  /* return false, msg */
   }
   else
-    return lua_gettop(L) - (int)extra;  /* return all results */
+    return LuaGetTop(L) - (int)extra;  /* return all results */
 }
 
 
@@ -421,7 +421,7 @@ static int luaB_pcall (lua_State *L) {
   luaL_checkany(L, 1);
   lua_pushboolean(L, 1);  /* first result if no errors */
   lua_insert(L, 1);  /* put it in place */
-  status = lua_pcallk(L, lua_gettop(L) - 2, LUA_MULTRET, 0, 0, finishpcall);
+  status = lua_pcallk(L, LuaGetTop(L) - 2, LUA_MULTRET, 0, 0, finishpcall);
   return finishpcall(L, status, 0);
 }
 
@@ -433,7 +433,7 @@ static int luaB_pcall (lua_State *L) {
 */
 static int luaB_xpcall (lua_State *L) {
   int status;
-  int n = lua_gettop(L);
+  int n = LuaGetTop(L);
   luaL_checktype(L, 2, LUA_TFUNCTION);  /* check error function */
   lua_pushboolean(L, 1);  /* first result */
   lua_pushvalue(L, 1);  /* function */

@@ -331,7 +331,7 @@ static int io_readline (lua_State *L);
 #define MAXARGLINE	250
 
 static void aux_lines (lua_State *L, int toclose) {
-  int n = lua_gettop(L) - 1;  /* number of arguments to read */
+  int n = LuaGetTop(L) - 1;  /* number of arguments to read */
   luaL_argcheck(L, n <= MAXARGLINE, MAXARGLINE + 2, "too many arguments");
   lua_pushinteger(L, n);  /* number of arguments to read */
   lua_pushboolean(L, toclose);  /* close/not close file when finished */
@@ -521,7 +521,7 @@ static int read_chars (lua_State *L, FILE *f, size_t n) {
 
 
 static int g_read (lua_State *L, FILE *f, int first) {
-  int nargs = lua_gettop(L) - 1;
+  int nargs = LuaGetTop(L) - 1;
   int success;
   int n;
   clearerr(f);
@@ -612,7 +612,7 @@ static int io_readline (lua_State *L) {
 
 
 static int g_write (lua_State *L, FILE *f, int arg) {
-  int nargs = lua_gettop(L) - arg;
+  int nargs = LuaGetTop(L) - arg;
   int status = 1;
   for (; nargs--; arg++) {
     if (lua_type(L, arg) == LUA_TNUMBER) {

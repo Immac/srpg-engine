@@ -72,7 +72,7 @@ static int findfield (lua_State *L, int objidx, int level) {
 ** (registry._LOADED).
 */
 static int pushglobalfuncname (lua_State *L, lua_Debug *ar) {
-  int top = lua_gettop(L);
+  int top = LuaGetTop(L);
   lua_getinfo(L, "f", ar);  /* push function */
   lua_getfield(L, LUA_REGISTRYINDEX, "_LOADED");
   if (findfield(L, top + 1, 2)) {
@@ -126,7 +126,7 @@ static int lastlevel (lua_State *L) {
 LUALIB_API void luaL_traceback (lua_State *L, lua_State *L1,
                                 const char *msg, int level) {
   lua_Debug ar;
-  int top = lua_gettop(L);
+  int top = LuaGetTop(L);
   int last = lastlevel(L1);
   int n1 = (last - level > LEVELS1 + LEVELS2) ? LEVELS1 : -1;
   if (msg)
@@ -147,10 +147,10 @@ LUALIB_API void luaL_traceback (lua_State *L, lua_State *L1,
       pushfuncname(L, &ar);
       if (ar.istailcall)
         lua_pushliteral(L, "\n\t(...tail calls...)");
-      lua_concat(L, lua_gettop(L) - top);
+      lua_concat(L, LuaGetTop(L) - top);
     }
   }
-  lua_concat(L, lua_gettop(L) - top);
+  lua_concat(L, LuaGetTop(L) - top);
 }
 
 /* }====================================================== */
@@ -706,7 +706,7 @@ LUALIB_API int luaL_loadfilex (lua_State *L, const char *filename,
   LoadF lf;
   int status, readstatus;
   int c;
-  int fnameindex = lua_gettop(L) + 1;  /* index of filename on the stack */
+  int fnameindex = LuaGetTop(L) + 1;  /* index of filename on the stack */
   if (filename == NULL) {
     lua_pushliteral(L, "=stdin");
     lf.f = stdin;

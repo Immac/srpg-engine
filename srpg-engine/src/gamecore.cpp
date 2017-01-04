@@ -6,21 +6,27 @@
 using string = std::string;
 using std::cout;
 using std::cin;
+
 int SrpgEngine::Game::Core::Init()
 {
 	this->_status = Status::Initializing;
 	for(auto systemPair : this->Systems)
 	{
 		GameSystem *system = systemPair.second;
-		for(auto objectPair : this->Objects)
+		for(auto object_pair : this->Objects)
 		{
-			auto systems = objectPair.second->Systems;
+			auto systems = object_pair.second->Systems;
 			if(Util::Find(systems ,system->GetSystemCode()))
-				system->GameObjects.insert(objectPair);
+				system->GameObjects.insert(object_pair);
 		}
-
 	}
 
+	for(auto systemPair : this->Systems)
+	{
+		auto system = systemPair.second;
+		system->Initialize();
+	}
+	this->_status = Status::Running;
 }
 
 int SrpgEngine::Game::Core::Run()

@@ -164,7 +164,7 @@ LUA_API int lua_absindex (lua_State *L, int idx) {
 }
 
 
-LUA_API int lua_gettop (lua_State *L) {
+LUA_API int LuaGetTop (lua_State *L) {
   return cast_int(L->top - (L->ci->func + 1));
 }
 

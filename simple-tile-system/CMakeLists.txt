@@ -1,11 +1,11 @@
-project(srpg-s2dge-system)
+project(simple-tile-system)
 cmake_minimum_required(VERSION 3.1)
 set (CMAKE_CXX_STANDARD 14)
 #sources
 aux_source_directory(. SRC_LIST)
 aux_source_directory(./src GENERAL_LIST)
 #headers
-FILE(GLOB_RECURSE HEADERS (*.hpp) | (*.h))
+FILE(GLOB_RECURSE HEADERS (*.hpp) | (*.h) )
 #include
 include_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/include)
 include_directories(include)
@@ -32,7 +32,6 @@ endif()
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} srpg-engine-lib)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}-lib srpg-engine-lib)
 
-#install
 install(TARGETS ${PROJECT_NAME}-lib EXPORT ${PROJECT_NAME}Config
             RUNTIME DESTINATION ${PROJECT_NAME}/bin
             LIBRARY DESTINATION ${PROJECT_NAME}/lib
@@ -40,4 +39,3 @@ install(TARGETS ${PROJECT_NAME}-lib EXPORT ${PROJECT_NAME}Config
 FILE(GLOB_RECURSE LibFiles *.hpp)
 install (FILES ${LibFiles} DESTINATION ${PROJECT_NAME}/include)
 install(EXPORT ${PROJECT_NAME}Config DESTINATION ${PROJECT_NAME}/cmake)
-

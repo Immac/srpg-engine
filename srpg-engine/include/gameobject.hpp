@@ -11,9 +11,11 @@ using namespace Framework;
 
 class GameObject {
 public:
+	int Id;
 	string Name;
 	Repository<int> Statistics;
 	Repository<string> Dictionary;
+	Repository<void*> Data;
 	Vector<GameObject*> Objects;
 	Vector<string> Tags;
 	Set<string> Systems;
