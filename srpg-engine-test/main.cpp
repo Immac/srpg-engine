@@ -3,7 +3,7 @@
 #include <gamecore.hpp>
 #include <s2dge-factory.hpp>
 #include <s2dge-gamesystem.hpp>
-#include <lua.hpp>
+
 
 using namespace SrpgEngine::S2dge;
 int main(){

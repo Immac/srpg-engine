@@ -18,7 +18,7 @@ public:
 	std::vector<std::string> GetTableKeys(const std::string& name);
 
 	inline void Clean() {
-	  int n = LuaGetTop(_state);
+	  int n = lua_gettop(_state);
 	  lua_pop(_state, n);
 	}
 

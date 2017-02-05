@@ -1,5 +1,6 @@
 #include <iostream>
 #include "s2dge-gamesystem.hpp"
+#include <lua.hpp>
 
 using namespace std;
 

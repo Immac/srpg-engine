@@ -4,18 +4,31 @@ cmake_minimum_required(VERSION 3.1)
 set (CMAKE_CXX_STANDARD 14)
 #sources
 aux_source_directory(. SRC_LIST)
-aux_source_directory(./lua/src LUA_LIST)
 aux_source_directory(./src GENERAL_LIST)
-aux_source_directory(${CMAKE_INSTALL_PREFIX}/selene SELENE_LIST)
-#includes
-include_directories(./lua/include ./include)
-include_directories(${CMAKE_INSTALL_PREFIX}/selene/include)
-#linking dir
 
-FILE(GLOB_RECURSE HEADERS (*.hpp) | (*.h))
+#includes
+include_directories(
+    ${CMAKE_INSTALL_PREFIX}/lua53/include
+    #${CMAKE_INSTALL_PREFIX}/sol2
+    ./include)
+#linking dir
+link_directories(${CMAKE_INSTALL_PREFIX}/lua53/bin)
+#sources
+FILE(GLOB_RECURSE HEADERS
+    (*.hpp)
+    | (*.h)
+    | ${CMAKE_INSTALL_PREFIX}/lua53/include/*.hpp
+    | ${CMAKE_INSTALL_PREFIX}/lua53/include/*.h
+    #| ${CMAKE_INSTALL_PREFIX}/sol2/*.hpp
+    #| ${CMAKE_INSTALL_PREFIX}/sol2/*.h)
+    )
+
 #targets
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${LUA_LIST} ${GENERAL_LIST} ${HEADERS} ${SELENE_LIST})
-add_library(${PROJECT_NAME}-lib SHARED ${SRC_LIST} ${LUA_LIST} ${GENERAL_LIST} ${HEADERS} )
+add_executable(${PROJECT_NAME} ${SRC_LIST}  ${GENERAL_LIST} ${HEADERS})
+add_library(${PROJECT_NAME}-lib SHARED ${SRC_LIST} ${GENERAL_LIST} ${HEADERS} )
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} lua53-lib)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}-lib lua53-lib)
 
 #install
 install(TARGETS ${PROJECT_NAME}-lib EXPORT ${PROJECT_NAME}Config
