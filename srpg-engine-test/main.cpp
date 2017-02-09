@@ -16,8 +16,6 @@ int main(){
 	auto item3 = factory.Create();
 	auto s2dge = new Simple2DGraphicsEngine();
 
-
-
 	core.Objects["1"] = &item;
 	core.Objects["2"] = &item2;
 	core.Objects["3"] = &item3;

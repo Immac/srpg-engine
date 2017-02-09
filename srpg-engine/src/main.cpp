@@ -1,17 +1,12 @@
 #define SOL_USING_CXX_LUA 1
 #include <luautil.hpp>
 #include <iostream>
-//#include <sol.hpp>
+#include <sol.hpp>
 
 int main(){
-	lua_State* L = luaL_newstate();
+	sol::state lua;
+		   lua.open_libraries(sol::lib::base, sol::lib::coroutine, sol::lib::string, sol::lib::io );
 
-	   luaL_dostring(L, "a = 10 + 5");
-	   lua_getglobal(L, "a");
-	   int i = lua_tointeger(L, -1);
-	   printf("%d\n", i);
-
-	   lua_close(L);
-
+		   lua.script( "print('bark bark bark!')" );
 	   return 0;
 }

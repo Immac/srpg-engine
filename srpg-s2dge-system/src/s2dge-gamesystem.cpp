@@ -4,17 +4,17 @@
 using namespace SrpgEngine::Framework::Lua;
 using SrpgEngine::Framework::string;
 
-void SrpgEngine::S2dge::Simple2DGraphicsEngine::Initialize()
+void SrpgEngine::S2dge::Simple2DGraphicsEngine::Initialize(Game::GameObject &settings)
 {
-	LuaScript script("s2dge-system.config");
-	int video_width, video_height, vsync, frame_limit;
+	int video_width, video_height, frame_limit;
+	bool vsync;
 	string window_title;
 
-	video_width = script.get<int>("s2dge_system.width");
-	video_height = script.get<int>("s2dge_system.height");
-	vsync = script.get<int>("s2dge_system.vsync"); // Not Implemented Yet
-	frame_limit = script.get<int>("s2dge_system.frame_limit");
-	window_title = script.get<string>("s2dge_system.window_title");
+	video_width = settings.Properties["video"]->Statistics["width"];
+	video_height = settings.Properties["video"]->Statistics["height"];
+	vsync = (bool)settings.Statistics["vsync"]; // Not Implemented Yet
+	frame_limit = settings.Statistics["frame_limit"];
+	window_title = settings.Dictionary["window_title"];
 
 	auto video_mode = sf::VideoMode(video_width, video_height);
 	this->_window = new sf::RenderWindow(video_mode, window_title);

@@ -9,7 +9,7 @@ using namespace Framework;
 class GameSystem
 {
 public:
-	virtual void Initialize() = 0;
+	virtual void Initialize(GameObject &settings) = 0;
 	virtual void Update() = 0;
 	virtual string GetSystemCode() = 0;
 	Map<string,GameObject*> GameObjects;

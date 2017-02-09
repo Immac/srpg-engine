@@ -1,4 +1,5 @@
 #include "gamecore.hpp"
+#include "configuration-manager.hpp"
 
 #include <iostream>
 #include <string>
@@ -20,11 +21,14 @@ int SrpgEngine::Game::Core::Init()
 				system->GameObjects.insert(object_pair);
 		}
 	}
+	//TODO initialize settings
+	ConfigurationManager cm;
 
 	for(auto systemPair : this->Systems)
 	{
 		auto system = systemPair.second;
-		system->Initialize();
+		auto settings = cm.LoadConfigurationFor(system->GetSystemCode());
+		system->Initialize(settings);
 	}
 	this->_status = Status::Running;
 }

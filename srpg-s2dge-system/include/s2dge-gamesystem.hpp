@@ -13,7 +13,7 @@ class Simple2DGraphicsEngine : public Game::GameSystem{
 private:
 	sf::RenderWindow *_window;
 public:
-	void Initialize();
+	void Initialize(Game::GameObject &settings);
 	void Update();
 	Framework::string GetSystemCode();
 	~Simple2DGraphicsEngine();
