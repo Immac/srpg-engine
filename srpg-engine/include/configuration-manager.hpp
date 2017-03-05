@@ -13,13 +13,29 @@ using SrpgEngine::Framework::Lua::LuaGameObjectFactory;
 
 class ConfigurationManager {
 private:
-	string _config_filepath = "game.config";
+	string _filepath = "game.config";
+	string _extension = ".Config";
 public:
+	ConfigurationManager()
+		: ConfigurationManager(_filepath,_extension)
+	{
+	}
+
+	ConfigurationManager(const string configFilePath)
+		:ConfigurationManager(configFilePath,_extension)
+	{
+	}
+
+	ConfigurationManager(const string configFilePath,const string configExtension)
+		:_filepath(configFilePath), _extension(configFilePath)
+	{
+	}
+
 	GameObject *LoadConfigurationFor(string system) {
-		const string key = system + ".Config";
+		const string key = system + _extension;
 		sol::state config_state;
 		config_state.open_libraries(sol::lib::base, sol::lib::package);
-		config_state.script_file(_config_filepath);
+		config_state.script_file(_filepath);
 		LuaGameObjectFactory luaGameObjectFactory(&config_state);
 		auto config_objects = luaGameObjectFactory.CreateList();
 		GameObject *dummy = new GameObject();
@@ -29,7 +45,7 @@ public:
 			auto was_found = game_object_iterator != config_objects.end();
 			if(!was_found)
 			{
-				throw "game_object was not found" // TODO: specify which one was not found
+				throw "game_object was not found"; // TODO: specify which one was not found
 			}
 			GameObject *config = new GameObject();
 			config->Properties["video"] = new GameObject();
