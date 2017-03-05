@@ -27,8 +27,8 @@ int SrpgEngine::Game::Core::Init()
 	for(auto systemPair : this->Systems)
 	{
 		auto system = systemPair.second;
-		auto settings = cm.LoadConfigurationFor(system->GetSystemCode());
-		system->Initialize(settings);
+		GameObject *settings = cm.LoadConfigurationFor(system->GetSystemCode());
+		system->Initialize(*settings);
 	}
 	this->_status = Status::Running;
 }

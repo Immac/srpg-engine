@@ -2,11 +2,20 @@
 #include <luautil.hpp>
 #include <iostream>
 #include <sol.hpp>
+#include "luautil.hpp"
+
+using SrpgEngine::Framework::Lua::LuaGameObjectFactory;
+using SrpgEngine::Framework::Vector;
+using SrpgEngine::Framework::string;
 
 int main(){
-	sol::state lua;
-		   lua.open_libraries(sol::lib::base, sol::lib::coroutine, sol::lib::string, sol::lib::io );
 
-		   lua.script( "print('bark bark bark!')" );
+	sol::state game_state;
+	std::string _config_filepath = "object.go";
+	game_state.open_libraries(sol::lib::base, sol::lib::package);
+	game_state.script_file(_config_filepath);
+
+	LuaGameObjectFactory gof(&game_state);
+	auto x = gof.CreateList();
 	   return 0;
 }

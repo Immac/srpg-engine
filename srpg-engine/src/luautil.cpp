@@ -1,66 +1,93 @@
 #include "luautil.hpp"
+
 using namespace SrpgEngine::Framework::Lua;
+using SrpgEngine::Framework::Lua::GameObject;
+using SrpgEngine::Framework::Repository;
+using SrpgEngine::Framework::Vector;
+using SrpgEngine::Game::GameObjectComparator;
 
-LuaScript::LuaScript(const std::string& filename) {
-	_state = luaL_newstate();
-	if (luaL_loadfile(_state, filename.c_str()) || lua_pcall(_state, 0, 0, 0)) {
-		std::cout<<"Error: failed to load ("<<filename<<")"<<std::endl;
-		_state = 0;
+Repository<int> LuaGameObjectFactory::getStats(sol::table object)
+{
+	sol::table stats = object["Statistics"];
+	if(!stats)
+		return Repository<int>();
+
+	Repository<int> repo = BuildRepository<int>(stats);
+	return repo;
+}
+
+Repository<string> LuaGameObjectFactory::getDictionary(sol::table object)
+{
+	sol::table dictionary_table = object["Dictionary"];
+	if(!dictionary_table)
+		return Repository<string>();
+
+	Repository<string> repo = BuildRepository<string>(dictionary_table);
+
+	return repo;
+}
+
+Vector<string> LuaGameObjectFactory::getPropertyNames(sol::table object)
+{
+	sol::table properties_table = object["Properties"];
+	if(!properties_table)
+		return Vector<string>();
+
+	return BuildVector<string>(properties_table);
+}
+
+Vector<string> LuaGameObjectFactory::getTags(sol::table object)
+{
+	sol::table tags_table = object["Tags"];
+	if(!tags_table) return Vector<string>();
+	Vector<string> vec = BuildVector<string>(tags_table);
+	return vec;
+}
+
+
+
+Vector<GameObject *> LuaGameObjectFactory::CreateList()
+{
+	auto root = (*_state)["Root"];
+	std::set<GameObject *,GameObjectComparator> game_objects;
+
+
+	for(int i = 1; root[i] ; i++)
+	{
+		auto game_object = new GameObject();
+		game_object->Statistics = getStats(root[i]);
+		game_object->Dictionary = getDictionary(root[i]);
+		game_object->Name = root[i]["Name"];
+		game_object->Tags = getTags(root[i]);
+		game_objects.insert(game_object);
 	}
-
-	if(_state) luaL_openlibs(_state);
-}
-
-LuaScript::~LuaScript() {
-	if(_state) lua_close(_state);
-}
-
-void LuaScript::PrintError(const std::string& variableName, const std::string& reason) {
-	std::cout<<"Error: can't get ["<<variableName<<"]. "<<reason<<std::endl;
-}
-
-std::vector<int> LuaScript::GetIntVector(const std::string& name) {
-	std::vector<int> v;
-	lua_gettostack(name.c_str());
-	if(lua_isnil(_state, -1)) { // array is not found
-		return std::vector<int>();
-	}
-	lua_pushnil(_state);
-	while(lua_next(_state, -2)) {
-		v.push_back((int)lua_tonumber(_state, -1));
-		lua_pop(_state, 1);
-	}
-	Clean();
-	return v;
-}
-
-std::vector<std::string> LuaScript::GetTableKeys(const std::string& name) {
-	std::string code =
-		"function getKeys(name) "
-		"s = \"\""
-		"for k, v in pairs(_G[name]) do "
-		"    s = s..k..\",\" "
-		"    end "
-		"return s "
-		"end"; // function for getting table keys
-	luaL_loadstring(_state,
-		code.c_str()); // execute code
-	lua_pcall(_state,0,0,0);
-	lua_getglobal(_state, "getKeys"); // get function
-	lua_pushstring(_state, name.c_str());
-	lua_pcall(_state, 1 , 1, 0); // execute function
-	std::string test = lua_tostring(_state, -1);
-	std::vector<std::string> strings;
-	std::string temp = "";
-	std::cout<<"TEMP:"<<test<<std::endl;
-	for(unsigned int i = 0; i < test.size(); i++) {
-		if(test.at(i) != ',') {
-			temp += test.at(i);
-		} else {
-			strings.push_back(temp);
-			temp= "";
+	GameObject game_object_dummy;
+	for(int i = 1; root[i] ; i++)
+	{
+		game_object_dummy.Name = root[i]["Name"];
+		auto game_object_iterator = game_objects.find(&game_object_dummy);
+		bool exists = game_object_iterator != game_objects.end(); //Should exist
+		if(!exists)
+		{
+			throw "Object does not exits";// TODO: specify what object;
 		}
+		GameObject *game_object = *game_object_iterator;
+		auto property_names = getPropertyNames(root[i]);
+		for(auto name : property_names)
+		{
+			game_object_dummy.Name = name;
+			auto prop = *game_objects.find(&game_object_dummy);
+			game_object->Properties.Add(name,prop);
+			int a = 1;
+		}
+		int a = 1;
 	}
-	Clean();
-	return strings;
+
+	return Vector<GameObject *>(game_objects.begin(),game_objects.end());
 }
+
+GameObject LuaGameObjectFactory::Create()
+{
+	return GameObject();
+}
+

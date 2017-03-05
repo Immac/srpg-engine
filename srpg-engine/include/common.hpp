@@ -49,6 +49,12 @@ static bool Find(Vector<T> vector, T item)
 	return std::find(vector.begin(),vector.end(),item) != vector.end();
 }
 
+//template<class TElement, class TComparator>
+//static T Find(std::set<TElement,TComparator> set, TElement item, bool &success){
+
+//}
+
+
 } // Util
 } // SrpgEngine
 

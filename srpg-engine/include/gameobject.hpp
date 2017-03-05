@@ -20,6 +20,38 @@ public:
 	Vector<string> Tags;
 	Set<string> Systems;
 	Repository<GameObject*> Properties;
+	bool operator <(const GameObject &other){
+		return this->Name.compare(other.Name) < 0;
+	}
+	bool operator ==(const std::string &other){
+		return this->Name == other;
+	}
+	bool operator ==(const GameObject &other){
+		return this->Name == other.Name;
+	}
+};
+
+class GameObjectComparator :public std::unary_function<std::string, bool>
+{
+private:
+	std::string baseline;
+public:
+	GameObjectComparator()
+	{}
+	GameObjectComparator(const std::string &baseline)
+		:baseline(baseline){
+	}
+
+	bool operator ()(const GameObject *other)
+	{
+		return baseline == other->Name;
+	}
+
+	bool operator ()(GameObject *first,GameObject *second) const
+	{
+		return first != nullptr
+				&& *first < *second;
+	}
 };
 
 }

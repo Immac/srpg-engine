@@ -19,8 +19,6 @@ FILE(GLOB_RECURSE HEADERS
     | (*.h)
     | ${CMAKE_INSTALL_PREFIX}/lua53/include/*.hpp
     | ${CMAKE_INSTALL_PREFIX}/lua53/include/*.h
-    #| ${CMAKE_INSTALL_PREFIX}/sol2/*.hpp
-    #| ${CMAKE_INSTALL_PREFIX}/sol2/*.h)
     )
 
 #targets
