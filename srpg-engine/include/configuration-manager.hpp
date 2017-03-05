@@ -25,10 +25,12 @@ public:
 		GameObject *dummy = new GameObject();
 		dummy->Name = key;
 		try{
-			auto iter = std::find_if(x.begin(),x.end(),GameObjectComparator(key));
-			auto iter2 = std::find_if(x.begin(),x.end(),[&key](const GameObject *o){return key == o->Name;});
-			auto was_found = iter != x.end();
-			auto was_found2 = iter2 != x.end();
+			auto game_object_iterator = std::find_if(x.begin(),x.end(),[&key](const GameObject *o){return key == o->Name;});
+			auto was_found = game_object_iterator != x.end();
+			if(!was_found)
+			{
+				throw "game_object was not found"; // TODO: specify which one was not found
+			}
 			GameObject *config = new GameObject();
 		config->Properties["video"] = new GameObject();
 		config->Properties["video"]->Statistics["width"] = config_state[system]["width"];
