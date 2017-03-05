@@ -31,21 +31,13 @@ public:
 	}
 };
 
-class GameObjectComparator :public std::unary_function<std::string, bool>
+class GameObjectComparator
 {
 private:
-	std::string baseline;
+
 public:
 	GameObjectComparator()
 	{}
-	GameObjectComparator(const std::string &baseline)
-		:baseline(baseline){
-	}
-
-	bool operator ()(const GameObject *other)
-	{
-		return baseline == other->Name;
-	}
 
 	bool operator ()(GameObject *first,GameObject *second) const
 	{
