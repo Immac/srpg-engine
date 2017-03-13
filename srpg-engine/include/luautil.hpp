@@ -19,7 +19,8 @@ private:
 	Repository<string> getDictionary(sol::table object);
 	Vector<string> getPropertyNames(sol::table object);
 	Vector<string> getTags(sol::table object);
-
+	std::set<string> getSystems(sol::table object);
+//	Repository<GameObject *> getProperties(sol::table object, const std::set<Game::GameObject *, Game::GameObjectComparator> &game_object);
 public:
 	LuaGameObjectFactory(sol::state *state)
 		:_state(state)
@@ -52,6 +53,16 @@ Vector<T> BuildVector(sol::table root){
 		vec.push_back(cursor);
 	}
 	return vec;
+}
+
+template<class T>
+Set<T> BuildSet(sol::table root){
+	Set<T> set;
+	for(int i = 1; root[i]; i++){
+		T cursor = root[i];
+		set.insert(cursor);
+	}
+	return set;
 }
 
 }

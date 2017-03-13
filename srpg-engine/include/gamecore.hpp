@@ -1,6 +1,7 @@
 #ifndef SRPG_GAME_CORE_HPP
 #define SRPG_GAME_CORE_HPP
 
+#include "configuration-manager.hpp"
 #include "gamecommon.hpp"
 #include "gamesystem.hpp"
 
@@ -18,9 +19,14 @@ private:
 	};
 
 	Status _status = Stopped;
+	void LoadSystemObjects();
+	void LoadCoreObjects();
+	ConfigurationManager _configurationManager;
 public:
-	Map<string,GameSystem*> Systems;
-	Map<string,GameObject*> Objects;
+	Core();
+	Map<string,GameSystem*> SystemMap;
+	Map<string,GameObject*> ObjectMap;
+
 	int Init();
 	int Run();
 };

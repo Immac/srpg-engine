@@ -35,6 +35,14 @@ public:
 		return this->_map[key];
 	}
 
+	auto begin() {
+		return _map.begin();
+	}
+
+	auto end() {
+		return _map.end();
+	}
+
 private:
 	Map<string,T> _map;
 };
