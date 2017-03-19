@@ -57,7 +57,6 @@ void Simple2DGraphicsEngine::Update()
 		// Notify that the window closed;
 	}
 
-	//sf::RectangleShape sp;
 	_window->clear(sf::Color::Black);
 	for(auto pair : this->GameObjects)
 	{

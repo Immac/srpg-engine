@@ -31,20 +31,24 @@ public:
 		this->_map.erase(key);
 	}
 
-	T& operator[](string key) {
+	T& operator[](string key)
+	{
 		return this->_map[key];
 	}
 
-	auto begin() {
+	auto begin()
+	{
 		return _map.begin();
 	}
 
-	auto end() {
+	auto end()
+	{
 		return _map.end();
 	}
 
 private:
 	Map<string,T> _map;
+
 };
 }
 }
