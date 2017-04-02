@@ -23,10 +23,11 @@ private:
 	void LoadCoreObjects();
 	ConfigurationManager _configurationManager;
 public:
+
 	Core();
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
-
+	int HandleEvent();
 	int Init();
 	int Run();
 };

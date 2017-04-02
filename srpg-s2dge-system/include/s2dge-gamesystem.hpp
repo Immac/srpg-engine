@@ -10,8 +10,6 @@ namespace SrpgEngine {
 namespace S2dge {
 
 class Simple2DGraphicsEngine : public Game::GameSystem{
-private:
-	sf::RenderWindow *_window;
 public:
 	void Initialize(Game::GameObject &settings);
 	void Update();
