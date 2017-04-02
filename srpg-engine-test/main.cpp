@@ -10,10 +10,18 @@
 using namespace SrpgEngine::S2dge;
 using namespace SrpgEngine::Game;
 using SrpgEngine::Framework::string;
+#define SANDBOX 1
 
+void sandbox(){
+	std::function<bool()> f = [](){return true;};
+	std::cout << (f() ? "True" : "False") << std::endl;
+}
 
 int main(){
-
+#if SANDBOX
+		sandbox();
+		return 0;
+#endif
 	Core core;
 	core.SystemMap["S2DGE"] = new SrpgEngine::S2dge::Simple2DGraphicsEngine();
 
@@ -26,7 +34,7 @@ int main(){
 
 	video_width = s2dge_settings->Properties["Video"]->Statistics["width"];
 	video_height = s2dge_settings->Properties["Video"]->Statistics["height"];
-	vsync = (bool)s2dge_settings->Statistics["vsync"]; // Not Implemented Yet
+	vsync = (bool)s2dge_settings->Statistics["vsync"];
 	frame_limit = s2dge_settings->Statistics["frame_limit"];
 	window_title = s2dge_settings->Dictionary["window_title"];
 
@@ -73,26 +81,3 @@ int main(){
 bool Configure(){
 
 }
-
-//int main(){
-
-
-//	Core srpg_core;
-
-//	auto s2dge = new Simple2DGraphicsEngine(); //TODO: make configurable
-
-////	score.Objects["1"] = &item;
-////	core.Objects["2"] = &item2;
-////	core.Objects["3"] = &item3;
-
-//	srpg_core.SystemMap[s2dge->GetSystemCode()] = s2dge;
-
-//	srpg_core.Init();
-//	while(1)
-//	{
-
-//		s2dge->Update();
-//	}
-//	srpg_core.Run();
-//	return 0;
-//}

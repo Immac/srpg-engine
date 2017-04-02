@@ -47,8 +47,6 @@ Core::Core()
 
 int Core::Init()
 {
-
-
 	// Initialize Core Objects
 	this->_status = Status::Initializing;
 	LoadCoreObjects();
