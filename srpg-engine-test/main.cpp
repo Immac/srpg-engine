@@ -10,7 +10,7 @@
 using namespace SrpgEngine::S2dge;
 using namespace SrpgEngine::Game;
 using SrpgEngine::Framework::string;
-#define SANDBOX 1
+#define SANDBOX 0
 
 void sandbox(){
 	std::function<bool()> f = [](){return true;};
