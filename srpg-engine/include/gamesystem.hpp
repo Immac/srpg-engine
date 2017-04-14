@@ -1,6 +1,7 @@
 #ifndef GAME_SYSTEM_HPP
 #define GAME_SYSTEM_HPP
 #include "gameobject.hpp"
+#include "observer.hpp"
 #include <iostream>
 
 namespace SrpgEngine {
@@ -14,6 +15,7 @@ public:
 	virtual string GetSystemCode() = 0;
 	Map<string,GameObject*> GameObjects;
 };
+
 
 
 

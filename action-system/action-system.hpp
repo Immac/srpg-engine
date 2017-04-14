@@ -6,9 +6,10 @@
 namespace SrpgEngine {
 namespace ActionSystem {
 using namespace Game;
-
+using namespace Framework;
 class SimpleActionSystem : public GameSystem {
 private:
+	string _execute_key = "execute";
 
 	// GameSystem interface
 public:

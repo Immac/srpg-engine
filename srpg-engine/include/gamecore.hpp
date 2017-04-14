@@ -1,6 +1,7 @@
 #ifndef SRPG_GAME_CORE_HPP
 #define SRPG_GAME_CORE_HPP
 
+#include <functional>
 #include "configuration-manager.hpp"
 #include "gamecommon.hpp"
 #include "gamesystem.hpp"
@@ -27,7 +28,8 @@ public:
 	Core();
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
-	int HandleEvent();
+	Map<string, std::function<void()>> EventMap;
+	int HandleEvent(string s);
 	int Init();
 	int Run();
 };

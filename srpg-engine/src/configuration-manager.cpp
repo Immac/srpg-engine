@@ -37,7 +37,7 @@ SrpgEngine::Game::GameObject *ConfigurationManager::LoadConfigurationFor(SrpgEng
 		auto was_found = game_object_iterator != config_objects.end();
 		if(!was_found)
 		{
-			throw "game_object was not found"; // TODO: specify which one was not found
+			throw std::runtime_error(std::string("game_object was not found: ") + key); // TODO: specify which one was not found
 		}
 		GameObject *config = *game_object_iterator;
 		return config;
@@ -45,6 +45,5 @@ SrpgEngine::Game::GameObject *ConfigurationManager::LoadConfigurationFor(SrpgEng
 	catch(std::exception e)
 	{
 		std::cout << e.what() << std::endl;
-		throw;
 	}
 }

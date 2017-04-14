@@ -1,11 +1,12 @@
 #include <iostream>
 #include <gameobject.hpp>
 #include <gamecore.hpp>
-#include <s2dge-factory.hpp>
 #include <s2dge-gamesystem.hpp>
+#include <simple-position-system.hpp>
 #include <configuration-manager.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 using namespace SrpgEngine::S2dge;
 using namespace SrpgEngine::Game;
@@ -19,12 +20,17 @@ void sandbox(){
 
 int main(){
 #if SANDBOX
-		sandbox();
-		return 0;
+	sandbox();
+	return 0;
 #endif
 	Core core;
-	core.SystemMap["S2DGE"] = new SrpgEngine::S2dge::Simple2DGraphicsEngine();
 
+	core.EventMap["hello"] = []() {
+		std::cout << "Hello from Lambda" << std::endl;
+		return;
+	};
+	core.SystemMap["S2DGE"] = new SrpgEngine::S2dge::Simple2DGraphicsEngine();
+	core.SystemMap["SPS"] = new SrpgEngine::SimplePositionSystem::SimplePositionSystem;
 	ConfigurationManager _configurationManager;
 
 	auto s2dge_settings = _configurationManager.LoadConfigurationFor("S2DGE");
@@ -53,9 +59,22 @@ int main(){
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
 				window->close();
-//			if (event.type == sf::Event::KeyPressed)
-//				core.HandleEvent(new srpg::SfmlEvent(event));
+			if(event.type == sf::Event::KeyPressed)
+			{
+				switch (event.key.code) {
+				case sf::Keyboard::H:
+					{
+						core.HandleEvent("hello");
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			//			if (event.type == sf::Event::KeyPressed)
+			//				core.HandleEvent(new srpg::SfmlEvent(event));
 			// Notify that the window closed;
+			//core.HandleEvent();
 		}
 		window->clear(sf::Color::Black);
 		for(auto pair : drawingSystem->GameObjects)

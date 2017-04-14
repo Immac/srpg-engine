@@ -45,6 +45,11 @@ Core::Core()
 
 }
 
+int Core::HandleEvent(string s)
+{
+	EventMap[s]();
+}
+
 int Core::Init()
 {
 	// Initialize Core Objects

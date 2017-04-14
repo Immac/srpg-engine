@@ -4,7 +4,7 @@
 #include <gamesystem.hpp>
 
 namespace SrpgEngine {
-namespace ActionSystem {
+namespace SimplePositionSystem {
 using namespace Game;
 
 class SimplePositionSystem : public GameSystem {

@@ -6,11 +6,13 @@ aux_source_directory(. SRC_LIST)
 #include
 include_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/include)
 include_directories(${CMAKE_INSTALL_PREFIX}/srpg-s2dge-system/include)
+include_directories(${CMAKE_INSTALL_PREFIX}/simple-position-system/include)
 include_directories(${CMAKE_INSTALL_PREFIX}/lua53/include)
 message(${CMAKE_INSTALL_PREFIX}/lua53/include)
 #linking-directory
 link_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/bin/)
 link_directories(${CMAKE_INSTALL_PREFIX}/srpg-s2dge-system/bin/)
+link_directories(${CMAKE_INSTALL_PREFIX}/simple-position-system/bin/)
 link_directories(${CMAKE_INSTALL_PREFIX}/lua53/bin/)
 #targets
 add_executable(${PROJECT_NAME} ${SRC_LIST})
@@ -27,6 +29,8 @@ if(SFML_FOUND)
 endif()
 #linking-phase
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} srpg-engine-lib)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} simple-position-system-lib)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} srpg-s2dge-system-lib)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} lua53-lib)
+
 
