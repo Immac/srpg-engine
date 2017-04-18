@@ -9,7 +9,11 @@
 namespace SrpgEngine {
 namespace S2dge {
 
-class Simple2DGraphicsEngine : public Game::GameSystem{
+using SrpgEngine::Framework::string;
+
+class Simple2DGraphicsEngine : public Game::GameSystem {
+private:
+	static string SystemName;
 public:
 	void Initialize(Game::GameObject &settings);
 	void Update();

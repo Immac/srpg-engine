@@ -45,9 +45,9 @@ Core::Core()
 
 }
 
-int Core::HandleEvent(string s)
+int Core::HandleEvent(string eventName)
 {
-	EventMap[s]();
+	EventMap[eventName]();
 }
 
 int Core::Init()
@@ -67,17 +67,14 @@ int Core::Init()
 	this->_status = Status::Running;
 }
 
-int SrpgEngine::Game::Core::Run()
+int SrpgEngine::Game::Core::Update()
 {
 	this->_status = Status::Running;
 
-	while(this->_status != Status::Stopped)
+	for(auto system : this->SystemMap)
 	{
-		for(auto system : this->SystemMap)
-		{
-			system.second->Update();
-		}
+		system.second->Update();
 	}
-	cout << "Good Bye" << std::endl;
+
 	return 0;
 }

@@ -24,13 +24,14 @@ int main(){
 	return 0;
 #endif
 	Core core;
-
-	core.EventMap["hello"] = []() {
-		std::cout << "Hello from Lambda" << std::endl;
+	int num = 0;
+	core.EventMap["hello"] = [&num]() {
+		num++;
+		std::cout << "Hello from a Lambda: " << num << std::endl;
 		return;
 	};
 	core.SystemMap["S2DGE"] = new SrpgEngine::S2dge::Simple2DGraphicsEngine();
-	core.SystemMap["SPS"] = new SrpgEngine::SimplePositionSystem::SimplePositionSystem;
+	core.SystemMap["SPS"] = new SrpgEngine::SimplePositionSystem::TilePositionSystem;
 	ConfigurationManager _configurationManager;
 
 	auto s2dge_settings = _configurationManager.LoadConfigurationFor("S2DGE");
@@ -67,27 +68,32 @@ int main(){
 						core.HandleEvent("hello");
 					}
 					break;
+				case sf::Keyboard::Escape:
+					{
+						window->close();
+					}
+					break;
 				default:
 					break;
 				}
 			}
-			//			if (event.type == sf::Event::KeyPressed)
-			//				core.HandleEvent(new srpg::SfmlEvent(event));
-			// Notify that the window closed;
-			//core.HandleEvent();
 		}
+		core.Update();
 		window->clear(sf::Color::Black);
 		for(auto pair : drawingSystem->GameObjects)
 		{
 			GameObject *obj = pair.second;
-			sf::Sprite *sp = (sf::Sprite*)obj->Properties["sprite"]->Data["sprite"];
+			auto s2dge = obj->Properties["S2DGE"];
+			sf::Sprite *sp = (sf::Sprite*)s2dge
+							 ->Properties["sprite"]
+							 ->Data["sprite"];
 
-			uint8_t red = obj->Statistics["red"];
-			uint8_t green = obj->Statistics["green"];
-			uint8_t blue = obj->Statistics["blue"];
-			uint8_t alpha = obj->Statistics["alpha"];
+			uint8_t red = s2dge->Statistics["red"];
+			uint8_t green = s2dge->Statistics["green"];
+			uint8_t blue = s2dge->Statistics["blue"];
+			uint8_t alpha = s2dge->Statistics["alpha"];
 			sp->setColor(sf::Color(red,green,blue,alpha));
-			sp->setPosition(obj->Properties["position"]->Statistics["x"],obj->Properties["position"]->Statistics["y"]);
+			sp->setPosition(s2dge->Statistics["x"],s2dge->Statistics["y"]);
 			window->draw(*sp);
 		}
 

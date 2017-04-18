@@ -4,12 +4,12 @@ using namespace SrpgEngine::SimplePositionSystem;
 using namespace SrpgEngine::Framework;
 using namespace SrpgEngine::Game;
 
-void SimplePositionSystem::Initialize(GameObject &settings)
+void TilePositionSystem::Initialize(GameObject &settings)
 {
 
 }
 
-void SimplePositionSystem::Update()
+void TilePositionSystem::Update()
 {
 	for(auto item : this->GameObjects)
 	{
@@ -19,7 +19,7 @@ void SimplePositionSystem::Update()
 	}
 }
 
-string SimplePositionSystem::GetSystemCode()
+string TilePositionSystem::GetSystemCode()
 {
-	return "SPS";
+	return "TILEPOS";
 }

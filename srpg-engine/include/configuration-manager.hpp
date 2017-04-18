@@ -15,6 +15,7 @@ class ConfigurationManager {
 private:
 	static const string DefaultFilePath;
 	static const string DefaultConfigIdTag;
+	static const string ConfigurationNotFoundMessage;
 	string _filepath;
 	string _id_tag;
 public:

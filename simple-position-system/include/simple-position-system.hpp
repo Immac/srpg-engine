@@ -7,7 +7,7 @@ namespace SrpgEngine {
 namespace SimplePositionSystem {
 using namespace Game;
 
-class SimplePositionSystem : public GameSystem {
+class TilePositionSystem : public GameSystem {
 private:
 
 	// GameSystem interface

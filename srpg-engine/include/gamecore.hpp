@@ -29,9 +29,9 @@ public:
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
 	Map<string, std::function<void()>> EventMap;
-	int HandleEvent(string s);
+	int HandleEvent(string eventName);
 	int Init();
-	int Run();
+	int Update();
 };
 
 }

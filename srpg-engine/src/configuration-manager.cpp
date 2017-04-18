@@ -5,6 +5,8 @@ using SrpgEngine::Framework::string;
 
 const string ConfigurationManager::DefaultConfigIdTag = ".Config";
 const string ConfigurationManager::DefaultFilePath = "game.config";
+const string ConfigurationManager::ConfigurationNotFoundMessage =
+		"game.config";
 
 ConfigurationManager::ConfigurationManager()
 	: ConfigurationManager(DefaultFilePath,DefaultConfigIdTag)
@@ -37,6 +39,7 @@ SrpgEngine::Game::GameObject *ConfigurationManager::LoadConfigurationFor(SrpgEng
 		auto was_found = game_object_iterator != config_objects.end();
 		if(!was_found)
 		{
+			std::cout << "The object: " << key << " was not found" << std::endl;//TODO: Exception
 			throw std::runtime_error(std::string("game_object was not found: ") + key); // TODO: specify which one was not found
 		}
 		GameObject *config = *game_object_iterator;
