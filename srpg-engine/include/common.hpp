@@ -43,17 +43,20 @@ static bool Find(Map<K,V> map, K key) {
 	return map.find(key) != map.end();
 }
 
+template<class K, class V>
+static Vector<V> ExtractValues(Map<K,V> map){
+	Vector<V> output;
+	 for (auto const& element : map) {
+	   output.push_back(element.second);
+	 }
+	 return output;
+}
+
 template<class T>
 static bool Find(Vector<T> vector, T item)
 {
 	return std::find(vector.begin(),vector.end(),item) != vector.end();
 }
-
-//template<class TElement, class TComparator>
-//static T Find(std::set<TElement,TComparator> set, TElement item, bool &success){
-
-//}
-
 
 } // Util
 } // SrpgEngine

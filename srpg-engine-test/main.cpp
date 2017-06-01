@@ -2,36 +2,30 @@
 #include <gameobject.hpp>
 #include <gamecore.hpp>
 #include <s2dge-gamesystem.hpp>
-#include <simple-position-system.hpp>
+#include <tile-position-system.hpp>
+#include <s2dge-tilepos-adapter.hpp>
 #include <configuration-manager.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include "chess.hpp"
 
 using namespace SrpgEngine::S2dge;
+using namespace SrpgEngine::SimplePositionSystem;
 using namespace SrpgEngine::Game;
 using SrpgEngine::Framework::string;
 #define SANDBOX 0
 
-void sandbox(){
-	std::function<bool()> f = [](){return true;};
-	std::cout << (f() ? "True" : "False") << std::endl;
-}
+Core setupCore();
+inline void sandbox();
 
 int main(){
-#if SANDBOX
 	sandbox();
-	return 0;
-#endif
-	Core core;
-	int num = 0;
-	core.EventMap["hello"] = [&num]() {
-		num++;
-		std::cout << "Hello from a Lambda: " << num << std::endl;
-		return;
-	};
-	core.SystemMap["S2DGE"] = new SrpgEngine::S2dge::Simple2DGraphicsEngine();
-	core.SystemMap["SPS"] = new SrpgEngine::SimplePositionSystem::TilePositionSystem;
+
+	if(SANDBOX) return 0;
+
+	Core core = setupCore();
+
 	ConfigurationManager _configurationManager;
 
 	auto s2dge_settings = _configurationManager.LoadConfigurationFor("S2DGE");
@@ -48,10 +42,10 @@ int main(){
 	auto video_mode = sf::VideoMode(video_width, video_height);
 	auto window = new sf::RenderWindow(video_mode,window_title);
 	window->setVerticalSyncEnabled(vsync);
-	core.Init();
 
-	GameSystem *drawingSystem = core.SystemMap["S2DGE"];
 
+	Simple2DGraphicsEngine *drawingSystem = (Simple2DGraphicsEngine*)core.SystemMap["S2DGE"];
+	bool firstRun = true;
 	while(window->isOpen())
 	{
 		sf::Event event;
@@ -68,9 +62,34 @@ int main(){
 						core.HandleEvent("hello");
 					}
 					break;
+				case sf::Keyboard::L:
+					{
+						core.HandleEvent("UpdateLayers");
+					}
+					break;
 				case sf::Keyboard::Escape:
 					{
 						window->close();
+					}
+					break;
+				case sf::Keyboard::Right:
+					{
+						core.HandleEvent("Right");
+					}
+					break;
+				case sf::Keyboard::Left:
+					{
+						core.HandleEvent("Left");
+					}
+					break;
+				case sf::Keyboard::Up:
+					{
+						core.HandleEvent("Up");
+					}
+					break;
+				case sf::Keyboard::Down:
+					{
+						core.HandleEvent("Down");
 					}
 					break;
 				default:
@@ -79,11 +98,11 @@ int main(){
 			}
 		}
 		core.Update();
-		window->clear(sf::Color::Black);
-		for(auto pair : drawingSystem->GameObjects)
+		window->clear(sf::Color::Blue);
+		Vector<GameObject *> drawables = drawingSystem->getDrawables();
+		for(GameObject* obj : drawables)
 		{
-			GameObject *obj = pair.second;
-			auto s2dge = obj->Properties["S2DGE"];
+			auto s2dge = obj->Properties[drawingSystem->GetSystemCode()];
 			sf::Sprite *sp = (sf::Sprite*)s2dge
 							 ->Properties["sprite"]
 							 ->Data["sprite"];
@@ -93,7 +112,8 @@ int main(){
 			uint8_t blue = s2dge->Statistics["blue"];
 			uint8_t alpha = s2dge->Statistics["alpha"];
 			sp->setColor(sf::Color(red,green,blue,alpha));
-			sp->setPosition(s2dge->Statistics["x"],s2dge->Statistics["y"]);
+			sp->setPosition(s2dge->Statistics["x"] + s2dge->Statistics["x-offset"]
+					, s2dge->Statistics["y"] + s2dge->Statistics["y-offset"]);
 			window->draw(*sp);
 		}
 
@@ -106,3 +126,39 @@ int main(){
 bool Configure(){
 
 }
+
+Core setupCore()
+{
+	Core core;
+	core.EventMap["hello"] = []() { std::cout << "Hello from a Lambda!" << std::endl; };
+
+	auto s2dge = new Simple2DGraphicsEngine();
+	auto sts = new TilePositionSystem();
+	auto s2dge_sts = new S2dgeTilePosAdapter();
+
+	core.SystemMap[s2dge->GetSystemCode()] = s2dge;
+	core.SystemMap[sts->GetSystemCode()] = sts;
+	core.SystemMap[s2dge_sts->GetSystemCode()] = s2dge_sts;
+
+	auto factory = ChessExample::BoardFactory();
+	auto board = factory.CreateBoard();
+	for(GameObject* item : board)
+	{
+		string s = item->Name;
+		core.ObjectMap[s] = item;
+	}
+	core.Init();
+	return core;
+}
+
+#if SANDBOX
+inline void sandbox(){
+	std::function<bool()> f = [](){return true;};
+	std::cout << (f() ? "True" : "False") << std::endl;
+}
+
+#else
+inline void sandbox(){
+
+}
+#endif

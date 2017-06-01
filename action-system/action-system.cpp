@@ -19,3 +19,4 @@ string SimpleActionSystem::GetSystemCode()
 {
 	return "SAS";
 }
+ 

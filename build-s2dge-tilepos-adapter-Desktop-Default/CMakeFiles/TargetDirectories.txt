@@ -1,0 +1,8 @@
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/install/strip.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/install/local.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/s2dge-tilepos-adapter.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/s2dge-tilepos-adapter-lib.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/edit_cache.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/install.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/rebuild_cache.dir
+D:/workspace/proyecto-de-graduacion/build-s2dge-tilepos-adapter-Desktop-Default/CMakeFiles/list_install_components.dir

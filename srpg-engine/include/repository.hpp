@@ -36,6 +36,11 @@ public:
 		return this->_map[key];
 	}
 
+	T& operator[](const char* key)
+	{
+		return this->_map[key];
+	}
+
 	auto begin()
 	{
 		return _map.begin();
@@ -44,6 +49,11 @@ public:
 	auto end()
 	{
 		return _map.end();
+	}
+
+	bool Exists(string key)
+	{
+		return _map.find(key) != _map.end();
 	}
 
 private:

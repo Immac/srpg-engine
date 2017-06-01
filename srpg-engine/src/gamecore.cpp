@@ -19,8 +19,30 @@ void Core::LoadSystemObjects()
 		for(auto object_pair : this->ObjectMap)
 		{
 			auto systems = object_pair.second->Systems;
-			if(Util::Find(systems ,system->GetSystemCode()))
+			auto system_code = system->GetSystemCode();
+			auto dependencies = system->GetDependencies();
+
+			if(Util::Find(systems , system_code))
+			{
 				system->GameObjects.insert(object_pair);
+			}
+			else
+			{
+				if(dependencies.size() > 0)
+				{
+					bool hasAllDependencies = true;
+					for(auto dependency : dependencies)
+					{
+						bool hasDependency = Util::Find(systems , dependency);
+						hasAllDependencies = hasAllDependencies && hasDependency;
+						if(!hasAllDependencies) break;
+					}
+					if(hasAllDependencies)
+					{
+						system->GameObjects.insert(object_pair);
+					}
+				}
+			}
 		}
 	}
 }
@@ -47,7 +69,15 @@ Core::Core()
 
 int Core::HandleEvent(string eventName)
 {
-	EventMap[eventName]();
+	if(EventMap.find(eventName)!=EventMap.end()){
+		EventMap[eventName]();
+	}
+
+	for(const auto& mapPair: this->SystemMap)
+	{
+		GameSystem *system = mapPair.second;
+		system->HandleEvent(eventName);
+	}
 }
 
 int Core::Init()

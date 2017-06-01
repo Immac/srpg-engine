@@ -5,20 +5,30 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 namespace SrpgEngine {
 namespace S2dge {
 
-using SrpgEngine::Framework::string;
+using namespace SrpgEngine::Framework;
+using Game::GameObject;
 
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
+	Vector<GameObject *> _drawables;
+	void InitializeDefaults(GameObject &settings);
+	Map<string, std::function<void()>> _eventMap;
 public:
-	void Initialize(Game::GameObject &settings);
-	void Update();
-	Framework::string GetSystemCode();
+	Simple2DGraphicsEngine();
+	void Initialize(GameObject &settings) override;
+	void Update() override;
+	int HandleEvent(string eventKey) override;
+	string GetSystemCode();
+	Vector<string> GetDependencies();
 	~Simple2DGraphicsEngine();
+
+	Vector<GameObject *> getDrawables() const;
 };
 
 }
