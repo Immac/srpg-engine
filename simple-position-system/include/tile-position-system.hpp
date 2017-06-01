@@ -10,12 +10,12 @@ using namespace Game;
 
 class TilePositionSystem : public GameSystem {
 private:
-	Map<string, std::function<void()>> _eventMap;
+	Map<string, std::function<void(GameObject *)>> _eventMap;
 	// GameSystem interface
 public:
 	void Initialize(GameObject &settings) override;
 	void Update() override;
-	int HandleEvent(string eventKey);
+	int HandleEvent(GameObject *event);
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
 };

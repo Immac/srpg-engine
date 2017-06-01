@@ -14,7 +14,7 @@ public:
 	virtual void Update() = 0;
 	virtual string GetSystemCode() = 0;
 	virtual Vector<string> GetDependencies() = 0;
-	virtual int HandleEvent(string eventKey) = 0;
+	virtual int HandleEvent(GameObject *event) = 0;
 	Map<string,GameObject*> GameObjects;
 };
 

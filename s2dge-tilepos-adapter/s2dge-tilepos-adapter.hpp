@@ -17,7 +17,7 @@ public:
 	S2dgeTilePosAdapter();
 	void Initialize(GameObject &settings) override;
 	void Update() override;
-	int HandleEvent(string eventKey) override;
+	int HandleEvent(GameObject *event) override;
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
 };

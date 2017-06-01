@@ -7,7 +7,9 @@ namespace ChessExample {
 using namespace SrpgEngine::Framework;
 using namespace SrpgEngine::Game;
 
+class ChessStuff {
 
+};
 
 class BoardFactory
 {

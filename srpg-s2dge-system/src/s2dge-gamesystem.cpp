@@ -44,7 +44,7 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 
 Simple2DGraphicsEngine::Simple2DGraphicsEngine()
 {
-	this->_eventMap["UpdateLayers"] = [&](){
+	this->_eventMap["UpdateLayers"] = [&](GameObject* event){
 		this->_drawables = SrpgEngine::Util::ExtractValues(this->GameObjects);
 		std::sort(_drawables.begin()
 				  ,_drawables.end()
@@ -86,8 +86,9 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 		s2dge->Properties["sprite"]->Data["sprite"] = sprite;
 		s2dge->Properties["sprite"]->Data["texture"] = texture;
 	}
-
-	this->HandleEvent("UpdateLayers");
+	auto event = new GameObject();
+	event->Name = "UpdateLayers";
+	this->HandleEvent(event);
 
 return;
 }
@@ -97,10 +98,11 @@ void Simple2DGraphicsEngine::Update()
 
 }
 
-int Simple2DGraphicsEngine::HandleEvent(string eventKey)
+int Simple2DGraphicsEngine::HandleEvent(GameObject *event)
 {
+	string eventKey = event->Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()){
-		_eventMap[eventKey]();
+		_eventMap[eventKey](event);
 	}
 }
 

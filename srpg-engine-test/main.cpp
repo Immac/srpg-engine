@@ -59,12 +59,13 @@ int main(){
 				switch (event.key.code) {
 				case sf::Keyboard::H:
 					{
-						core.HandleEvent("hello");
+
+						core.HandleEvent(new GameObject("hello"));
 					}
 					break;
 				case sf::Keyboard::L:
 					{
-						core.HandleEvent("UpdateLayers");
+						core.HandleEvent(new GameObject("UpdateLayers"));
 					}
 					break;
 				case sf::Keyboard::Escape:
@@ -74,22 +75,22 @@ int main(){
 					break;
 				case sf::Keyboard::Right:
 					{
-						core.HandleEvent("Right");
+						core.HandleEvent(new GameObject("Right"));
 					}
 					break;
 				case sf::Keyboard::Left:
 					{
-						core.HandleEvent("Left");
+						core.HandleEvent(new GameObject("Left"));
 					}
 					break;
 				case sf::Keyboard::Up:
 					{
-						core.HandleEvent("Up");
+						core.HandleEvent(new GameObject("Up"));
 					}
 					break;
 				case sf::Keyboard::Down:
 					{
-						core.HandleEvent("Down");
+						core.HandleEvent(new GameObject("Down"));
 					}
 					break;
 				default:
@@ -116,7 +117,6 @@ int main(){
 					, s2dge->Statistics["y"] + s2dge->Statistics["y-offset"]);
 			window->draw(*sp);
 		}
-
 		window->display();
 	}
 
@@ -130,7 +130,10 @@ bool Configure(){
 Core setupCore()
 {
 	Core core;
-	core.EventMap["hello"] = []() { std::cout << "Hello from a Lambda!" << std::endl; };
+	core.EventMap["hello"] = [](GameObject *event)
+	{
+		std::cout << "Hello from a Lambda!" << std::endl;
+	};
 
 	auto s2dge = new Simple2DGraphicsEngine();
 	auto sts = new TilePositionSystem();

@@ -28,8 +28,8 @@ public:
 	Core();
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
-	Map<string, std::function<void()>> EventMap;
-	int HandleEvent(string eventName);
+	Map<string, std::function<void(GameObject*)>> EventMap;
+	int HandleEvent(GameObject *event);
 	int Init();
 	int Update();
 };

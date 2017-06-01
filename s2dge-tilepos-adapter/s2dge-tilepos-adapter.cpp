@@ -32,7 +32,7 @@ void S2dgeTilePosAdapter::Update()
 	}
 }
 
-int S2dgeTilePosAdapter::HandleEvent(string eventKey)
+int S2dgeTilePosAdapter::HandleEvent(GameObject *event)
 {
 //TODO: Handle Events
 }

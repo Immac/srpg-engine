@@ -8,16 +8,16 @@ void TilePositionSystem::Initialize(GameObject &settings)
 {
 	auto item = this->GameObjects["Cursor"]
 				->Properties["TILEPOS"];
-	this->_eventMap["Right"] = [=](){
+	this->_eventMap["Right"] = [=](GameObject *event){
 		item->Statistics["x"]++;
 	};
-	this->_eventMap["Left"] = [=](){
+	this->_eventMap["Left"] = [=](GameObject *event){
 		item->Statistics["x"]--;
 	};
-	this->_eventMap["Up"] = [=](){
+	this->_eventMap["Up"] = [=](GameObject *event){
 		item->Statistics["y"]--;
 	};
-	this->_eventMap["Down"] = [=](){
+	this->_eventMap["Down"] = [=](GameObject *event){
 		item->Statistics["y"]++;
 	};
 }
@@ -32,10 +32,11 @@ void TilePositionSystem::Update()
 	}
 }
 
-int TilePositionSystem::HandleEvent(string eventKey)
+int TilePositionSystem::HandleEvent(GameObject *event)
 {
+	string eventKey = event->Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()){
-		_eventMap[eventKey]();
+		_eventMap[eventKey](event);
 	}
 }
 

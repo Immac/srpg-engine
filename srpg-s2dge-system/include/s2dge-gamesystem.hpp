@@ -18,12 +18,12 @@ private:
 	static string SystemName;
 	Vector<GameObject *> _drawables;
 	void InitializeDefaults(GameObject &settings);
-	Map<string, std::function<void()>> _eventMap;
+	Map<string, std::function<void(GameObject *)>> _eventMap;
 public:
 	Simple2DGraphicsEngine();
 	void Initialize(GameObject &settings) override;
 	void Update() override;
-	int HandleEvent(string eventKey) override;
+	int HandleEvent(GameObject *event) override;
 	string GetSystemCode();
 	Vector<string> GetDependencies();
 	~Simple2DGraphicsEngine();

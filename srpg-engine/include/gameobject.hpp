@@ -11,6 +11,8 @@ using namespace Framework;
 
 class GameObject {
 public:
+	GameObject() = default;
+	GameObject(string name);
 	int Id;
 	string Name;
 	Repository<int> Statistics;
@@ -20,12 +22,15 @@ public:
 	Vector<string> Tags;
 	Set<string> Systems;
 	Repository<GameObject*> Properties;
+
 	bool operator <(const GameObject &other){
 		return this->Name.compare(other.Name) < 0;
 	}
+
 	bool operator ==(const std::string &other){
 		return this->Name == other;
 	}
+
 	bool operator ==(const GameObject &other){
 		return this->Name == other.Name;
 	}

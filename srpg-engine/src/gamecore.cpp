@@ -67,16 +67,17 @@ Core::Core()
 
 }
 
-int Core::HandleEvent(string eventName)
+int Core::HandleEvent(GameObject *event)
 {
+	string eventName = event->Name;
 	if(EventMap.find(eventName)!=EventMap.end()){
-		EventMap[eventName]();
+		EventMap[eventName](event);
 	}
 
 	for(const auto& mapPair: this->SystemMap)
 	{
 		GameSystem *system = mapPair.second;
-		system->HandleEvent(eventName);
+		system->HandleEvent(event);
 	}
 }
 
