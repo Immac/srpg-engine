@@ -54,15 +54,6 @@ std::set<std::string> LuaGameObjectFactory::getSystems(sol::table object)
 	return BuildSet<string>(systems_table);
 }
 
-//Repository<GameObject *> LuaGameObjectFactory::getProperties(sol::table object,const std::set<GameObject *,GameObjectComparator> &game_object)
-//{
-//	sol::table properties_table = object["Properties"];
-//	if(!properties_table)
-//		return Repository<GameObject *>();
-//}
-
-
-
 Vector<GameObject *> LuaGameObjectFactory::CreateList()
 {
 	auto root = (*_state)["Root"];

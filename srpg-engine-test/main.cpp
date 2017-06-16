@@ -5,6 +5,7 @@
 #include <tile-position-system.hpp>
 #include <s2dge-tilepos-adapter.hpp>
 #include <configuration-manager.hpp>
+#include <simple-tile-movement-system.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -13,6 +14,7 @@
 using namespace SrpgEngine::S2dge;
 using namespace SrpgEngine::SimplePositionSystem;
 using namespace SrpgEngine::Game;
+using namespace SrpgEngine::TileMovementSystem;
 using SrpgEngine::Framework::string;
 #define SANDBOX 0
 
@@ -54,9 +56,21 @@ int main(){
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
 				window->close();
+
 			if(event.type == sf::Event::KeyPressed)
 			{
+				{
+					auto event = new GameObject("MoveCursor");
+					event->Dictionary["Subject"] = "Cursor";
+					if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+					{
+						event->Dictionary["Statistic"] = "x";
+						event->Statistics["Magnitude"] = 1;
+					}
+					core.HandleEvent(event);
+				}
 				switch (event.key.code) {
+
 				case sf::Keyboard::H:
 					{
 
@@ -73,24 +87,31 @@ int main(){
 						window->close();
 					}
 					break;
-				case sf::Keyboard::Right:
-					{
-						core.HandleEvent(new GameObject("Right"));
-					}
-					break;
 				case sf::Keyboard::Left:
 					{
-						core.HandleEvent(new GameObject("Left"));
+						auto event = new GameObject("MoveCursor");
+						event->Dictionary["Subject"] = "Cursor";
+						event->Dictionary["Statistic"] = "x";
+						event->Statistics["Magnitude"] = -1;
+						core.HandleEvent(event);
 					}
 					break;
 				case sf::Keyboard::Up:
 					{
-						core.HandleEvent(new GameObject("Up"));
+						auto event = new GameObject("MoveCursor");
+						event->Dictionary["Subject"] = "Cursor";
+						event->Dictionary["Statistic"] = "y";
+						event->Statistics["Magnitude"] = -1;
+						core.HandleEvent(event);
 					}
 					break;
 				case sf::Keyboard::Down:
 					{
-						core.HandleEvent(new GameObject("Down"));
+						auto event = new GameObject("MoveCursor");
+						event->Dictionary["Subject"] = "Cursor";
+						event->Dictionary["Statistic"] = "y";
+						event->Statistics["Magnitude"] = 1;
+						core.HandleEvent(event);
 					}
 					break;
 				default:
@@ -138,18 +159,13 @@ Core setupCore()
 	auto s2dge = new Simple2DGraphicsEngine();
 	auto sts = new TilePositionSystem();
 	auto s2dge_sts = new S2dgeTilePosAdapter();
+	auto stms = new TileMovementSystem();
 
 	core.SystemMap[s2dge->GetSystemCode()] = s2dge;
 	core.SystemMap[sts->GetSystemCode()] = sts;
 	core.SystemMap[s2dge_sts->GetSystemCode()] = s2dge_sts;
+	core.SystemMap[stms->GetSystemCode()] = stms;
 
-	auto factory = ChessExample::BoardFactory();
-	auto board = factory.CreateBoard();
-	for(GameObject* item : board)
-	{
-		string s = item->Name;
-		core.ObjectMap[s] = item;
-	}
 	core.Init();
 	return core;
 }

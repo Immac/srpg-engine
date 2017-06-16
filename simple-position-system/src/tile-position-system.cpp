@@ -4,26 +4,28 @@ using namespace SrpgEngine::SimplePositionSystem;
 using namespace SrpgEngine::Framework;
 using namespace SrpgEngine::Game;
 
+TilePositionSystem::TilePositionSystem()
+{
+
+}
+
 void TilePositionSystem::Initialize(GameObject &settings)
 {
-	auto item = this->GameObjects["Cursor"]
-				->Properties["TILEPOS"];
-	this->_eventMap["Right"] = [=](GameObject *event){
-		item->Statistics["x"]++;
-	};
-	this->_eventMap["Left"] = [=](GameObject *event){
-		item->Statistics["x"]--;
-	};
-	this->_eventMap["Up"] = [=](GameObject *event){
-		item->Statistics["y"]--;
-	};
-	this->_eventMap["Down"] = [=](GameObject *event){
-		item->Statistics["y"]++;
+
+	this->_eventMap["MoveCursor"] = [=](GameObject *event){
+		string subject_key = event->Dictionary["Subject"];
+		string stat_key = event->Dictionary["Statistic"];
+		int magnitude = event->Statistics["Magnitude"];
+		GameObject *subject = this->GameObjects[subject_key];
+		subject->Properties["TILEPOS"]->Statistics[stat_key]
+				= subject->Properties["TILEPOS"]->Statistics[stat_key]
+				  + magnitude;
 	};
 }
 
 void TilePositionSystem::Update()
 {
+
 	for(auto item : this->GameObjects)
 	{
 		auto a = item.first;
@@ -34,6 +36,7 @@ void TilePositionSystem::Update()
 
 int TilePositionSystem::HandleEvent(GameObject *event)
 {
+
 	string eventKey = event->Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()){
 		_eventMap[eventKey](event);
