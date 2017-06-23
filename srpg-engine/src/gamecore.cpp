@@ -64,7 +64,10 @@ void Core::LoadCoreObjects()
 
 Core::Core()
 {
-
+	for(int i = 0; i < 16 ; i++)
+	{
+		this->Controllers.emplace(i,new GameController());
+	}
 }
 
 int Core::HandleEvent(GameObject *event)

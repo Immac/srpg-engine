@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 512 512"
+   style="height: 512px; width: 512px;"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="chess-pawn (1).svg"
+   inkscape:export-filename="D:\workspace\proyecto-de-graduacion\resources\chess\chess-pawn (1).png"
+   inkscape:export-xdpi="12"
+   inkscape:export-ydpi="12"
+   inkscape:version="0.92.1 r15371">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1846"
+     inkscape:window-height="1057"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <path
+     d="M0 0h512v512H0z"
+     fill="#000"
+     opacity="0"
+     id="path2" />
+  <g
+     class=""
+     style="touch-action:none;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none"
+     transform="translate(0,0)"
+     id="g6">
+    <path
+       fill="#000"
+       d="M312.07 194.46A56.07 56.07 0 1 1 256 138.39a56.07 56.07 0 0 1 56.07 56.07zM406 418.01H106v60h300v-60zM282.33 261.52a71.81 71.81 0 0 1-52.15.2c-.73 58.91-62.35 114.06-96.75 140.28H378.9c-34.09-26.33-95.44-81.78-96.57-140.48z"
+       id="path4"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none" />
+  </g>
+  <!-- react-empty: 6 -->
+  <path
+     inkscape:connector-curvature="0"
+     style="opacity:0;fill:#000000"
+     d="M 709.42368,-4.3389828 H 1221.4237 V 507.66102 H 709.42368 Z"
+     id="path2-3"
+     inkscape:export-xdpi="12"
+     inkscape:export-ydpi="12" />
+  <g
+     class=""
+     style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="g6-1"
+     transform="translate(709.42369,-4.3389828)"
+     inkscape:export-xdpi="12"
+     inkscape:export-ydpi="12">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 312.07,194.46 A 56.07,56.07 0 1 1 256,138.39 56.07,56.07 0 0 1 312.07,194.46 Z M 406,418.01 H 106 v 60 H 406 Z M 282.33,261.52 a 71.81,71.81 0 0 1 -52.15,0.2 C 229.45,320.63 167.83,375.78 133.43,402 H 378.9 C 344.81,375.67 283.46,320.22 282.33,261.52 Z"
+       id="path4-9"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

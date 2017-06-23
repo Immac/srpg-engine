@@ -21,14 +21,14 @@ void S2dgeTilePosAdapter::Initialize(GameObject &settings)
 void S2dgeTilePosAdapter::Update()
 {
 	for(auto pair : GameObjects){
-		GameObject *item = pair.second;
-		auto tilepos = item->Properties["TILEPOS"];
-		auto s2dge = item->Properties["S2DGE"];
-		s2dge->Statistics["x"] = tilepos->Statistics["x"] * this->_tileSize;
-		s2dge->Statistics["y"] = tilepos->Statistics["y"] * this->_tileSize;
-		s2dge->Statistics["x-offset"] = tilepos->Statistics["x-offset"];
-		s2dge->Statistics["y-offset"] = tilepos->Statistics["y-offset"];
-		s2dge->Statistics["z"] = tilepos->Statistics["z"];
+			GameObject *item = pair.second;
+			auto tilepos = item->Properties["TILEPOS"];
+			auto s2dge = item->Properties["S2DGE"];
+			s2dge->Statistics["x"] = tilepos->Statistics["x"] * this->_tileSize;
+			s2dge->Statistics["y"] = tilepos->Statistics["y"] * this->_tileSize;
+			s2dge->Statistics["x-offset"] = tilepos->Statistics["x-offset"];
+			s2dge->Statistics["y-offset"] = tilepos->Statistics["y-offset"];
+			s2dge->Statistics["z"] = tilepos->Statistics["z"];
 	}
 }
 

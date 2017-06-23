@@ -31,8 +31,11 @@ int main(){
 	ConfigurationManager _configurationManager;
 
 	auto s2dge_settings = _configurationManager.LoadConfigurationFor("S2DGE");
-	int video_width, video_height, frame_limit;
+	int video_width, video_height, frame_limit, step_update_time_in_ms;
 	bool vsync;
+	sf::Time ms_per_frame; // simple frame limiter
+	sf::Time lag = sf::Time::Zero; // initialize lag at 0
+	sf::Clock clock;
 	string window_title;
 
 	video_width = s2dge_settings->Properties["Video"]->Statistics["width"];
@@ -40,7 +43,8 @@ int main(){
 	vsync = (bool)s2dge_settings->Statistics["vsync"];
 	frame_limit = s2dge_settings->Statistics["frame_limit"];
 	window_title = s2dge_settings->Dictionary["window_title"];
-
+	step_update_time_in_ms = s2dge_settings->Statistics["step_update_time_in_ms"];
+	ms_per_frame = sf::milliseconds(step_update_time_in_ms);
 	auto video_mode = sf::VideoMode(video_width, video_height);
 	auto window = new sf::RenderWindow(video_mode,window_title);
 	window->setVerticalSyncEnabled(vsync);
@@ -48,35 +52,21 @@ int main(){
 
 	Simple2DGraphicsEngine *drawingSystem = (Simple2DGraphicsEngine*)core.SystemMap["S2DGE"];
 	bool firstRun = true;
+	clock.restart();
 	while(window->isOpen())
 	{
+
 		sf::Event event;
 		while (window->pollEvent(event))
 		{
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
-				window->close();
-
-			if(event.type == sf::Event::KeyPressed)
 			{
-				{
-					auto event = new GameObject("MoveCursor");
-					event->Dictionary["Subject"] = "Cursor";
-					if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-					{
-						event->Dictionary["Statistic"] = "x";
-						event->Statistics["Magnitude"] = 1;
-					}
-					core.HandleEvent(event);
-				}
+				window->close();
+			}
+			else if(event.type == sf::Event::KeyPressed)
+			{
 				switch (event.key.code) {
-
-				case sf::Keyboard::H:
-					{
-
-						core.HandleEvent(new GameObject("hello"));
-					}
-					break;
 				case sf::Keyboard::L:
 					{
 						core.HandleEvent(new GameObject("UpdateLayers"));
@@ -87,39 +77,67 @@ int main(){
 						window->close();
 					}
 					break;
-				case sf::Keyboard::Left:
-					{
-						auto event = new GameObject("MoveCursor");
-						event->Dictionary["Subject"] = "Cursor";
-						event->Dictionary["Statistic"] = "x";
-						event->Statistics["Magnitude"] = -1;
-						core.HandleEvent(event);
-					}
-					break;
 				case sf::Keyboard::Up:
 					{
-						auto event = new GameObject("MoveCursor");
-						event->Dictionary["Subject"] = "Cursor";
-						event->Dictionary["Statistic"] = "y";
-						event->Statistics["Magnitude"] = -1;
-						core.HandleEvent(event);
+						core.Controllers[0]->DigitalInputs["DigitalUp"] = true;
 					}
 					break;
 				case sf::Keyboard::Down:
 					{
-						auto event = new GameObject("MoveCursor");
-						event->Dictionary["Subject"] = "Cursor";
-						event->Dictionary["Statistic"] = "y";
-						event->Statistics["Magnitude"] = 1;
-						core.HandleEvent(event);
+						core.Controllers[0]->DigitalInputs["DigitalDown"] = true;
+					}
+					break;
+				case sf::Keyboard::Left:
+					{
+						core.Controllers[0]->DigitalInputs["DigitalLeft"] = true;
+					}
+					break;
+				case sf::Keyboard::Right:
+					{
+						core.Controllers[0]->DigitalInputs["DigitalRight"] = true;
+						int p = 0;
 					}
 					break;
 				default:
 					break;
 				}
 			}
+			else if(event.type == sf::Event::KeyReleased)
+			{
+				switch (event.key.code) {
+				case sf::Keyboard::Up:
+					{
+						core.Controllers[0]->DigitalInputs["DigitalUp"] = false;
+					}
+					break;
+				case sf::Keyboard::Down:
+					{
+						core.Controllers[0]->DigitalInputs["DigitalDown"] = false;
+					}
+					break;
+				case sf::Keyboard::Left:
+					{
+						core.Controllers[0]->DigitalInputs["DigitalLeft"] = false;
+					}
+					break;
+				case sf::Keyboard::Right:
+					{
+						core.Controllers[0]->DigitalInputs["DigitalRight"] = false;
+					}
+					break;
+				}
+			}
 		}
-		core.Update();
+		lag += clock.getElapsedTime();
+
+		while(lag >= ms_per_frame)
+		{
+			core.Update();
+			lag -= ms_per_frame;
+			std::cout << lag.asMilliseconds() << std::endl;
+		}
+		clock.restart();
+
 		window->clear(sf::Color::Blue);
 		Vector<GameObject *> drawables = drawingSystem->getDrawables();
 		for(GameObject* obj : drawables)
@@ -139,6 +157,8 @@ int main(){
 			window->draw(*sp);
 		}
 		window->display();
+
+		sf::sleep(std::max(ms_per_frame - clock.getElapsedTime(),sf::milliseconds(0))); // simple frame limiter
 	}
 
 	return 0;
@@ -157,7 +177,7 @@ Core setupCore()
 	};
 
 	auto s2dge = new Simple2DGraphicsEngine();
-	auto sts = new TilePositionSystem();
+	auto sts = new TilePositionSystem(&core);
 	auto s2dge_sts = new S2dgeTilePosAdapter();
 	auto stms = new TileMovementSystem();
 
