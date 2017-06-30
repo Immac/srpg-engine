@@ -1,28 +1,19 @@
 #ifndef EVENT_HANDLER_HPP
 #define EVENT_HANDLER_HPP
-#include <gameobject.hpp>
-#include <map>
+#include <gamecore.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics.hpp>
 
-using SrpgEngine::Game::GameObject;
-using namespace SrpgEngine::Framework;
-class SfmlEventObject;
+using namespace SrpgEngine::Game;
 
-namespace SfmlExample {
-class EventHandler {
-public:
-	EventHandler();
-	Vector<SfmlEventObject*> Events;
-};
-
-class SfmlEventObject : public GameObject {
+class EventHandler{
 private:
-	sf::Event _event;
+	Core *_core;
+	sf::Window *_window;
 public:
-	SfmlEventObject(sf::Event event);
+	EventHandler(Core &core,sf::Window &window);
 
-	sf::Event GetEvent() const;
+	void Handle(sf::Event &event);
 };
-}
 
 #endif // EVENT_HANDLER_HPP

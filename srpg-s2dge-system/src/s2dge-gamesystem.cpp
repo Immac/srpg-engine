@@ -46,11 +46,9 @@ Simple2DGraphicsEngine::Simple2DGraphicsEngine()
 {
 	this->_eventMap["UpdateLayers"] = [&](GameObject* event){
 		this->_drawables = SrpgEngine::Util::ExtractValues(this->GameObjects);
-		std::sort(_drawables.begin()
-				  ,_drawables.end()
-				  ,[](GameObject *a, GameObject *b) {
-			return a->Properties["S2DGE"]->Statistics["z"]
-					< b->Properties["S2DGE"]->Statistics["z"];
+		std::sort(_drawables.begin() ,_drawables.end(),[](GameObject *a, GameObject *b)
+		{
+			return a->Statistics["z"] < b->Statistics["z"];
 		});
 	};
 }
@@ -64,8 +62,6 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 
 		auto sprite_game_object = new GameObject();
 		auto s2dge = object->Properties["S2DGE"];
-
-
 
 		s2dge->Properties["sprite"] = sprite_game_object;
 		sprite_game_object->Name = "sprite";
@@ -90,12 +86,21 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 	event->Name = "UpdateLayers";
 	this->HandleEvent(event);
 
-return;
+	return;
 }
 
 void Simple2DGraphicsEngine::Update()
 {
-
+	for(const auto& record : GameObjects)
+	{
+		GameObject *item = record.second;
+		auto system = item->Properties[this->GetSystemCode()];
+		system->Statistics["x"] = item->Statistics["x"];
+		system->Statistics["y"] = item->Statistics["y"];
+		system->Statistics["z"] = item->Statistics["x"];
+		system->Statistics["x-offset"] = item->Statistics["x-offset"];
+		system->Statistics["y-offset"] = item->Statistics["y-offset"];
+	}
 }
 
 int Simple2DGraphicsEngine::HandleEvent(GameObject *event)

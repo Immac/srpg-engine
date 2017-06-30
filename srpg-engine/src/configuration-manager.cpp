@@ -4,7 +4,7 @@ using SrpgEngine::Game::ConfigurationManager;
 using SrpgEngine::Framework::string;
 
 const string ConfigurationManager::DefaultConfigIdTag = ".Config";
-const string ConfigurationManager::DefaultFilePath = "game.config";
+const string ConfigurationManager::DefaultFilePath = "game.lua";
 const string ConfigurationManager::ConfigurationNotFoundMessage =
 		"game.config";
 

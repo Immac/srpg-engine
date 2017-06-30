@@ -20,6 +20,7 @@ void TileMovementSystem::TileMovementSystem::Update()
 
 int TileMovementSystem::TileMovementSystem::HandleEvent(GameObject *event)
 {
+
 }
 
 string TileMovementSystem::TileMovementSystem::GetSystemCode()

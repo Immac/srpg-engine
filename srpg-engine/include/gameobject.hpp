@@ -38,8 +38,6 @@ public:
 
 class GameObjectComparator
 {
-private:
-
 public:
 	GameObjectComparator()
 	{}

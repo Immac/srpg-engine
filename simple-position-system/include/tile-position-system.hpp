@@ -10,6 +10,8 @@ namespace SrpgEngine {
 namespace SimplePositionSystem {
 using namespace Game;
 
+enum class Layers;
+
 class TilePositionSystem : public GameSystem {
 private:
 	int status = 0;
@@ -17,9 +19,11 @@ private:
 	std::queue<std::function<void(GameObject *)>> _updateQueue;
 	GameObject *_cursor;
 	Core *_gameCore;
-	int _x_input_cooldown = 0;
-	int _y_input_cooldown = 0;
-	int _cursor_movement_cooldown = 4;
+	Vector<GameObject *> _selectedGameObjects;
+	int _xInpuntCooldown = 0;
+	int yInputCooldown = 0;
+	int _cursorMovementCooldown = 4;
+	int _tileSize = 64;
 public:
 	TilePositionSystem(Core *core);
 	void Initialize(GameObject &settings) override;
@@ -33,9 +37,17 @@ private:
 	TilePositionSystem& operator=(const &TilePositionSystem){}
 	void HandleVerticalCursorMovement();
 	void HandleHorizontaCursorlMovement();
+	void UpdateSelectedObjects();
 };
 
-
+enum class Layers : int {
+	Background,
+	Tile,
+	Ground,
+	Air,
+	Foreground = 100,
+	Cursor = 1000
+};
 
 }
 }

@@ -6,6 +6,7 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <functional>
 
 namespace SrpgEngine {
 namespace Framework {
@@ -50,6 +51,12 @@ static Vector<V> ExtractValues(Map<K,V> map){
 	   output.push_back(element.second);
 	 }
 	 return output;
+}
+
+template<class T,class F>
+static void RemoveIf(T &container,F function){
+	auto  from = std::remove_if(container.begin(),container.end(),function);
+	container.erase(from,container.end());
 }
 
 template<class T>
