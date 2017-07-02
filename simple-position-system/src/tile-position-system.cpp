@@ -14,31 +14,73 @@ TilePositionSystem::TilePositionSystem(Core *core)
 void TilePositionSystem::Initialize(GameObject &settings)
 {
 
-	this->_eventMap["MoveCursor"] = [=](auto event){
+	const auto &system_code = this->GetSystemCode();
+	this->_eventMap["MoveCursor"]
+			= [this,system_code](const auto &event){
 		string subject_key = event->Dictionary["Subject"];
 		string stat_key = event->Dictionary["Statistic"];
 		int magnitude = event->Statistics["Magnitude"];
 		GameObject *subject = this->GameObjects[subject_key];
-		subject->Properties["TILEPOS"]->Statistics[stat_key]
-				= subject->Properties["TILEPOS"]->Statistics[stat_key]
+		subject->Properties[system_code]->Statistics[stat_key]
+				= subject->Properties[system_code]->Statistics[stat_key]
 				  + magnitude;
 	};
 
-	this->_eventMap["SetObjectCoordinate"] = [this](auto event){
+	this->_eventMap["SelectObject"]
+			= [this,system_code](const auto &event) {
+		const auto &x = event->Statistics["x"];
+		const auto &y = event->Statistics["y"];
+		const auto &z = event->Statistics["z"];
+		auto vec = ExtractValues(this->GameObjects);
+						  RemoveIf(vec,[&system_code,&x,&y,&z](GameObject *go){
+							  auto &stats = go->Properties[system_code]->Statistics;
+							  return stats["x"] != x
+									  || stats["y"] != y
+									  || stats["z"] != z;
+						  });
+		for(auto &object : vec){
+			object->Properties[system_code]->Statistics["is-selected"] = 1;
+		}
+	};
+
+	this->_eventMap["SetObjectCoordinate"] = [this,system_code](const auto &event){
 		string subject_key = event->Dictionary["Subject"];
 		string stat_key = event->Dictionary["Statisic"];
 		int value = event->Statistics["Value"];
 		GameObject * subject = this->GameObjects[subject_key];
-		subject->Properties["TILEPOS"]->Statistics[stat_key]
+		subject->Properties[system_code]->Statistics[stat_key]
 				= value;
 	};
 
-	this->_eventMap["SetSelectedCoordinate"] = [this](auto event){
+	this->_eventMap["SetSelectedCoordinate"] = [this,system_code](const auto &event){
 		this->UpdateSelectedObjects();
-		auto system_code = this->GetSystemCode();
 		for(auto game_object : this->_selectedGameObjects)
 		{
-			game_object->Properties[system_code];
+			((GameObject*)game_object)
+					->Properties[system_code]
+					->Statistics["y"] = 3;
+		}
+	};
+
+	this->_eventMap["SelectObjectUnderCursor"] = [this,system_code](const auto &event) {
+		const auto &cursor = this->GameObjects["Cursor"];
+		auto x = cursor->Properties[system_code]->Statistics["x"];
+		auto y = cursor->Properties[system_code]->Statistics["y"];
+		auto z = Layers::Ground;
+		GameObject selection_event("SelectObject");
+		selection_event.Statistics["x"] = x;
+		selection_event.Statistics["y"] = y;
+		selection_event.Statistics["z"] = static_cast<int>(z);
+		this->_gameCore->HandleEvent(&selection_event);
+		int i = 0;
+	};
+
+	this->_eventMap["DeselectAll"] = [this,system_code](const auto &event){
+		this->UpdateSelectedObjects();
+		for(const auto& object:this->_selectedGameObjects)
+		{
+			object->Properties[system_code]->Statistics["is-selected"] = 0;
+			int i = 0;
 		}
 	};
 }
@@ -128,6 +170,11 @@ void TilePositionSystem::Update()
 {
 	this->_xInpuntCooldown = std::min(this->_xInpuntCooldown,this->yInputCooldown);
 	this->yInputCooldown = _xInpuntCooldown;
+	auto is_a_pressed = this->_gameCore->Controllers[0]->DigitalInputs["ButtonA"];
+	if(is_a_pressed){
+		GameObject event("SelectObjectUnderCursor");
+		this->_gameCore->HandleEvent(&event);
+	}
 	HandleVerticalCursorMovement();
 	HandleHorizontaCursorlMovement();
 	for(const auto& record : GameObjects){

@@ -11,8 +11,8 @@ using namespace Framework;
 
 class GameObject {
 public:
-	GameObject() = default;
-	GameObject(string name);
+	explicit GameObject() = default;
+	explicit GameObject(string name);
 	int Id;
 	string Name;
 	Repository<int> Statistics;

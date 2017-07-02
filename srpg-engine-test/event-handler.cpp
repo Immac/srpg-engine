@@ -27,6 +27,11 @@ void EventHandler::Handle(sf::Event &event)
 						_core->HandleEvent(new GameObject("SetSelectedCoordinate"));
 					}
 					break;
+				case sf::Keyboard::W:
+					{
+						_core->HandleEvent(new GameObject("DeselectAll"));
+					}
+					break;
 				case sf::Keyboard::Escape:
 					{
 						_window->close();
@@ -82,9 +87,11 @@ void EventHandler::Handle(sf::Event &event)
 					}
 					break;
 				case sf::Keyboard::A:
+
 					{
-						_core->Controllers[0]->DigitalInputs["ButtonA"] = true;
+						_core->Controllers[0]->DigitalInputs["ButtonA"] = false;
 					}
+					break;
 				}
 			}
 		}

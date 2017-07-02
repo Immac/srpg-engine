@@ -55,7 +55,6 @@ int main(){
 
 
 	Simple2DGraphicsEngine *drawingSystem = (Simple2DGraphicsEngine*)core.SystemMap["S2DGE"];
-	bool firstRun = true;
 	clock.restart();
 
 	EventHandler event_handler(core,window);
@@ -72,7 +71,6 @@ int main(){
 		{
 			core.Update();
 			lag -= ms_per_frame;
-
 		}
 		clock.restart();
 
