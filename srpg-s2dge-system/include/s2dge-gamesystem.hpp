@@ -11,11 +11,13 @@ namespace S2dge {
 
 using namespace SrpgEngine::Framework;
 using Game::GameObject;
+using UniqueTexture_t = std::unique_ptr<sf::Texture>;
 
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
 	Vector<GameObject *> _drawables;
+	Repository<UniqueTexture_t> _textures;
 	void InitializeDefaults(GameObject &settings);
 	Map<string, std::function<void(GameObject *)>> _eventMap;
 public:
