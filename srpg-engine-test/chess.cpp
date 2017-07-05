@@ -28,7 +28,7 @@
 ////			tile->Properties[_s2dge]->Dictionary["texture"] = (isWhite)
 ////															  ? this->_texturePaths["WhiteTile"]
 ////															  : this->_texturePaths["BlackTile"];
-////			tile->Properties[_tilepos]->Statistics["x"] = j;
+////			tile->Propertie s[_tilepos]->Statistics["x"] = j;
 ////			tile->Properties[_tilepos]->Statistics["y"] = i;
 ////			tile->Properties[_tilepos]->Statistics["z"] = 1;
 ////			vec.push_back(tile);

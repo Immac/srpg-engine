@@ -1,7 +1,7 @@
 #include "s2dge-gamesystem.hpp"
 #include <luautil.hpp>
 #include <algorithm>
-
+#include <memory>
 
 using namespace SrpgEngine::Framework::Lua;
 using namespace SrpgEngine;
@@ -69,18 +69,20 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 		sprite_game_object->Statistics["height"] = object->Statistics["height"];
 
 		sf::Sprite *sprite = new sf::Sprite();
-		sf::Texture *texture = new sf::Texture();
 		string texture_path = s2dge->Dictionary["texture"];
-
-		if(!texture->loadFromFile(texture_path))
+		if(!_textures.Exists(texture_path))
 		{
-			cout << "Texture not found at: \"" << texture_path;
-			throw;
+			_textures[texture_path] = std::make_unique<sf::Texture>();
+			if(!_textures[texture_path]->loadFromFile(texture_path))
+			{
+				cout << "Texture not found at: \"" << texture_path;
+				throw;
+			}
 		}
-
-		sprite->setTexture(*texture);
+		auto texture_ptr = _textures[texture_path].get();
+		sprite->setTexture(*texture_ptr);
 		s2dge->Properties["sprite"]->Data["sprite"] = sprite;
-		s2dge->Properties["sprite"]->Data["texture"] = texture;
+		s2dge->Properties["sprite"]->Data["texture"] = texture_ptr;
 	}
 	auto event = new GameObject();
 	event->Name = "UpdateLayers";

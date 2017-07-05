@@ -79,9 +79,9 @@ int main(){
 		for(GameObject* obj : drawables)
 		{
 			auto s2dge = obj->Properties[drawingSystem->GetSystemCode()];
-			sf::Sprite *sp = (sf::Sprite*)s2dge
+			auto sp = static_cast<sf::Sprite *>(s2dge
 							 ->Properties["sprite"]
-							 ->Data["sprite"];
+							 ->Data["sprite"]);
 
 			uint8_t red = s2dge->Statistics["red"];
 			uint8_t green = s2dge->Statistics["green"];
