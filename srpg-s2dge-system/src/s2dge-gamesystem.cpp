@@ -28,7 +28,7 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 		auto s2dge = game_object->Properties[system_code];
 		auto SetDefault = [&s2dge](string key, auto value)
 		{
-			if(!s2dge->Statistics.Any(key)) {
+			if(!s2dge->Statistics.HasAny(key)) {
 				s2dge->Statistics[key] = value;
 			}
 		};
@@ -46,13 +46,11 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 }
 
 Simple2DGraphicsEngine::Simple2DGraphicsEngine()
+	:_system_states("normal")
 {
-	auto state_machine_address = &(this->_system_states);
-	this->_system_states["nothing_selected"]
-			= State(state_machine_address,"nothing_selected");
-	this->_system_states["nothing_selected"]["asd"]=[this](auto e)
+	this->_system_states["normal"]["UpdateLayers"]=[this](auto e)
 	{
-		return;
+		std::cout << "normal>nothinh_selected";
 	};
 
 	this->_universal_events["UpdateLayers"] = [this](auto event)
@@ -82,8 +80,8 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 		s2dge->Properties["sprite"] = std::move(sprite_game_object);
 
 		auto sprite = new sf::Sprite();
-		string texture_path = s2dge->Dictionary["texture"];
-		if(!_textures.Any(texture_path))
+		auto texture_path = s2dge->Dictionary["texture"];
+		if(!_textures.HasAny(texture_path))
 		{
 			_textures[texture_path] = std::make_unique<sf::Texture>();
 

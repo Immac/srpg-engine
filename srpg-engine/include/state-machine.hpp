@@ -2,19 +2,23 @@
 #define SRPG_STATE_MACHINE_HPP
 #include "gamecommon.hpp"
 #include "gameobject.hpp"
+#include <memory>
 
 namespace SrpgEngine {
 namespace Game {
 using namespace Framework;
 class State;
+using UniqueState = std::unique_ptr<State>;
+
 class StateMachine
 {
 private:
-	HashMap<string,State*> _states;
+	HashMap<string,UniqueState> _states;
+	State * _current_state;
 public:
+
+	StateMachine(string initial_state_name = "Init");
 	void HandleEvent(GameObject &event);
-	void AddState(State &state);
-	void AddState(State* state);
 
 	auto& operator [] (string key) {
 		return *this->_states[key];
@@ -32,6 +36,7 @@ public:
 		:_parent_state_machine(parent),_name(name)
 	{}
 	void AddEvent(string name, std::function<void(GameObject &)> f);
+	void HandleEvent(GameObject &event);
 
 	auto& operator [] (string key) {
 		return this->_events[key];
