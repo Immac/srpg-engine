@@ -20,7 +20,7 @@ private:
 	Vector<string> getPropertyNames(sol::table object);
 	Vector<string> getTags(sol::table object);
 	std::set<string> getSystems(sol::table object);
-//	Repository<GameObject *> getProperties(sol::table object, const std::set<Game::GameObject *, Game::GameObjectComparator> &game_object);
+
 public:
 	LuaGameObjectFactory(sol::state *state)
 		:_state(state)

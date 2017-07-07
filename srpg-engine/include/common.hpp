@@ -34,14 +34,9 @@ using Framework::Set;
 using Framework::Map;
 using Framework::Vector;
 
-template <class T>
-static bool Find(Set<T> set, T item) {
-	return set.find(item) != set.end();
-}
-
-template<class K,class V>
-static bool Find(Map<K,V> map, K key) {
-	return map.find(key) != map.end();
+template <class TContainer,class TItem>
+static bool HasAny(TContainer container, TItem item) {
+	return container.find(item) != container.end();
 }
 
 template<class K, class V>
@@ -53,16 +48,17 @@ static Vector<V> ExtractValues(Map<K,V> map){
 	 return output;
 }
 
-template<class T,class F>
-static void RemoveIf(T &container,F function){
-	auto  from = std::remove_if(container.begin(),container.end(),function);
+template<class TContainer,class TFunction>
+static void RemoveIf(TContainer &container,TFunction function){
+	auto  from =
+			std::remove_if(container.begin(),container.end(),function);
 	container.erase(from,container.end());
 }
 
-template<class T>
-static bool Find(Vector<T> vector, T item)
+template<class TContainer,class TItem>
+static bool HasAnyIterative(TContainer container, TContainer item)
 {
-	return std::find(vector.begin(),vector.end(),item) != vector.end();
+	return std::find(container.begin(),container.end(),item) != container.end();
 }
 
 } // Util

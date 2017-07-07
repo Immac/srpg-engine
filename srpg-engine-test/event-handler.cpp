@@ -61,6 +61,12 @@ void EventHandler::Handle(sf::Event &event)
 					{
 						_core->Controllers[0]->DigitalInputs["ButtonA"] = true;
 					}
+					break;
+				case sf::Keyboard::Z:
+					{
+						_core->Controllers[0]->DigitalInputs["ButtonB"] = true;
+					}
+					break;
 				}
 			}
 			else if(event.type == sf::Event::KeyReleased)
@@ -90,6 +96,11 @@ void EventHandler::Handle(sf::Event &event)
 
 					{
 						_core->Controllers[0]->DigitalInputs["ButtonA"] = false;
+					}
+					break;
+				case sf::Keyboard::Z:
+					{
+						_core->Controllers[0]->DigitalInputs["ButtonB"] = false;
 					}
 					break;
 				}

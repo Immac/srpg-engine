@@ -17,8 +17,6 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lua53/bin)
 FILE(GLOB_RECURSE HEADERS
     (*.hpp)
     | (*.h)
-    | ${CMAKE_INSTALL_PREFIX}/lua53/include/*.hpp
-    | ${CMAKE_INSTALL_PREFIX}/lua53/include/*.h
     )
 
 #targets

@@ -14,16 +14,16 @@ enum class Layers;
 
 class TilePositionSystem : public GameSystem {
 private:
-	int status = 0;
 	Map<string, std::function<void(GameObject *)>> _eventMap;
 	std::queue<std::function<void(GameObject *)>> _updateQueue;
-	GameObject *_cursor;
 	Core *_gameCore;
-	Vector<GameObject *> _selectedGameObjects;
-	int _xInpuntCooldown = 0;
-	int yInputCooldown = 0;
-	int _cursorMovementCooldown = 4;
-	int _tileSize = 64;
+	Vector<GameObject *> _selected_game_objects;
+	int _current_cooldown = 0;
+	int _current_startup = 0;
+	int _cursor_movement_cooldown = 15;
+	int _cursor_startup = 4;
+	int _tile_size = 64;
+
 public:
 	TilePositionSystem(Core *core);
 	void Initialize(GameObject &settings) override;
@@ -35,7 +35,7 @@ public:
 private:
 	TilePositionSystem (const &TilePositionSystem){}
 	TilePositionSystem& operator=(const &TilePositionSystem){}
-	void HandleVerticalCursorMovement();
+	void HandleCursorMovement();
 	void HandleHorizontaCursorlMovement();
 	void UpdateSelectedObjects();
 };
@@ -47,6 +47,25 @@ enum class Layers : int {
 	Air,
 	Foreground = 100,
 	Cursor = 1000
+};
+
+enum class Facing : int {
+	North,
+	South,
+	East,
+	West
+};
+
+class InputFrameController {
+private:
+	int current_cooldown = 0;
+	int current_startup = 0;
+	int cooldown = 3;
+	int startup = 3;
+public:
+	Vector<GameController *> v;
+	bool PerformAction(GameController &controller);
+
 };
 
 }

@@ -51,7 +51,7 @@ public:
 		return _map.end();
 	}
 
-	bool Exists(string key)
+	bool Any(string key)
 	{
 		return _map.find(key) != _map.end();
 	}

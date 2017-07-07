@@ -10,8 +10,8 @@ class GameController {
 private:
 public:
 	GameController();
-	std::unordered_map<string,bool> DigitalInputs;
-	std::unordered_map<string,int> AnalogInputs;
+	HashMap<string,bool> DigitalInputs;
+	HashMap<string,int> AnalogInputs;
 };
 
 }

@@ -13,32 +13,24 @@ using Game::Lua::LuaGameObjectFactory;
 
 void Core::LoadSystemObjects()
 {
-	for(auto systemPair : this->SystemMap)
-	{
-		GameSystem *system = systemPair.second;
-		for(auto object_pair : this->ObjectMap)
-		{
+	for(auto systemPair : this->SystemMap) {
+		auto system = systemPair.second;
+		for(auto object_pair : this->ObjectMap) {
 			auto systems = object_pair.second->Systems;
 			auto system_code = system->GetSystemCode();
 			auto dependencies = system->GetDependencies();
 
-			if(Util::Find(systems , system_code))
-			{
+			if(Util::HasAny(systems , system_code)) {
 				system->GameObjects.insert(object_pair);
-			}
-			else
-			{
-				if(dependencies.size() > 0)
-				{
+			} else {
+				if(dependencies.size() > 0) {
 					bool hasAllDependencies = true;
-					for(auto dependency : dependencies)
-					{
-						bool hasDependency = Util::Find(systems , dependency);
+					for(const auto &dependency : dependencies) {
+						bool hasDependency = Util::HasAny(systems, dependency);
 						hasAllDependencies = hasAllDependencies && hasDependency;
 						if(!hasAllDependencies) break;
 					}
-					if(hasAllDependencies)
-					{
+					if(hasAllDependencies) {
 						system->GameObjects.insert(object_pair);
 					}
 				}
@@ -50,13 +42,13 @@ void Core::LoadSystemObjects()
 void Core::LoadCoreObjects()
 {
 	auto config = _configurationManager.LoadConfigurationFor("Core");
-	string object_database_file_path = config->Dictionary["game_object_database_filepath"];
+	const string &object_database_file_path = config->Dictionary["game_object_database_filepath"];
 	sol::state game_objects_state;
 	game_objects_state.open_libraries(sol::lib::base,sol::lib::package);
 	game_objects_state.script_file(object_database_file_path);
-	LuaGameObjectFactory f(&game_objects_state);
-	auto objects = f.CreateList();
-	for(GameObject *g : objects)
+	LuaGameObjectFactory factory(&game_objects_state);
+	auto objects = factory.CreateList();
+	for(const auto &g : objects)
 	{
 		this->ObjectMap[g->Name] = g;
 	}
@@ -64,7 +56,7 @@ void Core::LoadCoreObjects()
 
 Core::Core()
 {
-	for(int i = 0; i < 16 ; i++)
+	for(int i = 0; i < this->_controller_count ; i++)
 	{
 		this->Controllers.emplace(i,new GameController());
 	}

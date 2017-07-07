@@ -1,25 +1,28 @@
 #ifndef S2DGE_GAME_SYSTEM_HPP
 #define S2DGE_GAME_SYSTEM_HPP
 #include <gamesystem.hpp>
+#include <state-machine.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include <memory>
 
 namespace SrpgEngine {
 namespace S2dge {
 
 using namespace SrpgEngine::Framework;
 using Game::GameObject;
-using UniqueTexture_t = std::unique_ptr<sf::Texture>;
+using UniqueSfTexture = std::unique_ptr <sf::Texture>;
 
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
+	StateMachine _system_states;
 	Vector<GameObject *> _drawables;
-	Repository<UniqueTexture_t> _textures;
+	Repository<UniqueSfTexture> _textures;
 	void InitializeDefaults(GameObject &settings);
-	Map<string, std::function<void(GameObject *)>> _eventMap;
+	Map<string, std::function<void(GameObject *)>> _universal_events;
 public:
 	Simple2DGraphicsEngine();
 	void Initialize(GameObject &settings) override;

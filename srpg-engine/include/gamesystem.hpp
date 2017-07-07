@@ -7,9 +7,11 @@
 namespace SrpgEngine {
 namespace Game {
 using namespace Framework;
+
+
+
 class GameSystem
 {
-
 public:
 	virtual void Initialize(GameObject &settings) = 0;
 	virtual void Update() = 0;
@@ -19,12 +21,6 @@ public:
 
 	Map<string,GameObject*> GameObjects;
 };
-
-
-
-
-
-
 }
 }
 
