@@ -15,5 +15,7 @@ void StateMachine::HandleEvent(GameObject &event)
 
 void State::HandleEvent(GameObject &event)
 {
-	this->_events[event.Name](event);
+	if(Util::HasAny(this->_events,event.Name)) {
+		this->_events[event.Name](event);
+	}
 }

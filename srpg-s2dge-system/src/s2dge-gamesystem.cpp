@@ -50,13 +50,13 @@ Simple2DGraphicsEngine::Simple2DGraphicsEngine()
 {
 	this->_system_states["normal"]["UpdateLayers"]=[this](auto e)
 	{
-		std::cout << "normal>nothinh_selected";
+		std::cout << "normal>nothing_selected";
 	};
 
 	this->_universal_events["UpdateLayers"] = [this](auto event)
 	{
 		this->_drawables = Util::ExtractValues(this->GameObjects);
-		std::sort(_drawables.begin(), _drawables.end(), [](auto first, auto second)
+		Util::Sort(_drawables,[](auto first, auto second)
 		{
 			return first->Statistics["z"] < second->Statistics["z"];
 		});
