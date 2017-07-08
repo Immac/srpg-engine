@@ -17,7 +17,7 @@ public:
 	TileMovementSystem();
 	void Initialize(GameObject &settings) override;
 	void Update() override;
-	int HandleEvent(GameObject *event) override;
+	int HandleEvent(GameObject &event) override;
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
 };

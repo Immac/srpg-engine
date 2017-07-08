@@ -18,16 +18,16 @@ using UniqueSfTexture = std::unique_ptr <sf::Texture>;
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
-	StateMachine _system_states;
+	StateMachine _game_state;
 	Vector<GameObject *> _drawables;
 	Repository<UniqueSfTexture> _textures;
 	void InitializeDefaults(GameObject &settings);
-	Map<string, std::function<void(GameObject *)>> _universal_events;
+	Map<string, std::function<void(GameObject &)>> _universal_events;
 public:
 	Simple2DGraphicsEngine();
 	void Initialize(GameObject &settings) override;
 	void Update() override;
-	int HandleEvent(GameObject *event) override;
+	int HandleEvent(GameObject &event) override;
 	string GetSystemCode();
 	Vector<string> GetDependencies();
 	~Simple2DGraphicsEngine();

@@ -46,9 +46,9 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 }
 
 Simple2DGraphicsEngine::Simple2DGraphicsEngine()
-	:_system_states("normal")
+	:_game_state("normal")
 {
-	this->_system_states["normal"]["UpdateLayers"]=[this](auto e)
+	this->_game_state["normal"]["UpdateLayers"]=[this](auto e)
 	{
 		std::cout << "normal>nothing_selected";
 	};
@@ -97,7 +97,7 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 		s2dge->Properties["sprite"]->Data["texture"] = texture_ptr;
 	}
 	GameObject event("UpdateLayers");
-	this->HandleEvent(&event);
+	this->HandleEvent(event);
 }
 
 void Simple2DGraphicsEngine::Update()
@@ -114,9 +114,11 @@ void Simple2DGraphicsEngine::Update()
 	}
 }
 
-int Simple2DGraphicsEngine::HandleEvent(GameObject *event)
+int Simple2DGraphicsEngine::HandleEvent(GameObject &event)
 {
-	string eventKey = event->Name;
+	string eventKey = event.Name;
+	this->_game_state.HandleEvent(event);
+
 	if(Util::HasAny(this->_universal_events,eventKey)) {
 		this->_universal_events[eventKey](event);
 	}

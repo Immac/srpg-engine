@@ -14,8 +14,8 @@ enum class Layers;
 
 class TilePositionSystem : public GameSystem {
 private:
-	Map<string, std::function<void(GameObject *)>> _eventMap;
-	std::queue<std::function<void(GameObject *)>> _updateQueue;
+	Map<string, std::function<void(GameObject &)>> _eventMap;
+	std::queue<std::function<void(GameObject &)>> _updateQueue;
 	Core *_gameCore;
 	Vector<GameObject *> _selected_game_objects;
 	int _current_cooldown = 0;
@@ -28,7 +28,7 @@ public:
 	TilePositionSystem(Core *core);
 	void Initialize(GameObject &settings) override;
 	void Update() override;
-	int HandleEvent(GameObject *event);
+	int HandleEvent(GameObject &event);
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
 

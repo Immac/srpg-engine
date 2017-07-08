@@ -21,7 +21,7 @@ void S2dgeTilePosAdapter::Update()
 {
 }
 
-int S2dgeTilePosAdapter::HandleEvent(GameObject *event)
+int S2dgeTilePosAdapter::HandleEvent(GameObject &event)
 {
 //TODO: Handle Events
 }

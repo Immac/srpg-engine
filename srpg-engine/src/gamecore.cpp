@@ -62,9 +62,9 @@ Core::Core()
 	}
 }
 
-int Core::HandleEvent(GameObject *event)
+int Core::HandleEvent(GameObject &event)
 {
-	string eventName = event->Name;
+	string eventName = event.Name;
 	if(EventMap.find(eventName)!=EventMap.end()){
 		EventMap[eventName](event);
 	}

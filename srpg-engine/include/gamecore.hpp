@@ -31,9 +31,9 @@ public:
 	Core();
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
-	Map<string, std::function<void(GameObject*)>> EventMap;
+	Map<string, std::function<void(GameObject&)>> EventMap;
 	std::unordered_map<int,GameController *> Controllers;
-	int HandleEvent(GameObject *event);
+	int HandleEvent(GameObject &event);
 	int Init();
 	int Update();
 };

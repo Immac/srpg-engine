@@ -19,17 +19,20 @@ void EventHandler::Handle(sf::Event &event)
 				switch (event.key.code) {
 				case sf::Keyboard::L:
 					{
-						_core->HandleEvent(new GameObject("UpdateLayers"));
+						auto event_object = GameObject("UpdateLayers");
+						_core->HandleEvent(event_object);
 					}
 					break;
 				case sf::Keyboard::Q:
 					{
-						_core->HandleEvent(new GameObject("SetSelectedCoordinate"));
+						auto event_object = GameObject("SetSelectedCoordinate");
+						_core->HandleEvent(event_object);
 					}
 					break;
 				case sf::Keyboard::W:
 					{
-						_core->HandleEvent(new GameObject("DeselectAll"));
+						auto event_object = GameObject("DeselectAll");
+						_core->HandleEvent(event_object);
 					}
 					break;
 				case sf::Keyboard::Escape:
