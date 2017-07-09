@@ -22,7 +22,6 @@ private:
 	Vector<GameObject *> _drawables;
 	Repository<UniqueSfTexture> _textures;
 	void InitializeDefaults(GameObject &settings);
-	Map<string, std::function<void(GameObject &)>> _universal_events;
 public:
 	Simple2DGraphicsEngine();
 	void Initialize(GameObject &settings) override;

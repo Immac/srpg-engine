@@ -24,9 +24,10 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 	for(auto record : this->GameObjects)
 	{
 		auto game_object = record.second;
+
 		game_object->Systems.insert(system_code);
 		auto s2dge = game_object->Properties[system_code];
-		auto SetDefault = [&s2dge](string key, auto value)
+		auto SetDefault = [&s2dge](auto key, auto value)
 		{
 			if(!s2dge->Statistics.HasAny(key)) {
 				s2dge->Statistics[key] = value;
@@ -48,12 +49,9 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 Simple2DGraphicsEngine::Simple2DGraphicsEngine()
 	:_game_state("normal")
 {
-	this->_game_state["normal"]["UpdateLayers"]=[this](auto e)
-	{
-		std::cout << "normal>nothing_selected";
-	};
+	this->_game_state.AddState("global");
 
-	this->_universal_events["UpdateLayers"] = [this](auto event)
+	this->_game_state["global"]["UpdateLayers"]=[this](auto e)
 	{
 		this->_drawables = Util::ExtractValues(this->GameObjects);
 		Util::Sort(_drawables,[](auto first, auto second)
@@ -106,22 +104,29 @@ void Simple2DGraphicsEngine::Update()
 	{
 		auto object = record.second;
 		auto object_system = object->Properties[this->GetSystemCode()];
-		object_system->Statistics["x"] = object->Statistics["x"];
-		object_system->Statistics["y"] = object->Statistics["y"];
-		object_system->Statistics["z"] = object->Statistics["x"];
-		object_system->Statistics["x-offset"] = object->Statistics["x-offset"];
-		object_system->Statistics["y-offset"] = object->Statistics["y-offset"];
+
+		std::for_each(object->Statistics.begin(),object->Statistics.end(),[object_system](auto stat){
+			object_system->Statistics[stat.first] = stat.second;
+
+		});
+		auto red = object_system->Statistics["red"];
+		auto green = object_system->Statistics["green"];
+		auto blue = object_system->Statistics["blue"];
+		auto alpha = object_system->Statistics["alpha"];
+		auto sprite = static_cast<sf::Sprite *>(
+						  object_system->Properties["sprite"]->Data["sprite"]);
+
+		sprite->setColor(sf::Color(red,green,blue,alpha));
+		sprite->setPosition(object_system->Statistics["x"]
+				+ object_system->Statistics["x-offset"]
+				, object_system->Statistics["y"] + object_system->Statistics["y-offset"]);
 	}
 }
 
 int Simple2DGraphicsEngine::HandleEvent(GameObject &event)
 {
-	string eventKey = event.Name;
 	this->_game_state.HandleEvent(event);
-
-	if(Util::HasAny(this->_universal_events,eventKey)) {
-		this->_universal_events[eventKey](event);
-	}
+	this->_game_state["global"].HandleEvent(event);
 }
 
 string Simple2DGraphicsEngine::GetSystemCode()
@@ -137,8 +142,3 @@ Vector<SrpgEngine::Framework::string> Simple2DGraphicsEngine::GetDependencies()
 Simple2DGraphicsEngine::~Simple2DGraphicsEngine()
 {
 }
-
-
-
-
-

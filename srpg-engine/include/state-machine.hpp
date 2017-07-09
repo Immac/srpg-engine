@@ -8,22 +8,26 @@ namespace SrpgEngine {
 namespace Game {
 using namespace Framework;
 class State;
-using UniqueState = std::unique_ptr<State>;
+using State_u_ptr = std::unique_ptr<State>;
 
 class StateMachine
 {
 private:
-	HashMap<string,UniqueState> _states;
+	HashMap<string,State_u_ptr> _states;
 	State * _current_state;
 public:
 
 	StateMachine(string initial_state_name = "Init");
 	void HandleEvent(GameObject &event);
 
-	auto& operator [] (string key) {
+	StateMachine& AddState(const string &name);
+
+	auto& operator [] (const string &key) {
 		return *this->_states[key];
 	}
 };
+
+
 
 class State
 {
@@ -38,7 +42,7 @@ public:
 	void AddEvent(string name, std::function<void(GameObject &)> f);
 	void HandleEvent(GameObject &event);
 
-	auto& operator [] (string key) {
+	auto& operator [] (const string &key) {
 		return this->_events[key];
 	}
 

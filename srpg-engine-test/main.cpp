@@ -70,13 +70,6 @@ int main() {
 			auto s2dge = object->Properties[drawingSystem->GetSystemCode()];
 			auto sprite = static_cast<sf::Sprite *>(
 						  s2dge->Properties["sprite"]->Data["sprite"]);
-			auto red = s2dge->Statistics["red"];
-			auto green = s2dge->Statistics["green"];
-			auto blue = s2dge->Statistics["blue"];
-			auto alpha = s2dge->Statistics["alpha"];
-			sprite->setColor(sf::Color(red,green,blue,alpha));
-			sprite->setPosition(s2dge->Statistics["x"] + s2dge->Statistics["x-offset"]
-					, s2dge->Statistics["y"] + s2dge->Statistics["y-offset"]);
 			window.draw(*sprite);
 		}
 		window.display();
