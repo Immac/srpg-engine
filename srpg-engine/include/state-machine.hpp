@@ -18,8 +18,8 @@ private:
 public:
 
 	StateMachine(string initial_state_name = "Init");
-	void HandleEvent(GameObject &event);
-
+	void HandleEvent(GameObject &event); //TODO: add a const parameter version
+	void GoTo(const string& key);
 	StateMachine& AddState(const string &name);
 
 	auto& operator [] (const string &key) {
@@ -41,6 +41,7 @@ public:
 	{}
 	void AddEvent(string name, std::function<void(GameObject &)> f);
 	void HandleEvent(GameObject &event);
+
 
 	auto& operator [] (const string &key) {
 		return this->_events[key];

@@ -14,32 +14,43 @@ TilePositionSystem::TilePositionSystem(Core *core)
 void TilePositionSystem::Initialize(GameObject &settings)
 {
 	const auto &system_code = this->GetSystemCode();
-	this->_eventMap["MoveCursor"]
-			= [this,system_code](auto &event){
-		const auto &subject_key = event.Dictionary["Subject"];
-		const auto &stat_key = event.Dictionary["Statistic"];
-		int magnitude = event.Statistics["Magnitude"];
-		auto subject = this->GameObjects[subject_key];
-		subject->Properties[system_code]->Statistics[stat_key]
-				= subject->Properties[system_code]->Statistics[stat_key]
-				  + magnitude;
-	};
+	this->_game_state.AddState("global")
+			.AddState("nothing_is_selected")
+			.AddState("something_is_selected");
+	this->_game_state.GoTo("nothing_is_selected");
 
-	this->_eventMap["SelectObject"]
+	this->_game_state["nothing_is_selected"]["a_is_being_pressed"]
 			= [this,system_code](auto &event) {
-		const auto &x = event.Statistics["x"];
-		const auto &y = event.Statistics["y"];
-		const auto &z = event.Statistics["z"];
-		auto vec = Util::ExtractValues(this->GameObjects);
-		Util::RemoveIf(vec,[&system_code,&x,&y,&z](GameObject *go){
+		auto c = this->_cursor->GetCursor();
+		auto cursor_system_stats = c.Properties[system_code]->Statistics;
+		const auto &x = cursor_system_stats["x"];
+		const auto &y = cursor_system_stats["y"];
+		const auto &z = static_cast<int>(Layers::Ground);
+		auto game_objects = Util::ExtractValues(this->GameObjects);
+		Util::RemoveIf(game_objects,[&system_code,&x,&y,&z](auto go){
 			auto &stats = go->Properties[system_code]->Statistics;
-			return stats["x"] != x
-					|| stats["y"] != y
-					|| stats["z"] != z;
+			return stats["x"] != x || stats["y"] != y || stats["z"] != z;
 		});
-		for(auto &object : vec){
+
+		for(auto &object : game_objects) {
 			object->Properties[system_code]->Statistics["is-selected"] = 1;
 		}
+
+		if(!game_objects.empty()) {
+			this->_game_state.GoTo("something_is_selected");
+			std::cout << "selected something";
+		}
+	};
+
+	this->_game_state["something_is_selected"]["b_is_being_pressed"]
+			= [this,system_code](const auto &event) {
+		this->UpdateSelectedObjects();
+		for(auto& object:this->_selected_game_objects)
+		{
+			object->Properties[system_code]->Statistics["is-selected"] = 0;
+		}
+
+		this->_game_state.GoTo("nothing_is_selected");
 	};
 
 	this->_eventMap["SetObjectCoordinate"] = [this,system_code](auto &event) {
@@ -69,7 +80,6 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		selection_event.Statistics["y"] = y;
 		selection_event.Statistics["z"] = static_cast<int>(z);
 		this->_gameCore->HandleEvent(selection_event);
-		int i = 0;
 	};
 
 	this->_eventMap["DeselectAll"] = [this,system_code](const auto &event){
@@ -77,10 +87,10 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		for(auto& object:this->_selected_game_objects)
 		{
 			object->Properties[system_code]->Statistics["is-selected"] = 0;
-			int i = 0;
 		}
 	};
 
+	this->_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
 }
 
 void TilePositionSystem::HandleCursorMovement()
@@ -93,33 +103,9 @@ void TilePositionSystem::HandleCursorMovement()
 	if(!is_up_pressed && !is_down_pressed && !is_left_pressed && !is_right_pressed) {
 		this->_current_cooldown = _cursor_movement_cooldown + 1;
 	} else if(this->_current_cooldown > _cursor_movement_cooldown) {
-		GameObject event("MoveCursor");
-		event.Dictionary["Subject"] = "Cursor";
-
-		if(is_up_pressed) {
-			event.Dictionary["Statistic"] = "y";
-			event.Statistics["Magnitude"] -= 1;
+		if(this->_cursor->HandleInput(*this->_gameCore->Controllers[0])) {
 			this->_current_cooldown = 0;
 		}
-		if(is_down_pressed) {
-			event.Dictionary["Statistic"] = "y";
-			event.Statistics["Magnitude"] += 1;
-			this->_current_cooldown = 0;
-		}
-
-		this->HandleEvent(event);
-		event.Statistics["Magnitude"] = 0;
-		if(is_left_pressed) {
-			event.Dictionary["Statistic"] = "x";
-			event.Statistics["Magnitude"] -= 1;
-			this->_current_cooldown = 0;
-		}
-		if(is_right_pressed) {
-			event.Dictionary["Statistic"] = "x";
-			event.Statistics["Magnitude"] += 1;
-			this->_current_cooldown = 0;
-		}
-		this->HandleEvent(event);
 	} else {
 		this->_current_cooldown++;
 	}
@@ -144,14 +130,16 @@ void TilePositionSystem::Update()
 	auto is_a_pressed = this->_gameCore->Controllers[0]->DigitalInputs["ButtonA"];
 	auto is_b_pressed = this->_gameCore->Controllers[0]->DigitalInputs["ButtonB"];
 	if(is_a_pressed) {
-		GameObject event("SelectObjectUnderCursor");
-		this->_gameCore->HandleEvent(event);
+		GameObject event{"a_is_being_pressed"};
+		this->_game_state.HandleEvent(event);
 	}
 	if(is_b_pressed) {
-		GameObject event("DeselectAll");
-		this->_gameCore->HandleEvent(event);
+		GameObject event{"b_is_being_pressed"};
+		this->_game_state.HandleEvent(event);
 	}
+
 	HandleCursorMovement();
+
 	for(const auto& record : GameObjects){
 		GameObject *item = record.second;
 		auto tilepos = item->Properties["TILEPOS"];
@@ -165,6 +153,7 @@ void TilePositionSystem::Update()
 
 int TilePositionSystem::HandleEvent(GameObject &event)
 {
+
 	string eventKey = event.Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()) {
 		_eventMap[eventKey](event);
@@ -181,8 +170,43 @@ Vector<string> TilePositionSystem::GetDependencies()
 	return Vector<string>();
 }
 
-
-bool InputFrameController::PerformAction(GameController &controller)
+int Cursor::ParseInput(GameController &input, Cursor::InputType input_type, const string &key)
 {
-	//for(const auto &input )
+	switch (input_type) {
+	case InputType::Analog: {
+			return input.AnalogInputs[key];
+		} break;
+	case InputType::Digital: {
+			return input.DigitalInputs[key] ? 1 : 0;
+		} break;
+	}
+}
+
+Cursor::Cursor(GameObject *cursor)
+	:_cursor(cursor)
+{
+	if(this->_cursor == nullptr) {
+		std::cout << "cursor cannot be null";
+		throw;
+	}
+}
+
+GameObject &Cursor::GetCursor() const
+{
+	return *this->_cursor;
+}
+
+bool Cursor::HandleInput(GameController &input)
+{
+	auto ParseDigital = [&input](const auto &key) {
+		return Cursor::ParseInput(input,InputType::Digital,key);
+	};
+
+	auto y_displacement = ParseDigital("DigitalDown") - ParseDigital("DigitalUp");
+	auto x_displacement = ParseDigital("DigitalRight") - ParseDigital("DigitalLeft");
+
+	auto& cursor_system_stats = this->_cursor->Properties["TILEPOS"]->Statistics;
+	cursor_system_stats["x"] += x_displacement;
+	cursor_system_stats["y"] += y_displacement;
+	return x_displacement != 0 || y_displacement !=0;
 }

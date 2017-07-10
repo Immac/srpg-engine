@@ -1,4 +1,6 @@
 #include "state-machine.hpp"
+#include <iostream>
+
 using namespace SrpgEngine::Game;
 
 
@@ -11,6 +13,15 @@ StateMachine::StateMachine(string initial_state_name)
 void StateMachine::HandleEvent(GameObject &event)
 {
 	(*this->_current_state).HandleEvent(event);
+}
+
+void StateMachine::GoTo(const string &key)
+{
+	this->_current_state = this->_states[key].get();
+	if(this->_current_state == nullptr) {
+		std::cout << "state: " << key << "does not exist" << std::endl;
+	}
+
 }
 
 StateMachine& StateMachine::AddState(const string &name)
@@ -26,3 +37,4 @@ void State::HandleEvent(GameObject &event)
 		this->_events[event.Name](event);
 	}
 }
+

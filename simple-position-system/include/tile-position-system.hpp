@@ -5,23 +5,27 @@
 #include <functional>
 #include <queue>
 #include <gamecore.hpp>
+#include <state-machine.hpp>
+
 
 namespace SrpgEngine {
 namespace SimplePositionSystem {
 using namespace Game;
 
 enum class Layers;
-
+class Cursor;
+using Cursor_u_ptr = std::unique_ptr<Cursor>;
 class TilePositionSystem : public GameSystem {
 private:
 	Map<string, std::function<void(GameObject &)>> _eventMap;
-	std::queue<std::function<void(GameObject &)>> _updateQueue;
+	StateMachine _game_state;
+	Cursor_u_ptr _cursor;
 	Core *_gameCore;
+
 	Vector<GameObject *> _selected_game_objects;
+
 	int _current_cooldown = 0;
-	int _current_startup = 0;
 	int _cursor_movement_cooldown = 15;
-	int _cursor_startup = 4;
 	int _tile_size = 64;
 
 public:
@@ -31,7 +35,7 @@ public:
 	int HandleEvent(GameObject &event);
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
-
+	~TilePositionSystem();
 private:
 	TilePositionSystem (const &TilePositionSystem){}
 	TilePositionSystem& operator=(const &TilePositionSystem){}
@@ -56,16 +60,19 @@ enum class Facing : int {
 	West
 };
 
-class InputFrameController {
+class Cursor {
 private:
-	int current_cooldown = 0;
-	int current_startup = 0;
-	int cooldown = 3;
-	int startup = 3;
-public:
-	Vector<GameController *> v;
-	bool PerformAction(GameController &controller);
+	enum class InputType {
+		Analog,
+		Digital
+	};
 
+	GameObject *_cursor;
+	static int ParseInput(GameController &input, InputType input_type,const string& key);
+public:
+	Cursor(GameObject *cursor);
+	GameObject &GetCursor() const;
+	bool HandleInput(GameController &input);
 };
 
 }

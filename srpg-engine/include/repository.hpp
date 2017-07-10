@@ -40,10 +40,6 @@ public:
 	{
 		return this->_map[key];
 	}
-//	T& operator[](const char* key)
-//	{
-//		return this->_map[key];
-//	}
 
 	auto begin()
 	{
