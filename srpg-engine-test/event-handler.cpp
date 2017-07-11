@@ -56,6 +56,9 @@ void EventHandler::Handle(sf::Event &event)
 				case sf::Keyboard::Z: {
 						SendPressInputEvent("ButtonB",0);
 					} break;
+				case sf::Keyboard::S: {
+						SendPressInputEvent("ButtonX",0);
+					} break;
 				}
 			} else if(event.type == sf::Event::KeyReleased) {
 				switch (event.key.code) {
@@ -76,6 +79,9 @@ void EventHandler::Handle(sf::Event &event)
 					} break;
 				case sf::Keyboard::Z: {
 						SendReleaseInputEvent("ButtonB",0);
+					} break;
+				case sf::Keyboard::S: {
+						SendReleaseInputEvent("ButtonX",0);
 					} break;
 				}
 			}

@@ -29,14 +29,11 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 		if(input_key == "ButtonA") {
 			auto object_under_cursor = this->GetObjectUnderCursor();
-
 			if(object_under_cursor != nullptr) {
-				object_under_cursor
-						->Properties[system_code]->Statistics["is-selected"]
-						= 1;
+				this->SelectObject(*object_under_cursor);
 				this->_game_state.GoTo("something_is_selected");
-				GameObject e("selected_something");
-				this->_game_core->HandleEvent(e);
+				GameObject something_selected_event("selected_something");
+				this->_game_core->HandleEvent(something_selected_event);
 			}
 		}
 	};
@@ -57,16 +54,24 @@ void TilePositionSystem::Initialize(GameObject &settings)
 				GameObject new_event("deselected_unit");
 				_game_core->HandleEvent(new_event);
 				_game_state.GoTo("nothing_is_selected");
+			} else if (object_under_cursor != nullptr) {
+				this->DeselectObject(*selected_object);
+				this->SelectObject(*object_under_cursor);
 			}
+
 		} else if (input_key == "ButtonB") {
 			this->UpdateSelectedObjects();
 			for(auto& object:this->_selected_game_objects) {
-				object->Properties[system_code]->Statistics["is-selected"] = 0;
+				this->DeselectObject(*object);
 			}
 
 			_game_state.GoTo("nothing_is_selected");
 		} else if (input_key == "ButtonX") {
-			//Do example move
+			this->UpdateSelectedObjects();
+			for(auto game_object : this->_selected_game_objects) {
+				game_object->Properties[system_code]->Statistics["y"] = 3;
+			}
+
 		} else if (input_key == "ButtonY") {
 			//Do something ?
 		}
@@ -135,10 +140,10 @@ void TilePositionSystem::UpdateSelectedObjects()
 	auto selected_game_objects = ExtractValues(this->GameObjects);
 	auto system_code = this->GetSystemCode();
 	RemoveIf(selected_game_objects,
-					 [&system_code](const auto &record) -> bool
+			 [&system_code](const auto &record) -> bool
 	{
 		auto isSelected = static_cast<bool>(record->Properties[system_code]
-																				->Statistics["is-selected"]);
+											->Statistics["is-selected"]);
 		return !isSelected;
 	});
 	this->_selected_game_objects = selected_game_objects;
@@ -150,6 +155,12 @@ void TilePositionSystem::DeselectObject(GameObject &object)
 	object.Properties[system_code]->Statistics["is-selected"] = 0;
 }
 
+void TilePositionSystem::SelectObject(GameObject& object)
+{
+	const auto& system_code = this->GetSystemCode();
+	object.Properties[system_code]->Statistics["is-selected"] = 1;
+}
+
 GameObject *TilePositionSystem::GetObjectUnderCursor()
 {
 	const auto &system_code = this->GetSystemCode();
@@ -157,8 +168,8 @@ GameObject *TilePositionSystem::GetObjectUnderCursor()
 			= this->_cursor->GetCursor().Properties[system_code]->Statistics;
 
 	auto selected_record_iter = Util::First(this->GameObjects,
-																					[&system_code,&cursor_system_stats]
-																					(auto record) -> bool
+											[&system_code,&cursor_system_stats]
+											(auto record) -> bool
 	{
 		auto game_object = record.second;
 		auto &object_system_stats = game_object->Properties[system_code]->Statistics;
@@ -168,8 +179,8 @@ GameObject *TilePositionSystem::GetObjectUnderCursor()
 	});
 
 	return selected_record_iter != this->GameObjects.end()
-																 ? selected_record_iter->second
-																 : nullptr;
+								   ? selected_record_iter->second
+								   : nullptr;
 }
 
 void TilePositionSystem::Update()

@@ -42,6 +42,7 @@ private:
 	void HandleHorizontaCursorlMovement();
 	void UpdateSelectedObjects();
 	void DeselectObject(GameObject &object);
+	void SelectObject(GameObject &object);
 	GameObject *GetObjectUnderCursor();
 };
 
