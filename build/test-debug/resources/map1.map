@@ -1,0 +1,101 @@
+Map = {
+	Items = {
+		{	Name="WhiteTile",
+		Id="1",
+		Systems = {
+		"S2DGE","TILEPOS"
+		},
+		Statistics = {
+		},
+		Dictionary = {
+		},
+		Properties = {
+			{"S2DGE","WhiteTile.S2DGE"},
+			{"TILEPOS","WhiteTile.TILEPOS"}
+		}
+		},
+		{	Name = "WhiteTile.S2DGE",
+			Statistics = {
+				{"x",0},
+				{"y",0},
+				{"z",1},
+				{"height",64},
+				{"width",64},
+				{"alpha",255},
+				{"red",255},
+				{"green",255},
+				{"blue",255},
+				{"textured",1}
+			},
+			Dictionary = {
+				{"texture","resources/tile-0.png"}
+			}
+		},
+		{	Name = "WhiteTile.TILEPOS",
+			Statistics = {
+				{"x",1},
+				{"y",1},
+				{"z",1}
+			}
+		},
+		{	Name="BlackTile",
+		Id="1",
+		Systems = {
+		"S2DGE","TILEPOS"
+		},
+		Statistics = {
+		},
+		Dictionary = {
+		},
+		Properties = {
+			{"S2DGE","WhiteTile.S2DGE"},
+			{"TILEPOS","WhiteTile.TILEPOS"}
+		}
+		},
+		{	Name = "WhiteTile.S2DGE",
+			Statistics = {
+				{"x",0},
+				{"y",0},
+				{"z",1},
+				{"height",64},
+				{"width",64},
+				{"alpha",255},
+				{"red",255},
+				{"green",255},
+				{"blue",255},
+				{"textured",1}
+			},
+			Dictionary = {
+				{"texture","resources/tile-0.png"}
+			}
+		},
+		{	Name = "WhiteTile.TILEPOS",
+			Statistics = {
+				{"x",1},
+				{"y",1},
+				{"z",1}
+			}
+		}
+	}	,
+	Maps = {
+	{
+		TileLayer = {
+			{1,2,1,2,1,2,1,2},
+			{2,1,2,1,2,1,2,1},
+			{1,2,1,2,1,2,1,2},
+			{2,1,2,1,2,1,2,1},
+			{1,2,1,2,1,2,1,2},
+			{2,1,2,1,2,1,2,1},
+		},
+		ObjectLayer = {
+			{1,2,1,2,1,2,1,2},
+			{2,1,2,1,2,1,2,1},
+			{1,2,1,2,1,2,1,2},
+			{2,1,2,1,2,1,2,1},
+			{1,2,1,2,1,2,1,2},
+			{2,1,2,1,2,1,2,1},
+		}
+		
+	}
+	}
+}
