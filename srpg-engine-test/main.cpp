@@ -1,110 +1,106 @@
 #include <iostream>
 #include <gameobject.hpp>
 #include <gamecore.hpp>
-#include <s2dge-factory.hpp>
 #include <s2dge-gamesystem.hpp>
+#include <tile-position-system.hpp>
+#include <s2dge-tilepos-adapter.hpp>
+#include <configuration-manager.hpp>
+#include <simple-tile-movement-system.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
+#include <functional>
+#include "event-handler.hpp"
+#include "srpg-demo.hpp"
 
-int main(){
-	SrpgEngine::Game::Core core;
+using namespace SrpgEngine::S2dge;
+using namespace SrpgEngine::SimplePositionSystem;
+using namespace SrpgEngine::Game;
+using namespace SrpgEngine::TileMovementSystem;
+using namespace SrpgDemo::Util;
 
-	SrpgEngine::S2dge::DrawableTestObjectFactory factory;
-	auto item = factory.Create();
+using SrpgEngine::Framework::string;
+using CoreSp = std::shared_ptr<Core>;
+using WindowSp = std::shared_ptr<sf::Window>;
+#define SANDBOX 0
 
-	SrpgEngine::Game::GameSystem *s2dge = new SrpgEngine::S2dge::Simple2DGraphicsEngine();
-	s2dge->Initialize();
+Core setup_core();
+inline void sandbox();
 
-	core.Objects["item"] = &item;
-	core.Systems[s2dge->GetSystemCode()] = s2dge;
-	core.Run();
+int main() {
+	sandbox();
+	if(SANDBOX) return 0;
+
+	Core core = setup_core();
+
+	ConfigurationManager _configurationManager;
+
+	auto s2dge_settings = _configurationManager.LoadConfigurationFor("S2DGE");
+	int video_width, video_height, frame_limit;
+	bool vsync;
+
+	video_width = s2dge_settings->Properties["Video"]->Statistics["width"];
+	video_height = s2dge_settings->Properties["Video"]->Statistics["height"];
+	vsync = static_cast<bool>(s2dge_settings->Statistics["vsync"]);
+	frame_limit = s2dge_settings->Statistics["frame_limit"];
+	auto window_title = s2dge_settings->Dictionary["window_title"];
+	auto step_update_time_in_ms = s2dge_settings->Statistics["step_update_time_in_ms"];
+
+	Synchronizer synchronizer(sf::milliseconds(step_update_time_in_ms));
+	auto video_mode = sf::VideoMode(video_width, video_height);
+	sf::RenderWindow window(video_mode, window_title);
+	window.setVerticalSyncEnabled(vsync);
+
+	auto drawing_system =
+			static_cast<Simple2DGraphicsEngine*>(core.SystemMap["S2DGE"]);
+	synchronizer.Reset();
+	EventHandler event_handler(core,window);
+	while(window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			event_handler.Handle(event);
+		}
+
+		while(synchronizer.TryStep()) {
+			core.Update();
+			synchronizer.FinishStep();
+		}
+
+		window.clear(sf::Color::Blue);
+
+		for(const auto &object : drawing_system->getDrawables()) {
+			const auto &sprite =
+					static_cast<sf::Sprite *>(
+						object->Properties[drawing_system->GetSystemCode()]
+					->Properties["sprite"]->Data["sprite"]);
+			window.draw(*sprite);
+		}
+		window.display();
+	}
 	return 0;
 }
 
-//using string = std::string;
-//using namespace SrpgEngine::Framework;
-//using namespace SrpgEngine::Game;
+Core setup_core() {
+	Core core;
 
-//GameObject *makeTile(string name,int cost,int y, int x);
-//GameObject *makeMovable(string name, int movement, int y, int x);
+	auto s2dge = new Simple2DGraphicsEngine();
+	auto sts = new TilePositionSystem(&core);
+	auto s2dge_sts = new S2dgeTilePosAdapter();
+	auto stms = new TileMovementSystem();
 
-//static int ScreenWidth = 600;
-//static int ScreenHeight = 600;
+	core.SystemMap[s2dge->GetSystemCode()] = s2dge;
+	core.SystemMap[sts->GetSystemCode()] = sts;
+	core.SystemMap[s2dge_sts->GetSystemCode()] = s2dge_sts;
+	core.SystemMap[stms->GetSystemCode()] = stms;
 
-//int main()
-//{
-//	GameObject world;
-//	for(int i = 0; i < 3; i++)
-//	{
-//		for(int j = 0; j < 3; j++)
-//		{
-//			if(i == 1)
-//			{
-//				world.Objects.push_back(makeTile("water",2,i,j));
-//			}
-//			else
-//			{
-//				world.Objects.push_back(makeTile("grass",1,i,j));
-//			}
-//		}
-//	}
-//	GameObject *actor = makeMovable("actor",2,0,0);
+	core.Init();
+	return core;
+}
 
-//	Vector<sf::RectangleShape*> rects;
-//	for(GameObject *go : world.Objects)
-//	{
-//		auto rect = new sf::RectangleShape(sf::Vector2f(100,100
-//														));
-//		rect->setFillColor(!go->Name.compare("water")
-//						   ? sf::Color::Blue
-//						   : sf::Color::Green);
-//		rect->setPosition( sf::Vector2f(go->Statistics.Get("x")*100,
-//										go->Statistics.Get("y")*100));
-//		rects.push_back(rect);
-//	}
+#if SANDBOX
+inline void sandbox(){
+	std::cout << "Sandbox" << std::endl;
+}
 
-//	sf::RenderWindow window(sf::VideoMode(ScreenWidth, ScreenHeight), "SFML works!");
-
-//	while (window.isOpen())
-//	{
-//		sf::Event event;
-//		while (window.pollEvent(event))
-//		{
-//			if (event.type == sf::Event::Closed)
-//				window.close();
-//		}
-//		if(sf::Keyboard::R)
-//			actor->Statistics.Set("move",2);
-//		if(sf::Keyboard::Right)
-//		{
-
-//		}
-//		window.clear();
-//		for(auto rect :  rects)
-//		{
-//			auto c = rect->getFillColor();
-//			window.draw(*rect);
-//		}
-//		window.display();
-//	}
-
-//	return 0;
-//}
-
-//GameObject *makeTile(string name, int cost, int y, int x)
-//{
-//	GameObject *tile = new GameObject();
-//	tile->Name = name;
-//	tile->Statistics.Add("cost",cost);
-//	tile->Statistics.Add("y",y);
-//	tile->Statistics.Add("x",x);
-//	return tile;
-//}
-
-//GameObject *makeMovable(string name, int movement, int y, int x)
-//{
-//	GameObject *movable = new GameObject();
-//	movable->Name = name;
-//	movable->Statistics.Add("move",2);
-//	movable->Statistics.Add("y",y);
-//	movable->Statistics.Add("x",x);
-//	return movable;
-//}
+#else
+inline void sandbox(){}
+#endif

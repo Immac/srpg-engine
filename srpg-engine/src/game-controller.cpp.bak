@@ -1,0 +1,46 @@
+#include <game-controller.hpp>
+using namespace SrpgEngine::Game;
+SrpgEngine::Game::GameController::GameController()
+{
+	auto a = Input("DigitalUp",false);
+	this->Inputs = HashSet<string,Input> {
+	{"DigitalUp",{"DigitalUp",false}}
+//		{"DigitalDown",0},
+//		{"DigitalLeft",0},
+//		{"DigitalRight",0},
+//		{"ButtonA",0},
+//		{"ButtonB",0},
+//		{"ButtonX",0},
+//		{"ButtonY",0},
+//		{"ButtonLB",0},
+//		{"ButtonRB",0},
+//		{"ButtonLT",0},
+//		{"ButtonRT",0},
+//		{"ButtonLS",0},
+//		{"ButtonRS",0},
+//		{"ButtonStart",0},
+//		{"ButtonBack",0}
+//	};
+//	this->AnalogInputs = HashSet<string,int> {
+//		{"X_AXIS",0},
+//		{"Y_AXIS",0},
+//		{"Z_AXIS",0},
+//		{"U_AXIS",0},
+//		{"V_AXIS",0},
+//		{"W_AXIS",0}
+	};
+}
+
+
+Input::Input(const string &name, int _value)
+	:_name(name),_type(InputType::Analog)
+{
+	this->_value.Int = _value;
+}
+
+Input::Input(const string &name, bool _value)
+	:_name(name),_type(InputType::Digital)
+{
+	this->_value.Bool = _value;
+}
+

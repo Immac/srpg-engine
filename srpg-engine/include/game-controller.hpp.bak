@@ -1,0 +1,55 @@
+#ifndef SRPG_GAME_CONTROLLER_HPP
+#define SRPG_GAME_CONTROLLER_HPP
+#include <unordered_map>
+#include "gamecommon.hpp"
+
+namespace SrpgEngine {
+namespace Game {
+using namespace Framework;
+class Input;
+union InputValue;
+enum class InputType;
+
+union InputValue {
+	int Int;
+	bool Bool;
+};
+
+
+enum class InputType {
+	Digital,
+	Analog
+};
+
+class Input {
+private:
+	string _name;
+	InputValue _value;
+	InputType _type;
+public:
+	Input(const string &name,int _value);
+	Input(const string &name,bool _value);
+
+	bool operator==(const string& rhs) {
+		return this->_name == rhs;
+	}
+
+	explicit operator bool() const {
+		return _value.Bool;
+	}
+};
+
+
+template <class K,class I> using HashSet = std::unordered_map<K,I>;
+class GameController {
+private:
+public:
+	GameController();
+	HashSet<string,Input> Inputs;
+};
+
+
+}
+}
+
+#endif // SRPG_GAME_CONTROLLER_HPP

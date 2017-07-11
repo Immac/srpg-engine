@@ -1,0 +1,1 @@
+ -L"C:/Program Files (x86)/s2dge-tilepos-adapter/srpg-engine/bin"  -L"C:/Program Files (x86)/s2dge-tilepos-adapter/lua53/bin"  -lsrpg-engine-lib -llua53-lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

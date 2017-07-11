@@ -9,7 +9,7 @@ using Framework::string;
 using Framework::Repository;
 using Statistic = std::pair<string,int>;
 using StatRepository = Repository<int>;
-
+template <class K,class V> using HashMap = std::unordered_map<K,V>;
 }
 }
 
