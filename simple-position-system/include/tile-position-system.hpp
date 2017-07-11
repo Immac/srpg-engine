@@ -20,8 +20,7 @@ private:
 	Map<string, std::function<void(GameObject &)>> _eventMap;
 	StateMachine _game_state;
 	Cursor_u_ptr _cursor;
-	Core *_gameCore;
-
+	Core *_game_core;
 	Vector<GameObject *> _selected_game_objects;
 
 	int _current_cooldown = 0;
@@ -42,6 +41,8 @@ private:
 	void HandleCursorMovement();
 	void HandleHorizontaCursorlMovement();
 	void UpdateSelectedObjects();
+	void DeselectObject(GameObject &object);
+	GameObject *GetObjectUnderCursor();
 };
 
 enum class Layers : int {

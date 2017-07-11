@@ -21,7 +21,6 @@ void StateMachine::GoTo(const string &key)
 	if(this->_current_state == nullptr) {
 		std::cout << "state: " << key << "does not exist" << std::endl;
 	}
-
 }
 
 StateMachine& StateMachine::AddState(const string &name)

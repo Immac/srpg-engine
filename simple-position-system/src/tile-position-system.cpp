@@ -8,7 +8,7 @@ using namespace SrpgEngine::Util;
 
 TilePositionSystem::TilePositionSystem(Core *core)
 {
-	this->_gameCore = core;
+	this->_game_core = core;
 }
 
 void TilePositionSystem::Initialize(GameObject &settings)
@@ -19,38 +19,57 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			.AddState("something_is_selected");
 	this->_game_state.GoTo("nothing_is_selected");
 
-	this->_game_state["nothing_is_selected"]["a_is_being_pressed"]
-			= [this,system_code](auto &event) {
-		auto c = this->_cursor->GetCursor();
-		auto cursor_system_stats = c.Properties[system_code]->Statistics;
-		const auto &x = cursor_system_stats["x"];
-		const auto &y = cursor_system_stats["y"];
-		const auto &z = static_cast<int>(Layers::Ground);
-		auto game_objects = Util::ExtractValues(this->GameObjects);
-		Util::RemoveIf(game_objects,[&system_code,&x,&y,&z](auto go){
-			auto &stats = go->Properties[system_code]->Statistics;
-			return stats["x"] != x || stats["y"] != y || stats["z"] != z;
-		});
-
-		for(auto &object : game_objects) {
-			object->Properties[system_code]->Statistics["is-selected"] = 1;
+	this->_game_state["nothing_is_selected"]["input_pressed"]
+			= [this,system_code](auto &event)
+	{
+		auto input_key = event.Dictionary["input"];
+		auto controller_index = event.Statistics["controller"];
+		if(controller_index != 0) {
+			return;
 		}
+		if(input_key == "ButtonA") {
+			auto object_under_cursor = this->GetObjectUnderCursor();
 
-		if(!game_objects.empty()) {
-			this->_game_state.GoTo("something_is_selected");
-			std::cout << "selected something";
+			if(object_under_cursor != nullptr) {
+				object_under_cursor
+						->Properties[system_code]->Statistics["is-selected"]
+						= 1;
+				this->_game_state.GoTo("something_is_selected");
+				GameObject e("selected_something");
+				this->_game_core->HandleEvent(e);
+			}
 		}
 	};
 
-	this->_game_state["something_is_selected"]["b_is_being_pressed"]
-			= [this,system_code](const auto &event) {
-		this->UpdateSelectedObjects();
-		for(auto& object:this->_selected_game_objects)
-		{
-			object->Properties[system_code]->Statistics["is-selected"] = 0;
-		}
+	this->_game_state["something_is_selected"]["input_pressed"]
+			= [this,system_code](auto &event) {
+		auto input_key = event.Dictionary["input"];
+		auto controller_index = event.Statistics["controller"];
+		if(controller_index != 0) {
+			return;
+		} else if (input_key == "ButtonA") {
+			//TODO: Deselect if same, select new if other
+			this->UpdateSelectedObjects();
+			auto object_under_cursor = this->GetObjectUnderCursor();
+			auto selected_object = this->_selected_game_objects.at(0);
+			if(object_under_cursor == selected_object) {
+				selected_object->Properties[system_code]->Statistics["is-selected"] = 0;
+				GameObject new_event("deselected_unit");
+				_game_core->HandleEvent(new_event);
+				_game_state.GoTo("nothing_is_selected");
+			}
+		} else if (input_key == "ButtonB") {
+			this->UpdateSelectedObjects();
+			for(auto& object:this->_selected_game_objects) {
+				object->Properties[system_code]->Statistics["is-selected"] = 0;
+			}
 
-		this->_game_state.GoTo("nothing_is_selected");
+			_game_state.GoTo("nothing_is_selected");
+		} else if (input_key == "ButtonX") {
+			//Do example move
+		} else if (input_key == "ButtonY") {
+			//Do something ?
+		}
 	};
 
 	this->_eventMap["SetObjectCoordinate"] = [this,system_code](auto &event) {
@@ -79,7 +98,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		selection_event.Statistics["x"] = x;
 		selection_event.Statistics["y"] = y;
 		selection_event.Statistics["z"] = static_cast<int>(z);
-		this->_gameCore->HandleEvent(selection_event);
+		this->_game_core->HandleEvent(selection_event);
 	};
 
 	this->_eventMap["DeselectAll"] = [this,system_code](const auto &event){
@@ -95,15 +114,15 @@ void TilePositionSystem::Initialize(GameObject &settings)
 
 void TilePositionSystem::HandleCursorMovement()
 {
-	auto is_up_pressed = this->_gameCore->Controllers[0]->DigitalInputs["DigitalUp"];
-	auto is_down_pressed = this->_gameCore->Controllers[0]->DigitalInputs["DigitalDown"];
-	auto is_left_pressed = this->_gameCore->Controllers[0]->DigitalInputs["DigitalLeft"];
-	auto is_right_pressed = this->_gameCore->Controllers[0]->DigitalInputs["DigitalRight"];
+	auto is_up_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalUp"];
+	auto is_down_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalDown"];
+	auto is_left_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalLeft"];
+	auto is_right_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalRight"];
 
 	if(!is_up_pressed && !is_down_pressed && !is_left_pressed && !is_right_pressed) {
 		this->_current_cooldown = _cursor_movement_cooldown + 1;
 	} else if(this->_current_cooldown > _cursor_movement_cooldown) {
-		if(this->_cursor->HandleInput(*this->_gameCore->Controllers[0])) {
+		if(this->_cursor->HandleInput(*this->_game_core->Controllers[0])) {
 			this->_current_cooldown = 0;
 		}
 	} else {
@@ -116,28 +135,45 @@ void TilePositionSystem::UpdateSelectedObjects()
 	auto selected_game_objects = ExtractValues(this->GameObjects);
 	auto system_code = this->GetSystemCode();
 	RemoveIf(selected_game_objects,
-			 [&system_code](const auto &record) -> bool
+					 [&system_code](const auto &record) -> bool
 	{
 		auto isSelected = static_cast<bool>(record->Properties[system_code]
-											->Statistics["is-selected"]);
+																				->Statistics["is-selected"]);
 		return !isSelected;
 	});
 	this->_selected_game_objects = selected_game_objects;
 }
 
+void TilePositionSystem::DeselectObject(GameObject &object)
+{
+	const auto& system_code = this->GetSystemCode();
+	object.Properties[system_code]->Statistics["is-selected"] = 0;
+}
+
+GameObject *TilePositionSystem::GetObjectUnderCursor()
+{
+	const auto &system_code = this->GetSystemCode();
+	auto cursor_system_stats
+			= this->_cursor->GetCursor().Properties[system_code]->Statistics;
+
+	auto selected_record_iter = Util::First(this->GameObjects,
+																					[&system_code,&cursor_system_stats]
+																					(auto record) -> bool
+	{
+		auto game_object = record.second;
+		auto &object_system_stats = game_object->Properties[system_code]->Statistics;
+		return object_system_stats["x"] == cursor_system_stats["x"]
+				&& object_system_stats["y"] == cursor_system_stats["y"]
+				&& object_system_stats["z"] == static_cast<int>(Layers::Ground);
+	});
+
+	return selected_record_iter != this->GameObjects.end()
+																 ? selected_record_iter->second
+																 : nullptr;
+}
+
 void TilePositionSystem::Update()
 {
-	auto is_a_pressed = this->_gameCore->Controllers[0]->DigitalInputs["ButtonA"];
-	auto is_b_pressed = this->_gameCore->Controllers[0]->DigitalInputs["ButtonB"];
-	if(is_a_pressed) {
-		GameObject event{"a_is_being_pressed"};
-		this->_game_state.HandleEvent(event);
-	}
-	if(is_b_pressed) {
-		GameObject event{"b_is_being_pressed"};
-		this->_game_state.HandleEvent(event);
-	}
-
 	HandleCursorMovement();
 
 	for(const auto& record : GameObjects){
@@ -153,7 +189,8 @@ void TilePositionSystem::Update()
 
 int TilePositionSystem::HandleEvent(GameObject &event)
 {
-
+	_game_state["global"].HandleEvent(event);
+	_game_state.HandleEvent(event);
 	string eventKey = event.Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()) {
 		_eventMap[eventKey](event);

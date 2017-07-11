@@ -6,13 +6,15 @@
 
 using namespace SrpgEngine::Game;
 
-class EventHandler{
+class EventHandler
+{
 private:
 	Core *_core;
 	sf::Window *_window;
+	void SendPressInputEvent(const string& input_name, int controller);
+	void SendReleaseInputEvent(const string &input_name, int controller);
 public:
 	EventHandler(Core &core,sf::Window &window);
-
 	void Handle(sf::Event &event);
 };
 

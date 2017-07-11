@@ -8,6 +8,7 @@
 #include "gamecommon.hpp"
 #include "gamesystem.hpp"
 #include "game-controller.hpp"
+#include "state-machine.hpp"
 
 namespace SrpgEngine {
 namespace Game {
@@ -27,12 +28,14 @@ private:
 	void LoadCoreObjects();
 	ConfigurationManager _configurationManager;
 
+
 public:
 	Core();
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
-	Map<string, std::function<void(GameObject&)>> EventMap;
-	std::unordered_map<int,GameController *> Controllers;
+	StateMachine GameState;
+	HashMap<int,GameController *> Controllers;
+
 	int HandleEvent(GameObject &event);
 	int Init();
 	int Update();

@@ -23,14 +23,14 @@ using CoreSp = std::shared_ptr<Core>;
 using WindowSp = std::shared_ptr<sf::Window>;
 #define SANDBOX 0
 
-Core setupCore();
+Core setup_core();
 inline void sandbox();
 
 int main() {
 	sandbox();
 	if(SANDBOX) return 0;
 
-	Core core = setupCore();
+	Core core = setup_core();
 
 	ConfigurationManager _configurationManager;
 
@@ -50,7 +50,8 @@ int main() {
 	sf::RenderWindow window(video_mode, window_title);
 	window.setVerticalSyncEnabled(vsync);
 
-	auto drawingSystem = static_cast<Simple2DGraphicsEngine*>(core.SystemMap["S2DGE"]);
+	auto drawing_system =
+			static_cast<Simple2DGraphicsEngine*>(core.SystemMap["S2DGE"]);
 	synchronizer.Reset();
 	EventHandler event_handler(core,window);
 	while(window.isOpen()) {
@@ -66,10 +67,11 @@ int main() {
 
 		window.clear(sf::Color::Blue);
 
-		for(const auto &object : drawingSystem->getDrawables()) {
-			auto s2dge = object->Properties[drawingSystem->GetSystemCode()];
-			auto sprite = static_cast<sf::Sprite *>(
-						  s2dge->Properties["sprite"]->Data["sprite"]);
+		for(const auto &object : drawing_system->getDrawables()) {
+			const auto &sprite =
+					static_cast<sf::Sprite *>(
+						object->Properties[drawing_system->GetSystemCode()]
+					->Properties["sprite"]->Data["sprite"]);
 			window.draw(*sprite);
 		}
 		window.display();
@@ -77,7 +79,7 @@ int main() {
 	return 0;
 }
 
-Core setupCore() {
+Core setup_core() {
 	Core core;
 
 	auto s2dge = new Simple2DGraphicsEngine();

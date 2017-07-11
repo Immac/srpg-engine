@@ -60,18 +60,33 @@ Core::Core()
 	{
 		this->Controllers.emplace(i,new GameController());
 	}
+	this->GameState.AddState("global");
+	this->GameState["global"]["input_pressed"]
+			= [this](auto event)
+	{
+		auto input_key = event.Dictionary["input"];
+		auto controller_index = event.Statistics["controller"];
+		auto controller = this->Controllers[controller_index];
+		controller->DigitalInputs[input_key] = true;
+	};
+
+	this->GameState["global"]["input_released"]
+			= [this](auto event)
+	{
+		auto input_key = event.Dictionary["input"];
+		auto controller_index = event.Statistics["controller"];
+		auto controller = this->Controllers[controller_index];
+		controller->DigitalInputs[input_key] = false;
+	};
 }
 
 int Core::HandleEvent(GameObject &event)
 {
-	string eventName = event.Name;
-	if(EventMap.find(eventName)!=EventMap.end()){
-		EventMap[eventName](event);
-	}
-
-	for(const auto& mapPair: this->SystemMap)
+	GameState.HandleEvent(event);
+	GameState["global"].HandleEvent(event);
+	for(const auto& record: this->SystemMap)
 	{
-		GameSystem *system = mapPair.second;
+		auto system = record.second;
 		system->HandleEvent(event);
 	}
 }

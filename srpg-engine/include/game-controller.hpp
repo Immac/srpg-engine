@@ -14,6 +14,11 @@ public:
 	HashMap<string,int> AnalogInputs;
 };
 
+enum class InputType : int {
+	Digital,
+	Analog
+};
+
 }
 }
 

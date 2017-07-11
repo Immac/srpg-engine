@@ -32,7 +32,7 @@ static bool HasAny(TContainer container, TItem item) {
 }
 
 template<class K, class V>
-static Vector<V> ExtractValues(Map<K,V> map){
+static Vector<V> ExtractValues(const Map<K,V>& map){
 	Vector<V> output;
 	 for (auto const& element : map) {
 	   output.push_back(element.second);
@@ -48,9 +48,15 @@ static void RemoveIf(TContainer &container,TFunction function){
 }
 
 template<class TContainer,class TItem>
-static bool HasAnyIterative(TContainer container, TContainer item)
+static bool HasAnyIterative(const TContainer& container, TContainer item)
 {
 	return std::find(container.begin(),container.end(),item) != container.end();
+}
+
+template<class TContainer, class TFunction>
+static auto First(const TContainer& container, TFunction predicate) {
+	auto result = std::find_if(container.begin(),container.end(),predicate);
+	return result;
 }
 
 template<class TContainer,class TFunction>
