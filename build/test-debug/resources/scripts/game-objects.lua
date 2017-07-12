@@ -8,31 +8,60 @@ local clown_piece = require("resources.scripts.clown-piece")
 --clown_piece.AddClownPiece(Root)
 
 Root[#Root+1] = {	Name="Cursor",
-	Id="Cursor",
-	Systems = {
-	"S2DGE","TILEPOS"
-	},
-	Properties = {
-		{"S2DGE","Cursor.S2DGE"},
-		{"TILEPOS","Cursor.TILEPOS"}
-	}
+  Id="Cursor",
+  Systems = {
+    "S2DGE","TILEPOS"
+  },
+  Properties = {
+    {"S2DGE","Cursor.S2DGE"},
+    {"TILEPOS","Cursor.TILEPOS"}
+  }
 }
 
 Root[#Root+1] = {	Name = "Cursor.S2DGE",
-	Statistics = {
-		{"textured",1}
-	},
-	Dictionary = {
-		{"texture","resources/cursor.png"}
-	}
+  Statistics = {
+    {"textured",1}
+  },
+  Dictionary = {
+    {"texture","resources/cursor.png"}
+  }
 }	
-	
+
 Root[#Root+1] = {	Name = "Cursor.TILEPOS",
-	Statistics = {
-		{"x",0},
-		{"y",0},
-		{"z",1000},
-		{"x-offset",0},
-		{"y-offset",0}
-	}
+  Statistics = {
+    {"x",0},
+    {"y",0},
+    {"z",1000},
+    {"x-offset",0},
+    {"y-offset",0}
+  }
+}
+Root[#Root+1] = {	Name="Highlight",
+  Id="Highlight",
+  Systems = {
+    "S2DGE","TILEPOS"
+  },
+  Properties = {
+    {"S2DGE","Highlight.S2DGE"},
+    {"TILEPOS","Highlight.TILEPOS"}
+  }
+}
+
+Root[#Root+1] = {	Name = "Highlight.S2DGE",
+  Statistics = {
+    {"textured",1}
+  },
+  Dictionary = {
+    {"texture","resources/highlight.png"}
+  }
+}	
+
+Root[#Root+1] = {	Name = "Highlight.TILEPOS",
+  Statistics = {
+    {"x",0},
+    {"y",0},
+    {"z",1000},
+    {"x-offset",0},
+    {"y-offset",0}
+  }
 }
