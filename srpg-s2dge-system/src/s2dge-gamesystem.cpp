@@ -2,12 +2,14 @@
 #include <luautil.hpp>
 #include <algorithm>
 #include <memory>
+#include "sprite.hpp"
+#include "utilities.hpp"
 
 using namespace SrpgEngine;
 using namespace Framework;
 using namespace Lua;
 using namespace Game;
-using SrpgEngine::S2dge::Simple2DGraphicsEngine;
+using namespace S2dge;
 
 using std::cout;
 
@@ -46,8 +48,8 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 	}
 }
 
-Simple2DGraphicsEngine::Simple2DGraphicsEngine()
-	:_game_state("normal")
+Simple2DGraphicsEngine::Simple2DGraphicsEngine(Core* core)
+	:_game_state("normal"),_game_core(core)
 {
 	this->_game_state.AddState("global");
 
@@ -67,32 +69,9 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 	const auto &system_code = this->GetSystemCode();
 	for(auto record : this->GameObjects)
 	{
-		auto object = record.second;
-		auto sprite_game_object = new GameObject();
-
-		sprite_game_object->Name = "sprite";
-		sprite_game_object->Statistics["width"] = object->Statistics["width"];
-		sprite_game_object->Statistics["height"] = object->Statistics["height"];
-
-		auto s2dge = object->Properties[system_code];
-		s2dge->Properties["sprite"] = std::move(sprite_game_object);
-
-		auto sprite = new sf::Sprite();
-		auto texture_path = s2dge->Dictionary["texture"];
-		if(!_textures.HasAny(texture_path))
-		{
-			_textures[texture_path] = std::make_unique<sf::Texture>();
-
-			if(!_textures[texture_path]->loadFromFile(texture_path))
-			{
-				cout << "Texture not found at: \"" << texture_path;
-				throw;
-			}
-		}
-		const auto &texture_ptr = _textures[texture_path].get();
-		sprite->setTexture(*texture_ptr);
-		s2dge->Properties["sprite"]->Data["sprite"] = std::move(sprite);
-		s2dge->Properties["sprite"]->Data["texture"] = texture_ptr;
+		auto game_object = record.second;
+		auto s2dge = game_object->Properties[system_code];
+		S2dgeUtil::InitializeSprite(*game_object,*s2dge,_textures);
 	}
 	GameObject event("UpdateLayers");
 	this->HandleEvent(event);
@@ -102,24 +81,9 @@ void Simple2DGraphicsEngine::Update()
 {
 	for(const auto& record : GameObjects)
 	{
-		auto object = record.second;
-		auto object_system = object->Properties[this->GetSystemCode()];
-
-		std::for_each(object->Statistics.begin(),object->Statistics.end(),[object_system](auto stat){
-			object_system->Statistics[stat.first] = stat.second;
-
-		});
-		auto red = object_system->Statistics["red"];
-		auto green = object_system->Statistics["green"];
-		auto blue = object_system->Statistics["blue"];
-		auto alpha = object_system->Statistics["alpha"];
-		auto sprite = static_cast<sf::Sprite *>(
-						  object_system->Properties["sprite"]->Data["sprite"]);
-
-		sprite->setColor(sf::Color(red,green,blue,alpha));
-		sprite->setPosition(object_system->Statistics["x"]
-				+ object_system->Statistics["x-offset"]
-				, object_system->Statistics["y"] + object_system->Statistics["y-offset"]);
+		auto game_object = record.second;
+		auto system = game_object->Properties[this->GetSystemCode()];
+		S2dgeUtil::UpdateSprite(*game_object,*system);
 	}
 }
 
@@ -142,3 +106,4 @@ Vector<SrpgEngine::Framework::string> Simple2DGraphicsEngine::GetDependencies()
 Simple2DGraphicsEngine::~Simple2DGraphicsEngine()
 {
 }
+

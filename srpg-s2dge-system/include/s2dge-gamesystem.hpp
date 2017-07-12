@@ -7,23 +7,30 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <memory>
+#include "texture-handler.hpp"
+#include <gamecore.hpp>
 
 namespace SrpgEngine {
 namespace S2dge {
 
-using namespace SrpgEngine::Framework;
-using Game::GameObject;
-using UniqueSfTexture = std::unique_ptr <sf::Texture>;
+class Sprite;
+class TextureHandler;
+
+using namespace SrpgEngine;
+using namespace Framework;
+using namespace Game;
 
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
 	StateMachine _game_state;
+	Core* _game_core;
 	Vector<GameObject *> _drawables;
-	Repository<UniqueSfTexture> _textures;
+	TextureHandler _textures;
 	void InitializeDefaults(GameObject &settings);
 public:
-	Simple2DGraphicsEngine();
+
+	Simple2DGraphicsEngine(Core *core);
 	void Initialize(GameObject &settings) override;
 	void Update() override;
 	int HandleEvent(GameObject &event) override;
@@ -33,6 +40,8 @@ public:
 
 	Vector<GameObject *> getDrawables() const;
 };
+
+
 
 }
 }

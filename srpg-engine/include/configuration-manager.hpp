@@ -25,7 +25,7 @@ public:
 
 	ConfigurationManager(const string configFilePath,const string configIdTag);
 
-	GameObject *LoadConfigurationFor(string system);
+	GameObject *LoadConfigurationFor(string sprite_object);
 };
 }
 }

@@ -32,8 +32,9 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			if(object_under_cursor != nullptr) {
 				this->SelectObject(*object_under_cursor);
 				this->_game_state.GoTo("something_is_selected");
-				GameObject something_selected_event("selected_something");
-				this->_game_core->HandleEvent(something_selected_event);
+				GameObject notify_object_selected("selected_object");
+				notify_object_selected.Properties["subject"] = object_under_cursor;
+				this->_game_core->HandleEvent(notify_object_selected);
 			}
 		}
 	};
@@ -45,14 +46,14 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		if(controller_index != 0) {
 			return;
 		} else if (input_key == "ButtonA") {
-			//TODO: Deselect if same, select new if other
 			this->UpdateSelectedObjects();
 			auto object_under_cursor = this->GetObjectUnderCursor();
 			auto selected_object = this->_selected_game_objects.at(0);
 			if(object_under_cursor == selected_object) {
-				selected_object->Properties[system_code]->Statistics["is-selected"] = 0;
-				GameObject new_event("deselected_unit");
-				_game_core->HandleEvent(new_event);
+				this->DeselectObject(*selected_object);
+				GameObject notify_deselect("deselected_object");
+				notify_deselect.Properties["subject"] = selected_object;
+				_game_core->HandleEvent(notify_deselect);
 				_game_state.GoTo("nothing_is_selected");
 			} else if (object_under_cursor != nullptr) {
 				this->DeselectObject(*selected_object);
@@ -77,7 +78,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 	};
 
-	this->_eventMap["SetObjectCoordinate"] = [this,system_code](auto &event) {
+	_eventMap["SetObjectCoordinate"] = [this,system_code](auto &event) {
 		auto subject_key = event.Dictionary["Subject"];
 		auto stat_key = event.Dictionary["Statisic"];
 		auto value = event.Statistics["Value"];
@@ -86,7 +87,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 				= value;
 	};
 
-	this->_eventMap["SetSelectedCoordinate"] = [this,system_code](auto &event){
+	_eventMap["SetSelectedCoordinate"] = [this,system_code](auto &event){
 		this->UpdateSelectedObjects();
 
 		for(auto game_object : this->_selected_game_objects) {
@@ -94,7 +95,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 	};
 
-	this->_eventMap["SelectObjectUnderCursor"] = [this,system_code](auto &event) {
+	_eventMap["SelectObjectUnderCursor"] = [this,system_code](auto &event) {
 		const auto &cursor = this->GameObjects["Cursor"];
 		auto x = cursor->Properties[system_code]->Statistics["x"];
 		auto y = cursor->Properties[system_code]->Statistics["y"];
@@ -106,7 +107,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		this->_game_core->HandleEvent(selection_event);
 	};
 
-	this->_eventMap["DeselectAll"] = [this,system_code](const auto &event){
+	_eventMap["DeselectAll"] = [this,system_code](const auto &event){
 		this->UpdateSelectedObjects();
 		for(auto& object:this->_selected_game_objects)
 		{
@@ -114,7 +115,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 	};
 
-	this->_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
+	_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
 }
 
 void TilePositionSystem::HandleCursorMovement()

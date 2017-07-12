@@ -32,21 +32,18 @@ int main() {
 
 	Core core = setup_core();
 
-	ConfigurationManager _configurationManager;
+	ConfigurationManager configuration_manager;
 
-	auto s2dge_settings = _configurationManager.LoadConfigurationFor("S2DGE");
-	int video_width, video_height, frame_limit;
-	bool vsync;
-
-	video_width = s2dge_settings->Properties["Video"]->Statistics["width"];
-	video_height = s2dge_settings->Properties["Video"]->Statistics["height"];
-	vsync = static_cast<bool>(s2dge_settings->Statistics["vsync"]);
-	frame_limit = s2dge_settings->Statistics["frame_limit"];
+	auto s2dge_settings = configuration_manager.LoadConfigurationFor("S2DGE");
+	auto video_width = s2dge_settings->Properties["Video"]->Statistics["width"];
+	auto video_height = s2dge_settings->Properties["Video"]->Statistics["height"];
+	auto vsync = static_cast<bool>(s2dge_settings->Statistics["vsync"]);
+	auto frame_limit = s2dge_settings->Statistics["frame_limit"];
 	auto window_title = s2dge_settings->Dictionary["window_title"];
 	auto step_update_time_in_ms = s2dge_settings->Statistics["step_update_time_in_ms"];
 
 	Synchronizer synchronizer(sf::milliseconds(step_update_time_in_ms));
-	auto video_mode = sf::VideoMode(video_width, video_height);
+	sf::VideoMode video_mode(video_width, video_height);
 	sf::RenderWindow window(video_mode, window_title);
 	window.setVerticalSyncEnabled(vsync);
 
@@ -55,7 +52,7 @@ int main() {
 	synchronizer.Reset();
 	EventHandler event_handler(core,window);
 	while(window.isOpen()) {
-		sf::Event event;
+		auto event = sf::Event();
 		while (window.pollEvent(event)) {
 			event_handler.Handle(event);
 		}
@@ -68,10 +65,8 @@ int main() {
 		window.clear(sf::Color::Blue);
 
 		for(const auto &object : drawing_system->getDrawables()) {
-			const auto &sprite =
-					static_cast<sf::Sprite *>(
-						object->Properties[drawing_system->GetSystemCode()]
-					->Properties["sprite"]->Data["sprite"]);
+			const auto& sprite =
+					static_cast<sf::Sprite *>(object->Data["graphic"]);
 			window.draw(*sprite);
 		}
 		window.display();
@@ -82,15 +77,11 @@ int main() {
 Core setup_core() {
 	Core core;
 
-	auto s2dge = new Simple2DGraphicsEngine();
+	auto s2dge = new Simple2DGraphicsEngine(&core);
 	auto sts = new TilePositionSystem(&core);
-	auto s2dge_sts = new S2dgeTilePosAdapter();
-	auto stms = new TileMovementSystem();
 
 	core.SystemMap[s2dge->GetSystemCode()] = s2dge;
 	core.SystemMap[sts->GetSystemCode()] = sts;
-	core.SystemMap[s2dge_sts->GetSystemCode()] = s2dge_sts;
-	core.SystemMap[stms->GetSystemCode()] = stms;
 
 	core.Init();
 	return core;
