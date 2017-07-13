@@ -51,15 +51,27 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 Simple2DGraphicsEngine::Simple2DGraphicsEngine(Core* core)
 	:_game_state("normal"),_game_core(core)
 {
-	this->_game_state.AddState("global");
+	_game_state.AddState("global");
 
-	this->_game_state["global"]["UpdateLayers"]=[this](auto e)
+	_game_state["global"]["UpdateLayers"]=[this](auto& event)
 	{
 		this->_drawables = Util::ExtractValues(this->GameObjects);
 		Util::Sort(_drawables,[](auto first, auto second)
 		{
 			return first->Statistics["z"] < second->Statistics["z"];
 		});
+	};
+
+	_game_state["global"]["selected_object"]
+			= [this](auto &event) {
+		auto& subject = event.Properties["subject"];
+		std::cout << "Selected: " << subject->Name << std::endl;
+	};
+
+	_game_state["global"]["deselected_object"]
+			= [this](auto &event) {
+		auto& subject = event.Properties["subject"];
+		std::cout << "Deselected: " << subject->Name << std::endl;
 	};
 }
 

@@ -14,12 +14,12 @@ TilePositionSystem::TilePositionSystem(Core *core)
 void TilePositionSystem::Initialize(GameObject &settings)
 {
 	const auto &system_code = this->GetSystemCode();
-	this->_game_state.AddState("global")
+	_game_state.AddState("global")
 			.AddState("nothing_is_selected")
 			.AddState("something_is_selected");
-	this->_game_state.GoTo("nothing_is_selected");
+	_game_state.GoTo("nothing_is_selected");
 
-	this->_game_state["nothing_is_selected"]["input_pressed"]
+	_game_state["nothing_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event)
 	{
 		auto input_key = event.Dictionary["input"];
@@ -31,15 +31,13 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			auto object_under_cursor = this->GetObjectUnderCursor();
 			if(object_under_cursor != nullptr) {
 				this->SelectObject(*object_under_cursor);
-				this->_game_state.GoTo("something_is_selected");
-				GameObject notify_object_selected("selected_object");
-				notify_object_selected.Properties["subject"] = object_under_cursor;
-				this->_game_core->HandleEvent(notify_object_selected);
+				_game_state.GoTo("something_is_selected");
+				this->Notify("selected_object",*object_under_cursor);
 			}
 		}
 	};
 
-	this->_game_state["something_is_selected"]["input_pressed"]
+	_game_state["something_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event) {
 		auto input_key = event.Dictionary["input"];
 		auto controller_index = event.Statistics["controller"];
@@ -48,21 +46,20 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		} else if (input_key == "ButtonA") {
 			this->UpdateSelectedObjects();
 			auto object_under_cursor = this->GetObjectUnderCursor();
-			auto selected_object = this->_selected_game_objects.at(0);
+			auto selected_object = _selected_game_objects.at(0);
 			if(object_under_cursor == selected_object) {
 				this->DeselectObject(*selected_object);
-				GameObject notify_deselect("deselected_object");
-				notify_deselect.Properties["subject"] = selected_object;
-				_game_core->HandleEvent(notify_deselect);
+				this->Notify("deselected_object",*selected_object);
 				_game_state.GoTo("nothing_is_selected");
 			} else if (object_under_cursor != nullptr) {
 				this->DeselectObject(*selected_object);
+				this->Notify("deselected_object",*selected_object);
 				this->SelectObject(*object_under_cursor);
+				this->Notify("selected_object",*object_under_cursor);
 			}
-
 		} else if (input_key == "ButtonB") {
 			this->UpdateSelectedObjects();
-			for(auto& object:this->_selected_game_objects) {
+			for(auto& object : _selected_game_objects) {
 				this->DeselectObject(*object);
 			}
 
@@ -78,41 +75,14 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 	};
 
-	_eventMap["SetObjectCoordinate"] = [this,system_code](auto &event) {
-		auto subject_key = event.Dictionary["Subject"];
-		auto stat_key = event.Dictionary["Statisic"];
-		auto value = event.Statistics["Value"];
-		auto subject = this->GameObjects[subject_key];
-		subject->Properties[system_code]->Statistics[stat_key]
-				= value;
+	_game_state["global"]["selected_object"]
+			= [this](auto &event) {
+
 	};
 
-	_eventMap["SetSelectedCoordinate"] = [this,system_code](auto &event){
-		this->UpdateSelectedObjects();
+	_game_state["global"]["deselected_object"]
+			= [this](auto &event) {
 
-		for(auto game_object : this->_selected_game_objects) {
-			game_object->Properties[system_code]->Statistics["y"] = 3;
-		}
-	};
-
-	_eventMap["SelectObjectUnderCursor"] = [this,system_code](auto &event) {
-		const auto &cursor = this->GameObjects["Cursor"];
-		auto x = cursor->Properties[system_code]->Statistics["x"];
-		auto y = cursor->Properties[system_code]->Statistics["y"];
-		auto z = Layers::Ground;
-		GameObject selection_event("SelectObject");
-		selection_event.Statistics["x"] = x;
-		selection_event.Statistics["y"] = y;
-		selection_event.Statistics["z"] = static_cast<int>(z);
-		this->_game_core->HandleEvent(selection_event);
-	};
-
-	_eventMap["DeselectAll"] = [this,system_code](const auto &event){
-		this->UpdateSelectedObjects();
-		for(auto& object:this->_selected_game_objects)
-		{
-			object->Properties[system_code]->Statistics["is-selected"] = 0;
-		}
 	};
 
 	_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
@@ -162,11 +132,19 @@ void TilePositionSystem::SelectObject(GameObject& object)
 	object.Properties[system_code]->Statistics["is-selected"] = 1;
 }
 
+void TilePositionSystem::Notify(const string& name,GameObject &subject)
+{
+	GameObject notify_deselect(name);
+	notify_deselect.Properties["subject"] = &subject;
+	_game_core->HandleEvent(notify_deselect);
+}
+
 GameObject *TilePositionSystem::GetObjectUnderCursor()
 {
 	const auto &system_code = this->GetSystemCode();
 	auto cursor_system_stats
-			= this->_cursor->GetCursor().Properties[system_code]->Statistics;
+			= static_cast<GameObject>(*this->_cursor)
+			  .Properties[system_code]->Statistics;
 
 	auto selected_record_iter = Util::First(this->GameObjects,
 											[&system_code,&cursor_system_stats]
@@ -219,43 +197,3 @@ Vector<string> TilePositionSystem::GetDependencies()
 	return Vector<string>();
 }
 
-int Cursor::ParseInput(GameController &input, Cursor::InputType input_type, const string &key)
-{
-	switch (input_type) {
-	case InputType::Analog: {
-			return input.AnalogInputs[key];
-		} break;
-	case InputType::Digital: {
-			return input.DigitalInputs[key] ? 1 : 0;
-		} break;
-	}
-}
-
-Cursor::Cursor(GameObject *cursor)
-	:_cursor(cursor)
-{
-	if(this->_cursor == nullptr) {
-		std::cout << "cursor cannot be null";
-		throw;
-	}
-}
-
-GameObject &Cursor::GetCursor() const
-{
-	return *this->_cursor;
-}
-
-bool Cursor::HandleInput(GameController &input)
-{
-	auto ParseDigital = [&input](const auto &key) {
-		return Cursor::ParseInput(input,InputType::Digital,key);
-	};
-
-	auto y_displacement = ParseDigital("DigitalDown") - ParseDigital("DigitalUp");
-	auto x_displacement = ParseDigital("DigitalRight") - ParseDigital("DigitalLeft");
-
-	auto& cursor_system_stats = this->_cursor->Properties["TILEPOS"]->Statistics;
-	cursor_system_stats["x"] += x_displacement;
-	cursor_system_stats["y"] += y_displacement;
-	return x_displacement != 0 || y_displacement !=0;
-}

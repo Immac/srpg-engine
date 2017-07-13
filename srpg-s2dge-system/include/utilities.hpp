@@ -13,6 +13,4 @@ void UpdateSprite(GameObject& game_object, GameObject& system);
 }
 }
 
-
-
 #endif // S2DGE_UTIL_HPP

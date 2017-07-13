@@ -6,7 +6,7 @@
 #include <queue>
 #include <gamecore.hpp>
 #include <state-machine.hpp>
-
+#include "cursor.hpp"
 
 namespace SrpgEngine {
 namespace SimplePositionSystem {
@@ -34,7 +34,6 @@ public:
 	int HandleEvent(GameObject &event);
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
-	~TilePositionSystem();
 private:
 	TilePositionSystem (const &TilePositionSystem){}
 	TilePositionSystem& operator=(const &TilePositionSystem){}
@@ -43,6 +42,7 @@ private:
 	void UpdateSelectedObjects();
 	void DeselectObject(GameObject &object);
 	void SelectObject(GameObject &object);
+	void Notify(const string& name, GameObject& subject);
 	GameObject *GetObjectUnderCursor();
 };
 
@@ -62,20 +62,7 @@ enum class Facing : int {
 	West
 };
 
-class Cursor {
-private:
-	enum class InputType {
-		Analog,
-		Digital
-	};
 
-	GameObject *_cursor;
-	static int ParseInput(GameController &input, InputType input_type,const string& key);
-public:
-	Cursor(GameObject *cursor);
-	GameObject &GetCursor() const;
-	bool HandleInput(GameController &input);
-};
 
 }
 }
