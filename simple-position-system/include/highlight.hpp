@@ -3,19 +3,22 @@
 #include <gameobject.hpp>
 
 namespace SrpgEngine {
-namespace S2dge {
+namespace SimplePositionSystem {
 using namespace SrpgEngine;
 using namespace Game;
 class Highlight {
 private:
 	GameObject *_highlight;
+	string _system;
+	int _offscreen_x = -1;
+	int _offscreen_y = -1;
 public:
-	Highlight(GameObject *highlight);
+	Highlight(GameObject *highlight,const string& system);
 	operator GameObject&() const {
 		return *_highlight;
 	}
-	GameObject &AsGameObject();
-
+	void HighlightObject(GameObject& game_object);
+	void Reset();
 };
 
 }

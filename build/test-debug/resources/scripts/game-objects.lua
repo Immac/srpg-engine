@@ -1,4 +1,5 @@
 Root = {}
+local cursor_level = 400;
 
 local chess_board_tiles = require("resources.scripts.chess-board-tiles")
 chess_board_tiles.AddTiles(Root)
@@ -31,7 +32,7 @@ Root[#Root+1] = {	Name = "Cursor.TILEPOS",
   Statistics = {
     {"x",0},
     {"y",0},
-    {"z",1000},
+    {"z",cursor_level},
     {"x-offset",0},
     {"y-offset",0}
   }
@@ -58,9 +59,9 @@ Root[#Root+1] = {	Name = "Highlight.S2DGE",
 
 Root[#Root+1] = {	Name = "Highlight.TILEPOS",
   Statistics = {
-    {"x",0},
-    {"y",0},
-    {"z",1000},
+    {"x",-1},
+    {"y",-1},
+    {"z",cursor_level},
     {"x-offset",0},
     {"y-offset",0}
   }

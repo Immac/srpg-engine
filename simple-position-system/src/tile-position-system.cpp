@@ -61,15 +61,15 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			this->UpdateSelectedObjects();
 			for(auto& object : _selected_game_objects) {
 				this->DeselectObject(*object);
+				this->Notify("deselected_object",*object);
 			}
-
 			_game_state.GoTo("nothing_is_selected");
 		} else if (input_key == "ButtonX") {
 			this->UpdateSelectedObjects();
-			for(auto game_object : this->_selected_game_objects) {
+			for(auto& game_object : this->_selected_game_objects) {
 				game_object->Properties[system_code]->Statistics["y"] = 3;
+				this->Notify("moved_object",*game_object);
 			}
-
 		} else if (input_key == "ButtonY") {
 			//Do something ?
 		}
@@ -77,15 +77,25 @@ void TilePositionSystem::Initialize(GameObject &settings)
 
 	_game_state["global"]["selected_object"]
 			= [this](auto &event) {
-
+		auto& subject = event.Properties["subject"];
+		_highlight->HighlightObject(*subject);
 	};
 
 	_game_state["global"]["deselected_object"]
 			= [this](auto &event) {
+		_highlight->Reset();
+	};
+
+	_game_state["global"]["moved_object"]
+			= [this](auto &event) {
+		auto& subject = event.Properties["subject"];
+		_highlight->HighlightObject(*subject);\
 
 	};
 
 	_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
+	_highlight = std::make_unique<Highlight>(
+					 this->GameObjects["Highlight"],system_code);
 }
 
 void TilePositionSystem::HandleCursorMovement()

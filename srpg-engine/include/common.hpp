@@ -7,6 +7,7 @@
 #include <set>
 #include <algorithm>
 #include <functional>
+#include <memory>
 
 namespace SrpgEngine {
 namespace Framework {
@@ -19,6 +20,7 @@ using Vector = std::vector<T>;
 template<class Key, class Value> using Map = std::map<Key,Value>;
 template<class Key, class Value> using MultiMap = std::multimap<Key,Value>;
 using byte = uint8_t;
+template<class T> using UniquePtr = std::unique_ptr<T>;
 
 } // Framework
 

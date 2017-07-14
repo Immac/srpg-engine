@@ -1,17 +1,17 @@
 local Table = {}
 
-local function AddPiece(root,owner,x,y,z,name,path)
+local function AddPiece(root,owner,x,y,z,name,texture_path)
   print("Adding " .. name .. " for: " .. owner .. " at x: " .. x .. " y:" .. y )
   local piece_name = name .. #root+1
   local s2dge = piece_name .. ".S2DGE"
   local tilepos = piece_name .. ".TILEPOS"
+  local sss = piece_name .. ".SSS"
   local sprite = {}
 
-  local Piece = {}
   root[#root+1] = { Name = piece_name,
     Id=piece_name,
     Systems = {
-      "S2DGE","TILEPOS"
+      "S2DGE","TILEPOS","SSS"
     },
     Statistics = {
       {"x",x},
@@ -30,11 +30,18 @@ local function AddPiece(root,owner,x,y,z,name,path)
     },
     Properties = {
       {"S2DGE",s2dge},
-      {"TILEPOS",tilepos}
+      {"TILEPOS",tilepos},
+      {"SSS",sss},
+      {"sound_effects",piece_name .. ".sound_effects"}
     }
   }
 
-  Piece[#Piece] = root[#root];
+  root[#root+1] = { Name = piece_name..".sound_effects",
+    Dictionary = {
+      {"select","resources/sound/sfx/generic-select.wav"}
+    }
+  }
+
   root[#root+1] = {	Name = s2dge,
     Statistics = {
       {"x",x},
@@ -49,10 +56,10 @@ local function AddPiece(root,owner,x,y,z,name,path)
       {"textured",1}
     },
     Dictionary = {
-      {"texture",path}
+      {"texture",texture_path}
     }
   }
-  Piece[#Piece] = root[#root];
+
   root[#root+1] = {	Name = tilepos,
     Statistics = {
       {"x",x},
@@ -64,8 +71,10 @@ local function AddPiece(root,owner,x,y,z,name,path)
       {"is-selected",0}
     }
   }
-  Piece[#Piece] = root[#root];
-  return Piece;
+
+  root[#root+1] = {	Name = sss,
+
+  }
 end
 print("OK")
 Table.AddPiece = AddPiece

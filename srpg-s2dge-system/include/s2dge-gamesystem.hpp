@@ -2,9 +2,6 @@
 #define S2DGE_GAME_SYSTEM_HPP
 #include <gamesystem.hpp>
 #include <state-machine.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 #include <functional>
 #include <memory>
 #include "texture-handler.hpp"

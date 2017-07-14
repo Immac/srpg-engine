@@ -11,6 +11,7 @@ using UniqueSfTexture = std::unique_ptr <sf::Texture>;
 
 class TextureHandler : public Repository<UniqueSfTexture> {
 public:
+	TextureHandler() = default;
 	bool LoadTexture(const string& texture_path);
 };
 

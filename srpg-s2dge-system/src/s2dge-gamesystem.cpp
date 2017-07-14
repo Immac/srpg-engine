@@ -78,7 +78,7 @@ Simple2DGraphicsEngine::Simple2DGraphicsEngine(Core* core)
 void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 {
 	this->InitializeDefaults(settings);
-	const auto &system_code = this->GetSystemCode();
+	const auto& system_code = this->GetSystemCode();
 	for(auto record : this->GameObjects)
 	{
 		auto game_object = record.second;

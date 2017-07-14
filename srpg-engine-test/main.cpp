@@ -8,14 +8,17 @@
 #include <simple-tile-movement-system.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <simple-sound-system.hpp>
 #include <functional>
 #include "event-handler.hpp"
 #include "srpg-demo.hpp"
 
-using namespace SrpgEngine::S2dge;
-using namespace SrpgEngine::SimplePositionSystem;
-using namespace SrpgEngine::Game;
-using namespace SrpgEngine::TileMovementSystem;
+using namespace SrpgEngine;
+using namespace S2dge;
+using namespace SimplePositionSystem;
+using namespace Game;
+using namespace TileMovementSystem;
+using namespace Audio;
 using namespace SrpgDemo::Util;
 
 using SrpgEngine::Framework::string;
@@ -79,9 +82,11 @@ Core setup_core() {
 
 	auto s2dge = new Simple2DGraphicsEngine(&core);
 	auto sts = new TilePositionSystem(&core);
+	auto sss = new SimpleSoundSystem(core);
 
 	core.SystemMap[s2dge->GetSystemCode()] = s2dge;
 	core.SystemMap[sts->GetSystemCode()] = sts;
+	core.SystemMap[sss->GetSystemCode()] = sss;
 
 	core.Init();
 	return core;

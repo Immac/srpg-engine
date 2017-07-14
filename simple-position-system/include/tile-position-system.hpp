@@ -7,19 +7,22 @@
 #include <gamecore.hpp>
 #include <state-machine.hpp>
 #include "cursor.hpp"
+#include "highlight.hpp"
 
 namespace SrpgEngine {
 namespace SimplePositionSystem {
 using namespace Game;
-
-enum class Layers;
+template <class T>
+	using UniquePtr = std::unique_ptr<T>;
+enum class Layers : int;
 class Cursor;
-using Cursor_u_ptr = std::unique_ptr<Cursor>;
 class TilePositionSystem : public GameSystem {
 private:
 	Map<string, std::function<void(GameObject &)>> _eventMap;
 	StateMachine _game_state;
-	Cursor_u_ptr _cursor;
+	UniquePtr<Cursor> _cursor;
+	UniquePtr<Highlight> _highlight;
+
 	Core *_game_core;
 	Vector<GameObject *> _selected_game_objects;
 
