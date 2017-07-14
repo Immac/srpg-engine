@@ -1,0 +1,2 @@
+192273__lebcraftlp__click.wav = click.wav
+270401__littlerobotsoundfactory__menu-select-00.wav = menu-select.wav
