@@ -22,7 +22,8 @@ void SimpleSoundSystem::Initialize(GameObject& settings)
 	for(auto record : this->GameObjects) {
 		auto game_object = record.second;
 		auto system = game_object->Properties[system_code];
-		auto& sound_effect_paths = game_object->Properties["sound_effects"]->Dictionary;
+		auto& sound_effect_paths =
+				game_object->Properties["sound_effects"]->Dictionary;
 		for(const auto& record : sound_effect_paths) {
 
 			const auto& path = record.second;

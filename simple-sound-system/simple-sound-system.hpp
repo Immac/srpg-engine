@@ -16,6 +16,7 @@ private:
 	Core* game_core_;
 	StateMachine game_state_;
 	SoundEffectHandler sound_effects_;
+
 public:
 	SimpleSoundSystem(Core& game_core);
 	void Initialize(GameObject& settings) override;

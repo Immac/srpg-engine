@@ -2,8 +2,6 @@
 #define SRPG_GAME_CORE_HPP
 
 #include <functional>
-#include <unordered_map>
-
 #include "configuration-manager.hpp"
 #include "gamecommon.hpp"
 #include "gamesystem.hpp"
@@ -17,28 +15,20 @@ using namespace Framework;
 
 class Core {
 private:
-	enum Status{
-		Stopped,
-		Initializing,
-		Running
-	};
-	const int _controller_count = 16;
-	Status _status = Stopped;
+	const int controller_count_ = 16;
 	void LoadSystemObjects();
 	void LoadCoreObjects();
-	ConfigurationManager _configurationManager;
-
-
+	ConfigurationManager configuration_manage_;
+	StateMachine game_state_;
 public:
 	Core();
 	Map<string,GameSystem*> SystemMap;
 	Map<string,GameObject*> ObjectMap;
-	StateMachine GameState;
 	HashMap<int,GameController *> Controllers;
 
-	int HandleEvent(GameObject &event);
-	int Init();
-	int Update();
+	void HandleEvent(GameObject &event);
+	void Init();
+	void Update();
 };
 
 }

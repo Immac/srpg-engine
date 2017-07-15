@@ -20,22 +20,20 @@ using namespace Game;
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
-	StateMachine _game_state;
-	Core* _game_core;
-	Vector<GameObject *> _drawables;
-	TextureHandler _textures;
-	void InitializeDefaults(GameObject &settings);
+	StateMachine game_state_;
+	Core* game_core_;
+	Vector<GameObject *> drawables_;
+	TextureHandler textures_;
+	void InitializeDefaults(GameObject& settings);
 public:
-
-	Simple2DGraphicsEngine(Core *core);
-	void Initialize(GameObject &settings) override;
+	Simple2DGraphicsEngine(Core* core);
+	void Initialize(GameObject& settings) override;
 	void Update() override;
-	int HandleEvent(GameObject &event) override;
-	string GetSystemCode();
-	Vector<string> GetDependencies();
-	~Simple2DGraphicsEngine();
-
+	int HandleEvent(GameObject& event) override;
+	string GetSystemCode() override;
+	Vector<string> GetDependencies() override;
 	Vector<GameObject *> getDrawables() const;
+	~Simple2DGraphicsEngine();
 };
 
 }

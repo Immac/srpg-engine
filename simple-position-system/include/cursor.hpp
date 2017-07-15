@@ -19,6 +19,7 @@ public:
 	}
 	bool HandleInput(GameController &input);
 };
+
 }
 }
 #endif // TILEPOS_CURSOR_HPP

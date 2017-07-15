@@ -65,8 +65,6 @@ enum class Facing : int {
 	West
 };
 
-
-
 }
 }
 

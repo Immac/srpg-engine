@@ -14,7 +14,7 @@ using Game::GameObject;
 using Framework::string;
 class LuaGameObjectFactory : public GameObjectFactory {
 private:
-	sol::state* sol_state_;
+	sol::state *sol_state_;
 	Repository<int> getStats(sol::table object);
 	Repository<string> getDictionary(sol::table object);
 	Vector<string> getPropertyNames(sol::table object);

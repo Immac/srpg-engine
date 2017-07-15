@@ -1,10 +1,8 @@
 #include "luautil.hpp"
-
-using namespace SrpgEngine::Framework::Lua;
-using SrpgEngine::Framework::Repository;
-using SrpgEngine::Framework::Vector;
-using SrpgEngine::Game::GameObjectComparator;
-using SrpgEngine::Game::GameObject;
+using namespace SrpgEngine;
+using namespace Framework;
+using namespace Lua;
+using namespace Game;
 
 Repository<int> LuaGameObjectFactory::getStats(sol::table object)
 {
@@ -45,7 +43,7 @@ Vector<string> LuaGameObjectFactory::getTags(sol::table object)
 	return BuildVector<string>(tags_table);
 }
 
-std::set<std::string> LuaGameObjectFactory::getSystems(sol::table object)
+Set<string> LuaGameObjectFactory::getSystems(sol::table object)
 {
 	sol::table systems_table = object["Systems"];
 	if(!systems_table)
@@ -56,7 +54,7 @@ std::set<std::string> LuaGameObjectFactory::getSystems(sol::table object)
 
 Vector<GameObject *> LuaGameObjectFactory::CreateList()
 {
-	auto root = (*_state)["Root"];
+	auto root = (*sol_state_)["Root"];
 	std::set<GameObject *,GameObjectComparator> game_objects;
 
 	for(int i = 1; root[i] ; i++)
@@ -93,7 +91,7 @@ Vector<GameObject *> LuaGameObjectFactory::CreateList()
 				string property_id = pair.second;
 				game_object_dummy.Name = property_id;
 				auto property = *game_objects.find(&game_object_dummy);
-				game_object->Properties.Add(property_name,property);
+				game_object->Properties[property_name] = property;
 			}
 		}
 	}

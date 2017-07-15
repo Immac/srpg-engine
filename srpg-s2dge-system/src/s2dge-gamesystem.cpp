@@ -11,24 +11,22 @@ using namespace Lua;
 using namespace Game;
 using namespace S2dge;
 
-using std::cout;
-
 string Simple2DGraphicsEngine::SystemName = "S2DGE";
 
 Vector<GameObject *> Simple2DGraphicsEngine::getDrawables() const
 {
-	return _drawables;
+	return drawables_;
 }
 
 void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 {
-	const auto &system_code = this->GetSystemCode();
-	for(auto record : this->GameObjects)
+	const auto& system_code = this->GetSystemCode();
+	for(const auto& record : this->GameObjects)
 	{
-		auto game_object = record.second;
+		auto& game_object = record.second;
 
 		game_object->Systems.insert(system_code);
-		auto s2dge = game_object->Properties[system_code];
+		const auto& s2dge = game_object->Properties[system_code];
 		auto SetDefault = [&s2dge](auto key, auto value)
 		{
 			if(!s2dge->Statistics.HasAny(key)) {
@@ -49,26 +47,29 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 }
 
 Simple2DGraphicsEngine::Simple2DGraphicsEngine(Core* core)
-	:_game_state("normal"),_game_core(core)
+	:game_state_("normal"),game_core_(core)
 {
-	_game_state.AddState("global");
+	game_state_.AddState("global");
 
-	_game_state["global"]["UpdateLayers"]=[this](auto& event)
+	game_state_["global"]["UpdateLayers"]
+			= [this](auto& event)
 	{
-		this->_drawables = Util::ExtractValues(this->GameObjects);
-		Util::Sort(_drawables,[](auto first, auto second)
+		this->drawables_ = Util::ExtractValues(this->GameObjects);
+		const auto& sort_predicate = [](auto first, auto second)
 		{
 			return first->Statistics["z"] < second->Statistics["z"];
-		});
+		};
+
+		Util::Sort(drawables_,sort_predicate);
 	};
 
-	_game_state["global"]["selected_object"]
+	game_state_["global"]["selected_object"]
 			= [this](auto &event) {
 		auto& subject = event.Properties["subject"];
 		std::cout << "Selected: " << subject->Name << std::endl;
 	};
 
-	_game_state["global"]["deselected_object"]
+	game_state_["global"]["deselected_object"]
 			= [this](auto &event) {
 		auto& subject = event.Properties["subject"];
 		std::cout << "Deselected: " << subject->Name << std::endl;
@@ -83,7 +84,7 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 	{
 		auto game_object = record.second;
 		auto s2dge = game_object->Properties[system_code];
-		S2dgeUtil::InitializeSprite(*game_object,*s2dge,_textures);
+		S2dgeUtil::InitializeSprite(*game_object,*s2dge,textures_);
 	}
 	GameObject event("UpdateLayers");
 	this->HandleEvent(event);
@@ -101,8 +102,8 @@ void Simple2DGraphicsEngine::Update()
 
 int Simple2DGraphicsEngine::HandleEvent(GameObject &event)
 {
-	this->_game_state.HandleEvent(event);
-	this->_game_state["global"].HandleEvent(event);
+	this->game_state_.HandleEvent(event);
+	this->game_state_["global"].HandleEvent(event);
 }
 
 string Simple2DGraphicsEngine::GetSystemCode()
