@@ -6,7 +6,7 @@ using namespace Audio;
 SimpleSoundSystem::SimpleSoundSystem(SrpgEngine::Game::Core& game_core)
 	:game_core_(&game_core),game_state_("normal")
 {
-	game_state_.AddState("global");
+	game_state_.CreateState("global");
 	game_state_["global"]["selected_object"] = [this](auto& event) {
 		auto& subject = event.Properties["subject"];
 		auto sound_effect =

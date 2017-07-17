@@ -1,11 +1,15 @@
 Root = {}
+--[[local inspect = require("resources.scripts.lib.inspect")
+--]]
 local cursor_level = 400;
-
+local util = require("resources.scripts.mechanics.util")
 local chess_board_tiles = require("resources.scripts.chess-board-tiles")
 chess_board_tiles.AddTiles(Root)
 local chess_board_units = require("resources.scripts.chess-board-units")
 chess_board_units.AddUnits(Root)
 local clown_piece = require("resources.scripts.clown-piece")
+local menu = require("resources.scripts.mechanics.menu")
+
 --clown_piece.AddClownPiece(Root)
 
 Root[#Root+1] = {	Name="Cursor",
@@ -66,3 +70,7 @@ Root[#Root+1] = {	Name = "Highlight.TILEPOS",
     {"y-offset",0}
   }
 }
+
+util.concatenate_table(Root,menu)
+--[[print(inspect.inspect(Root))
+]]

@@ -12,6 +12,7 @@ namespace Lua {
 using Game::GameObjectFactory;
 using Game::GameObject;
 using Framework::string;
+
 class LuaGameObjectFactory : public GameObjectFactory {
 private:
 	sol::state* sol_state_;

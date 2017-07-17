@@ -51,7 +51,7 @@ int main() {
 	window.setVerticalSyncEnabled(vsync);
 
 	auto drawing_system =
-			static_cast<Simple2DGraphicsEngine*>(core.SystemMap["S2DGE"]);
+			static_cast<Simple2DGraphicsEngine*>(core.Systems["S2DGE"]);
 	synchronizer.Reset();
 	EventHandler event_handler(core,window);
 	while(window.isOpen()) {
@@ -84,9 +84,9 @@ Core setup_core() {
 	auto sts = new TilePositionSystem(&core);
 	auto sss = new SimpleSoundSystem(core);
 
-	core.SystemMap[s2dge->GetSystemCode()] = s2dge;
-	core.SystemMap[sts->GetSystemCode()] = sts;
-	core.SystemMap[sss->GetSystemCode()] = sss;
+	core.Systems[s2dge->GetSystemCode()] = s2dge;
+	core.Systems[sts->GetSystemCode()] = sts;
+	core.Systems[sss->GetSystemCode()] = sss;
 
 	core.Init();
 	return core;

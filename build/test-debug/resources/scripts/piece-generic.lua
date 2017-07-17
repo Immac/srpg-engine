@@ -4,14 +4,16 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
   print("Adding " .. name .. " for: " .. owner .. " at x: " .. x .. " y:" .. y )
   local piece_name = name .. #root+1
   local s2dge = piece_name .. ".S2DGE"
-  local tilepos = piece_name .. ".TILEPOS"
-  local sss = piece_name .. ".SSS"
+  local tile_position_system = piece_name .. ".TILEPOS"
+  local simple_sound_system = piece_name .. ".SSS"
+  local simple_action_system = piece_name .. ".SAS"
+  local actions = piece_name .. ".actions"
   local sprite = {}
-
+-- PIECE --
   root[#root+1] = { Name = piece_name,
     Id=piece_name,
     Systems = {
-      "S2DGE","TILEPOS","SSS"
+      "S2DGE","TILEPOS","SSS","SAS"
     },
     Statistics = {
       {"x",x},
@@ -23,25 +25,37 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
       {"red",255},
       {"green",255},
       {"blue",255},
-      {"textured",1}
+      {"textured",1},
+      {"has-moved",0},
+
     },
     Dictionary = {
       {"owner",owner}
     },
     Properties = {
       {"S2DGE",s2dge},
-      {"TILEPOS",tilepos},
-      {"SSS",sss},
-      {"sound_effects",piece_name .. ".sound_effects"}
+      {"TILEPOS",tile_position_system},
+      {"SSS",simple_sound_system},
+      {"SAS",simple_action_system},
+      {"sound_effects",piece_name .. ".sound_effects"},
+      {"actions",actions}
     }
   }
 
+-- SFX --
   root[#root+1] = { Name = piece_name..".sound_effects",
     Dictionary = {
       {"select","resources/sound/sfx/generic-select.wav"}
     }
   }
+-- ACTIONS --
+  root[#root+1] = { Name = piece_name..".actions",
+    Dictionary = {
+        
+      }
+    }
 
+-- S2DGE --
   root[#root+1] = {	Name = s2dge,
     Statistics = {
       {"x",x},
@@ -60,7 +74,8 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
     }
   }
 
-  root[#root+1] = {	Name = tilepos,
+-- TILEPOS --
+  root[#root+1] = {	Name = tile_position_system,
     Statistics = {
       {"x",x},
       {"y",y},
@@ -72,7 +87,13 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
     }
   }
 
-  root[#root+1] = {	Name = sss,
+-- SSS --
+  root[#root+1] = {	Name = simple_sound_system,
+
+  }
+
+-- SAS -- 
+  root[#root+1] = {	Name = simple_action_system,
 
   }
 end

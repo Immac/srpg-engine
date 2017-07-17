@@ -6,34 +6,29 @@ using namespace SrpgEngine::Game;
 
 StateMachine::StateMachine(string initial_state_name)
 {
-	this->AddState(initial_state_name);
-	this->_current_state = this->_states[initial_state_name].get();
+	this->CreateState(initial_state_name);
+	this->Push(initial_state_name);
 }
 
 void StateMachine::HandleEvent(GameObject &event)
 {
-	(*this->_current_state).HandleEvent(event);
+	(*this->context_.top()).HandleEvent(event);
 }
 
-void StateMachine::GoTo(const string &key)
+void StateMachine::Push(const string &key)
 {
-	this->_current_state = this->_states[key].get();
-	if(this->_current_state == nullptr) {
-		std::cout << "state: " << key << "does not exist" << std::endl;
-	}
+	context_.push(states_[key].get());
 }
 
-StateMachine& StateMachine::AddState(const string &name)
+void StateMachine::Pop()
 {
-	this->_states[name] = std::make_unique<State>(this,name);
+	context_.pop();
+}
+
+StateMachine& StateMachine::CreateState(const string &name)
+{
+	states_[name] = std::make_unique<State>(this,name);
 	return *this;
 }
 
-
-void State::HandleEvent(GameObject &event)
-{
-	if(Util::HasAny(this->_events,event.Name)) {
-		this->_events[event.Name](event);
-	}
-}
 

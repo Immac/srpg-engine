@@ -37,6 +37,8 @@ local function AddTiles(root)
         Statistics = {
           {"x",j},
           {"y",i},
+          {"display_x",i},
+          {"display_y",j},
           {"z",1},
           {"height",64},
           {"width",64},

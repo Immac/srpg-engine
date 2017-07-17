@@ -6,13 +6,13 @@ using namespace SrpgEngine::Game;
 
 void SimpleActionSystem::Initialize(GameObject &settings)
 {
+	context_.CreateState("global")
+			.CreateState("idle");
 
 }
 
 void SimpleActionSystem::Update()
 {
-	//auto actionQ = this->GameObjects["ActionQueue"];
-
 }
 
 string SimpleActionSystem::GetSystemCode()
@@ -20,3 +20,14 @@ string SimpleActionSystem::GetSystemCode()
 	return "SAS";
 }
  
+
+Vector<string> SrpgEngine::ActionSystem::SimpleActionSystem::GetDependencies()
+{
+	return Vector<string> {
+		"TILEPOS"
+	};
+}
+
+int SrpgEngine::ActionSystem::SimpleActionSystem::HandleEvent(GameObject& event)
+{
+}

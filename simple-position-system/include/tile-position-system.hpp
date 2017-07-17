@@ -12,14 +12,13 @@
 namespace SrpgEngine {
 namespace SimplePositionSystem {
 using namespace Game;
-template <class T>
-	using UniquePtr = std::unique_ptr<T>;
+
 enum class Layers : int;
 class Cursor;
 class TilePositionSystem : public GameSystem {
 private:
 	Map<string, std::function<void(GameObject &)>> _eventMap;
-	StateMachine _game_state;
+	StateMachine game_state_;
 	UniquePtr<Cursor> _cursor;
 	UniquePtr<Highlight> _highlight;
 

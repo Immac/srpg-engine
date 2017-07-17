@@ -22,8 +22,8 @@ private:
 	StateMachine game_state_;
 public:
 	Core();
-	Map<string,GameSystem*> SystemMap;
-	Map<string,GameObject*> ObjectMap;
+	Repository<GameSystem*> Systems;
+	Repository<GameObject*> Objects;
 	HashMap<int,GameController *> Controllers;
 
 	void HandleEvent(GameObject &event);

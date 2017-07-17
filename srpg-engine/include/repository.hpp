@@ -5,18 +5,18 @@
 namespace SrpgEngine {
 namespace Framework {
 
-template <class T>
+template <class TEntity>
 class Repository
 {
 public:
 	Repository() = default;
 
-	T& operator[](string key)
+	TEntity& operator[](string key)
 	{
 		return this->_map[key];
 	}
 
-	T& operator[](string key) const
+	TEntity& operator[](string key) const
 	{
 		return this->_map[key];
 	}
@@ -37,9 +37,9 @@ public:
 	}
 
 private:
-	Map<string,T> _map;
-
+	Map<string,TEntity> _map;
 };
+
 }
 }
 

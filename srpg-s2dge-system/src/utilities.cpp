@@ -35,7 +35,6 @@ void S2dgeUtil::UpdateSprite(GameObject& game_object, GameObject& system)
 	if(different_color){
 		sprite->setColor(sf::Color(red,green,blue,alpha));
 	}
-	sprite->setPosition(system.Statistics["x"]
-			+ system.Statistics["x-offset"]
-			, system.Statistics["y"] + system.Statistics["y-offset"]);
+	sprite->setPosition(system.Statistics["display_x"] + system.Statistics["x-offset"]
+			, system.Statistics["display_y"] + system.Statistics["y-offset"]);
 }

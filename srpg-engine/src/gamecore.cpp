@@ -12,9 +12,9 @@ using Game::Lua::LuaGameObjectFactory;
 
 void Core::LoadSystemObjects()
 {
-	for(const auto& systemPair : this->SystemMap) {
+	for(const auto& systemPair : this->Systems) {
 		auto system = systemPair.second;
-		for(auto record : this->ObjectMap) {
+		for(auto record : this->Objects) {
 			auto systems = record.second->Systems;
 			const auto& system_code = system->GetSystemCode();
 			auto dependencies = system->GetDependencies();
@@ -49,7 +49,7 @@ void Core::LoadCoreObjects()
 	auto objects = factory.CreateList();
 	for(const auto &game_object : objects)
 	{
-		this->ObjectMap[game_object->Name] = game_object;
+		this->Objects[game_object->Name] = game_object;
 	}
 }
 
@@ -60,7 +60,7 @@ Core::Core()
 		this->Controllers.emplace(i,new GameController());
 	}
 
-	this->game_state_.AddState("global");
+	this->game_state_.CreateState("global");
 	this->game_state_["global"]["input_pressed"]
 			= [this](auto event)
 	{
@@ -84,7 +84,7 @@ void Core::HandleEvent(GameObject &event)
 {
 	game_state_.HandleEvent(event);
 	game_state_["global"].HandleEvent(event);
-	for(const auto& record: this->SystemMap)
+	for(const auto& record: this->Systems)
 	{
 		auto system = record.second;
 		system->HandleEvent(event);
@@ -96,7 +96,7 @@ void Core::Init()
 	LoadCoreObjects();
 	LoadSystemObjects();
 
-	for(const auto& systemPair : this->SystemMap)
+	for(const auto& systemPair : this->Systems)
 	{
 		const auto& system = systemPair.second;
 		auto& settings = *configuration_manage_.LoadConfigurationFor(system->GetSystemCode());
@@ -106,7 +106,7 @@ void Core::Init()
 
 void SrpgEngine::Game::Core::Update()
 {
-	for(const auto& system : this->SystemMap)
+	for(const auto& system : this->Systems)
 	{
 		system.second->Update();
 	}

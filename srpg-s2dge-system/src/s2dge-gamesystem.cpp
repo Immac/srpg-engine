@@ -49,7 +49,7 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 Simple2DGraphicsEngine::Simple2DGraphicsEngine(Core* core)
 	:game_state_("normal"),game_core_(core)
 {
-	game_state_.AddState("global");
+	game_state_.CreateState("global");
 
 	game_state_["global"]["UpdateLayers"]
 			= [this](auto& event)

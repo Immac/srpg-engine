@@ -14,12 +14,12 @@ TilePositionSystem::TilePositionSystem(Core *core)
 void TilePositionSystem::Initialize(GameObject &settings)
 {
 	const auto &system_code = this->GetSystemCode();
-	_game_state.AddState("global")
-			.AddState("nothing_is_selected")
-			.AddState("something_is_selected");
-	_game_state.GoTo("nothing_is_selected");
+	game_state_.CreateState("global")
+			.CreateState("nothing_is_selected")
+			.CreateState("something_is_selected");
+	game_state_.Push("nothing_is_selected");
 
-	_game_state["nothing_is_selected"]["input_pressed"]
+	game_state_["nothing_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event)
 	{
 		auto input_key = event.Dictionary["input"];
@@ -31,13 +31,13 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			auto object_under_cursor = this->GetObjectUnderCursor();
 			if(object_under_cursor != nullptr) {
 				this->SelectObject(*object_under_cursor);
-				_game_state.GoTo("something_is_selected");
+				game_state_.Push("something_is_selected");
 				this->Notify("selected_object",*object_under_cursor);
 			}
 		}
 	};
 
-	_game_state["something_is_selected"]["input_pressed"]
+	game_state_["something_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event) {
 		auto input_key = event.Dictionary["input"];
 		auto controller_index = event.Statistics["controller"];
@@ -50,7 +50,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			if(object_under_cursor == selected_object) {
 				this->DeselectObject(*selected_object);
 				this->Notify("deselected_object",*selected_object);
-				_game_state.GoTo("nothing_is_selected");
+				game_state_.Pop();
 			} else if (object_under_cursor != nullptr) {
 				this->DeselectObject(*selected_object);
 				this->Notify("deselected_object",*selected_object);
@@ -63,7 +63,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 				this->DeselectObject(*object);
 				this->Notify("deselected_object",*object);
 			}
-			_game_state.GoTo("nothing_is_selected");
+			game_state_.Pop();
 		} else if (input_key == "ButtonX") {
 			this->UpdateSelectedObjects();
 			for(auto& game_object : this->_selected_game_objects) {
@@ -75,18 +75,18 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 	};
 
-	_game_state["global"]["selected_object"]
+	game_state_["global"]["selected_object"]
 			= [this](auto &event) {
 		auto& subject = event.Properties["subject"];
 		_highlight->HighlightObject(*subject);
 	};
 
-	_game_state["global"]["deselected_object"]
+	game_state_["global"]["deselected_object"]
 			= [this](auto &event) {
 		_highlight->Reset();
 	};
 
-	_game_state["global"]["moved_object"]
+	game_state_["global"]["moved_object"]
 			= [this](auto &event) {
 		auto& subject = event.Properties["subject"];
 		_highlight->HighlightObject(*subject);\
@@ -179,8 +179,11 @@ void TilePositionSystem::Update()
 	for(const auto& record : GameObjects){
 		GameObject *item = record.second;
 		auto tilepos = item->Properties["TILEPOS"];
-		item->Statistics["x"] = tilepos->Statistics["x"] * this->_tile_size;
-		item->Statistics["y"] = tilepos->Statistics["y"] * this->_tile_size;
+
+		item->Statistics["display_x"] = tilepos->Statistics["x"] * this->_tile_size;
+		item->Statistics["display_y"] = tilepos->Statistics["y"] * this->_tile_size;
+		item->Statistics["x"] = tilepos->Statistics["x"];
+		item->Statistics["y"] = tilepos->Statistics["y"];
 		item->Statistics["z"] = tilepos->Statistics["z"];
 		item->Statistics["x-offset"] = tilepos->Statistics["x-offset"];
 		item->Statistics["y-offset"] = tilepos->Statistics["y-offset"];
@@ -189,8 +192,8 @@ void TilePositionSystem::Update()
 
 int TilePositionSystem::HandleEvent(GameObject &event)
 {
-	_game_state["global"].HandleEvent(event);
-	_game_state.HandleEvent(event);
+	game_state_["global"].HandleEvent(event);
+	game_state_.HandleEvent(event);
 	string eventKey = event.Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()) {
 		_eventMap[eventKey](event);
