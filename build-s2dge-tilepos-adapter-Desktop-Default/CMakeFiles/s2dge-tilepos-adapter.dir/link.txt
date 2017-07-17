@@ -1,3 +1,0 @@
-C:\lib\cmake-3.7.0-rc2\bin\cmake.exe -E remove -f CMakeFiles\s2dge-tilepos-adapter.dir/objects.a
-C:\app\mingw64\mingw32\bin\ar.exe cr CMakeFiles\s2dge-tilepos-adapter.dir/objects.a @CMakeFiles\s2dge-tilepos-adapter.dir\objects1.rsp
-C:\app\mingw64\mingw32\bin\i686-w64-mingw32-g++.exe     -Wl,--whole-archive CMakeFiles\s2dge-tilepos-adapter.dir/objects.a -Wl,--no-whole-archive  -o s2dge-tilepos-adapter.exe -Wl,--out-implib,libs2dge-tilepos-adapter.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\s2dge-tilepos-adapter.dir\linklibs.rsp
