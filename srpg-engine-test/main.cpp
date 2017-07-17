@@ -68,9 +68,9 @@ int main() {
 		window.clear(sf::Color::Blue);
 
 		for(const auto &object : drawing_system->getDrawables()) {
-			const auto& sprite =
-					static_cast<sf::Sprite *>(object->Data["graphic"]);
-			window.draw(*sprite);
+			auto& sprite =
+					*static_cast<sf::Sprite *>(object->Data["graphic"]);
+			window.draw(sprite);
 		}
 		window.display();
 	}

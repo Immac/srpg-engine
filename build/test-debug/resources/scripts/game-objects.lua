@@ -1,5 +1,6 @@
 Root = {}
---[[local inspect = require("resources.scripts.lib.inspect")
+--[[
+    local inspect = require("resources.scripts.lib.inspect")
 --]]
 local cursor_level = 400;
 local util = require("resources.scripts.mechanics.util")
@@ -72,5 +73,6 @@ Root[#Root+1] = {	Name = "Highlight.TILEPOS",
 }
 
 util.concatenate_table(Root,menu)
---[[print(inspect.inspect(Root))
-]]
+--[[
+print(inspect.inspect(Root))
+--]]
