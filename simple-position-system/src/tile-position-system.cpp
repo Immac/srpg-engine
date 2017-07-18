@@ -22,98 +22,98 @@ void TilePositionSystem::Initialize(GameObject &settings)
 	game_state_["nothing_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event)
 	{
-		auto input_key = event.Dictionary["input"];
-		auto controller_index = event.Statistics["controller"];
-		if(controller_index != 0) {
-			return;
-		}
-		if(input_key == "ButtonA") {
-			auto object_under_cursor = this->GetObjectUnderCursor();
-			if(object_under_cursor != nullptr) {
-				this->SelectObject(*object_under_cursor);
-				game_state_.Push("something_is_selected");
-				this->Notify("selected_object",*object_under_cursor);
-			}
-		}
+//		auto input_key = event.Dictionary["input"];
+//		auto controller_index = event.Statistics["controller"];
+//		if(controller_index != 0) {
+//			return;
+//		}
+//		if(input_key == "ButtonA") {
+//			auto object_under_cursor = this->GetObjectUnderCursor();
+//			if(object_under_cursor != nullptr) {
+//				this->SelectObject(*object_under_cursor);
+//				game_state_.Push("something_is_selected");
+//				this->Notify("selected_object",*object_under_cursor);
+//			}
+//		}
 	};
 
 	game_state_["something_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event) {
-		auto input_key = event.Dictionary["input"];
-		auto controller_index = event.Statistics["controller"];
-		if(controller_index != 0) {
-			return;
-		} else if (input_key == "ButtonA") {
-			this->UpdateSelectedObjects();
-			auto object_under_cursor = this->GetObjectUnderCursor();
-			auto selected_object = _selected_game_objects.at(0);
-			if(object_under_cursor == selected_object) {
-				this->DeselectObject(*selected_object);
-				this->Notify("deselected_object",*selected_object);
-				game_state_.Pop();
-			} else if (object_under_cursor != nullptr) {
-				this->DeselectObject(*selected_object);
-				this->Notify("deselected_object",*selected_object);
-				this->SelectObject(*object_under_cursor);
-				this->Notify("selected_object",*object_under_cursor);
-			}
-		} else if (input_key == "ButtonB") {
-			this->UpdateSelectedObjects();
-			for(auto& object : _selected_game_objects) {
-				this->DeselectObject(*object);
-				this->Notify("deselected_object",*object);
-			}
-			game_state_.Pop();
-		} else if (input_key == "ButtonX") {
-			this->UpdateSelectedObjects();
-			for(auto& game_object : this->_selected_game_objects) {
-				game_object->Properties[system_code]->Statistics["y"] = 3;
-				this->Notify("moved_object",*game_object);
-			}
-		} else if (input_key == "ButtonY") {
-			//Do something ?
-		}
+//		auto input_key = event.Dictionary["input"];
+//		auto controller_index = event.Statistics["controller"];
+//		if(controller_index != 0) {
+//			return;
+//		} else if (input_key == "ButtonA") {
+//			this->UpdateSelectedObjects();
+//			auto object_under_cursor = this->GetObjectUnderCursor();
+//			auto selected_object = _selected_game_objects.at(0);
+//			if(object_under_cursor == selected_object) {
+//				this->DeselectObject(*selected_object);
+//				this->Notify("deselected_object",*selected_object);
+//				game_state_.Pop();
+//			} else if (object_under_cursor != nullptr) {
+//				this->DeselectObject(*selected_object);
+//				this->Notify("deselected_object",*selected_object);
+//				this->SelectObject(*object_under_cursor);
+//				this->Notify("selected_object",*object_under_cursor);
+//			}
+//		} else if (input_key == "ButtonB") {
+//			this->UpdateSelectedObjects();
+//			for(auto& object : _selected_game_objects) {
+//				this->DeselectObject(*object);
+//				this->Notify("deselected_object",*object);
+//			}
+//			game_state_.Pop();
+//		} else if (input_key == "ButtonX") {
+//			this->UpdateSelectedObjects();
+//			for(auto& game_object : this->_selected_game_objects) {
+//				game_object->Properties[system_code]->Statistics["y"] = 3;
+//				this->Notify("moved_object",*game_object);
+//			}
+//		} else if (input_key == "ButtonY") {
+//			//Do something ?
+//		}
 	};
 
 	game_state_["global"]["selected_object"]
 			= [this](auto &event) {
-		auto& subject = event.Properties["subject"];
-		_highlight->HighlightObject(*subject);
+//		auto& subject = event.Properties["subject"];
+//		_highlight->HighlightObject(*subject);
 	};
 
 	game_state_["global"]["deselected_object"]
 			= [this](auto &event) {
-		_highlight->Reset();
+//		_highlight->Reset();
 	};
 
 	game_state_["global"]["moved_object"]
 			= [this](auto &event) {
-		auto& subject = event.Properties["subject"];
-		_highlight->HighlightObject(*subject);\
+//		auto& subject = event.Properties["subject"];
+//		_highlight->HighlightObject(*subject);
 
 	};
 
-	_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
-	_highlight = std::make_unique<Highlight>(
-					 this->GameObjects["Highlight"],system_code);
+//	_cursor = std::make_unique<Cursor>(this->GameObjects["Cursor"]);
+//	_highlight = std::make_unique<Highlight>(
+//					 this->GameObjects["Highlight"],system_code);
 }
 
 void TilePositionSystem::HandleCursorMovement()
 {
-	auto is_up_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalUp"];
-	auto is_down_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalDown"];
-	auto is_left_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalLeft"];
-	auto is_right_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalRight"];
+//	auto is_up_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalUp"];
+//	auto is_down_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalDown"];
+//	auto is_left_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalLeft"];
+//	auto is_right_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalRight"];
 
-	if(!is_up_pressed && !is_down_pressed && !is_left_pressed && !is_right_pressed) {
-		this->_current_cooldown = _cursor_movement_cooldown + 1;
-	} else if(this->_current_cooldown > _cursor_movement_cooldown) {
-		if(this->_cursor->HandleInput(*this->core_->Controllers[0])) {
-			this->_current_cooldown = 0;
-		}
-	} else {
-		this->_current_cooldown++;
-	}
+//	if(!is_up_pressed && !is_down_pressed && !is_left_pressed && !is_right_pressed) {
+//		this->_current_cooldown = _cursor_movement_cooldown + 1;
+//	} else if(this->_current_cooldown > _cursor_movement_cooldown) {
+//		if(this->_cursor->HandleInput(*this->core_->Controllers[0])) {
+//			this->_current_cooldown = 0;
+//		}
+//	} else {
+//		this->_current_cooldown++;
+//	}
 }
 
 void TilePositionSystem::UpdateSelectedObjects()
@@ -177,7 +177,9 @@ void TilePositionSystem::Update()
 	HandleCursorMovement();
 
 	for(const auto& record : GameObjects){
-		GameObject *item = record.second;
+		const auto& item = record.second;
+
+
 		auto tilepos = item->Properties["TILEPOS"];
 
 		item->Statistics["display_x"] = tilepos->Statistics["x"] * this->_tile_size;

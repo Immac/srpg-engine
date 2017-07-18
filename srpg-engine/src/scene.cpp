@@ -11,5 +11,9 @@ Act::Act(Vector<GameObject*> actors)
 
 void Scene::HandleEvent(GameObject& event)
 {
+	auto iter = Util::First(event.Tags,[](auto& tag){return tag == "push_scene";});
+	if(iter != nullptr){
+
+	}
 	context_.HandleEvent(event);
 }
