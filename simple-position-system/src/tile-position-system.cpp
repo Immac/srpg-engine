@@ -7,8 +7,8 @@ using namespace SrpgEngine::Game;
 using namespace SrpgEngine::Util;
 
 TilePositionSystem::TilePositionSystem(Core *core)
+	:core_(core)
 {
-	this->_game_core = core;
 }
 
 void TilePositionSystem::Initialize(GameObject &settings)
@@ -100,15 +100,15 @@ void TilePositionSystem::Initialize(GameObject &settings)
 
 void TilePositionSystem::HandleCursorMovement()
 {
-	auto is_up_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalUp"];
-	auto is_down_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalDown"];
-	auto is_left_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalLeft"];
-	auto is_right_pressed = this->_game_core->Controllers[0]->DigitalInputs["DigitalRight"];
+	auto is_up_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalUp"];
+	auto is_down_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalDown"];
+	auto is_left_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalLeft"];
+	auto is_right_pressed = this->core_->Controllers[0]->DigitalInputs["DigitalRight"];
 
 	if(!is_up_pressed && !is_down_pressed && !is_left_pressed && !is_right_pressed) {
 		this->_current_cooldown = _cursor_movement_cooldown + 1;
 	} else if(this->_current_cooldown > _cursor_movement_cooldown) {
-		if(this->_cursor->HandleInput(*this->_game_core->Controllers[0])) {
+		if(this->_cursor->HandleInput(*this->core_->Controllers[0])) {
 			this->_current_cooldown = 0;
 		}
 	} else {
@@ -146,7 +146,7 @@ void TilePositionSystem::Notify(const string& name,GameObject &subject)
 {
 	GameObject notify_deselect(name);
 	notify_deselect.Properties["subject"] = &subject;
-	_game_core->HandleEvent(notify_deselect);
+	core_->HandleEvent(notify_deselect);
 }
 
 GameObject *TilePositionSystem::GetObjectUnderCursor()

@@ -1,9 +1,11 @@
 Root = {}
+
 --[[
-    local inspect = require("resources.scripts.lib.inspect")
+local main_scene = require("resources.scripts.scenes.main-screen.main-scene")
+local chess_scene = require("resources.scripts.scenes.chess.chess-scene")
 --]]
 local cursor_level = 400;
-local util = require("resources.scripts.mechanics.util")
+local util = require("resources.scripts.util.util")
 local chess_board_tiles = require("resources.scripts.chess-board-tiles")
 chess_board_tiles.AddTiles(Root)
 local chess_board_units = require("resources.scripts.chess-board-units")
@@ -72,7 +74,8 @@ Root[#Root+1] = {	Name = "Highlight.TILEPOS",
   }
 }
 
-util.concatenate_table(Root,menu)
+--util.concat_table(Root,main_scene)
 --[[
-print(inspect.inspect(Root))
+    local inspect = require("resources.scripts.lib.inspect")
+    print(inspect.inspect(Root))
 --]]

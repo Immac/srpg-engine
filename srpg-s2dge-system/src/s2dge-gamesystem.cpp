@@ -23,8 +23,14 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 	const auto& system_code = this->GetSystemCode();
 	for(const auto& record : this->GameObjects)
 	{
+
 		auto& game_object = record.second;
 
+		if(Util::HasAnyIterative(game_object->Tags,string("new_s2dge")))
+		{
+
+			continue;
+		}
 		game_object->Systems.insert(system_code);
 		const auto& s2dge = game_object->Properties[system_code];
 		auto SetDefault = [&s2dge](auto key, auto value)

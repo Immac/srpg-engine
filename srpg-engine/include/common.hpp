@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <queue>
 
 namespace SrpgEngine {
 namespace Framework {
@@ -21,6 +22,7 @@ template<class Key, class Value> using Map = std::map<Key,Value>;
 template<class Key, class Value> using MultiMap = std::multimap<Key,Value>;
 using byte = uint8_t;
 template<class T> using UniquePtr = std::unique_ptr<T>;
+template<class T> using Queue = std::queue<T>;
 
 } // Framework
 
@@ -50,7 +52,7 @@ static void RemoveIf(TContainer &container,TFunction function){
 }
 
 template<class TContainer,class TItem>
-static bool HasAnyIterative(const TContainer& container, TContainer item)
+static bool HasAnyIterative(const TContainer& container, TItem item)
 {
 	return std::find(container.begin(),container.end(),item) != container.end();
 }

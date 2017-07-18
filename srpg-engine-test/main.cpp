@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <simple-sound-system.hpp>
 #include <functional>
+#include <menu-system.hpp>
 #include "event-handler.hpp"
 #include "srpg-demo.hpp"
 
@@ -20,6 +21,7 @@ using namespace Game;
 using namespace TileMovementSystem;
 using namespace Audio;
 using namespace SrpgDemo::Util;
+using namespace SimpleMenuSystem;
 
 using SrpgEngine::Framework::string;
 using CoreSp = std::shared_ptr<Core>;
@@ -83,10 +85,13 @@ Core setup_core() {
 	auto s2dge = new Simple2DGraphicsEngine(&core);
 	auto sts = new TilePositionSystem(&core);
 	auto sss = new SimpleSoundSystem(core);
+	auto menu = new MenuSystem(core);
+
 
 	core.Systems[s2dge->GetSystemCode()] = s2dge;
 	core.Systems[sts->GetSystemCode()] = sts;
 	core.Systems[sss->GetSystemCode()] = sss;
+	core.Systems[menu->GetSystemCode()] = menu;
 
 	core.Init();
 	return core;

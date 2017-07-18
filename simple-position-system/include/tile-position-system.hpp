@@ -22,7 +22,7 @@ private:
 	UniquePtr<Cursor> _cursor;
 	UniquePtr<Highlight> _highlight;
 
-	Core *_game_core;
+	Core *core_;
 	Vector<GameObject *> _selected_game_objects;
 
 	int _current_cooldown = 0;

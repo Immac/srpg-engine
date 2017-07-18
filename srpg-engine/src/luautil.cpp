@@ -64,7 +64,6 @@ Vector<GameObject *> LuaGameObjectFactory::CreateList()
 		game_object->Statistics = getStats(root[i]);
 		game_object->Dictionary = getDictionary(root[i]);
 		game_object->Name = root[i]["Name"];
-
 		game_object->Tags = getTags(root[i]);
 		game_objects.insert(game_object);
 	}
@@ -80,11 +79,11 @@ Vector<GameObject *> LuaGameObjectFactory::CreateList()
 			throw "Object does not exits";// TODO: specify what object;
 		}
 		GameObject *game_object = *game_object_iterator;
-		sol::table o = (root[i])["Properties"];
+		sol::table properties = (root[i])["Properties"];
 
-		if(o)
+		if(properties)
 		{
-			auto rep = BuildRepository<string>(o);
+			auto rep = BuildRepository<string>(properties);
 			for(auto pair : rep)
 			{
 				string property_name = pair.first;
