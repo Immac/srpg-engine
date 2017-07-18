@@ -7,7 +7,16 @@ namespace SrpgEngine {
 namespace S2dge {
 namespace S2dgeUtil {
 using namespace SrpgEngine::Game;
-void InitializeSprite(GameObject& sprite_object, GameObject& system, TextureHandler& textures);
+
+struct Vocabulary {
+	string graphics = "graphics";
+	string graphic = "graphic";
+	string position = "position";
+	string size = "size";
+	string texture = "texture";
+};
+
+void InitializeSprite(GameObject& sprite_object, TextureHandler& textures);
 void UpdateSprite(GameObject& game_object, GameObject& system);
 }
 }

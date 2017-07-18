@@ -20,35 +20,32 @@ Vector<GameObject *> Simple2DGraphicsEngine::getDrawables() const
 
 void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 {
-	const auto& system_code = this->GetSystemCode();
+
 	for(const auto& record : this->GameObjects)
 	{
 
 		auto& game_object = record.second;
 
-		if(Util::HasAnyIterative(game_object->Tags,string("new_s2dge")))
-		{
+		const auto& graphics = game_object->Properties[vocabulary.graphics];
+		const auto& position = graphics->Properties[vocabulary.position];
+		const auto& size = graphics->Properties[vocabulary.size];
 
-			continue;
-		}
-		game_object->Systems.insert(system_code);
-		const auto& s2dge = game_object->Properties[system_code];
-		auto SetDefault = [&s2dge](auto key, auto value)
+		auto SetDefault = [](auto& container ,auto key, auto value)
 		{
-			if(!s2dge->Statistics.HasAny(key)) {
-				s2dge->Statistics[key] = value;
+			if(!container->Statistics.HasAny(key)) {
+				container->Statistics[key] = value;
 			}
 		};
-		SetDefault("x",0);
-		SetDefault("y",0);
-		SetDefault("x-offset",0);
-		SetDefault("y-offset",0);
-		SetDefault("red",255);
-		SetDefault("green",255);
-		SetDefault("blue",255);
-		SetDefault("alpha",255);
-		SetDefault("width",64);
-		SetDefault("heigth",64);
+		SetDefault(position,"x",0);
+		SetDefault(position,"y",0);
+		SetDefault(position,"x-offset",0);
+		SetDefault(position,"y-offset",0);
+		SetDefault(graphics,"red",255);
+		SetDefault(graphics,"green",255);
+		SetDefault(graphics,"blue",255);
+		SetDefault(graphics,"alpha",255);
+		SetDefault(size,"width",64);
+		SetDefault(size,"heigth",64);
 	}
 }
 
@@ -90,7 +87,7 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 	{
 		auto game_object = record.second;
 		auto s2dge = game_object->Properties[system_code];
-		S2dgeUtil::InitializeSprite(*game_object,*s2dge,textures_);
+		S2dgeUtil::InitializeSprite(*game_object,textures_);
 	}
 	GameObject event("UpdateLayers");
 	this->HandleEvent(event);
@@ -98,12 +95,12 @@ void Simple2DGraphicsEngine::Initialize(GameObject &settings)
 
 void Simple2DGraphicsEngine::Update()
 {
-	for(const auto& record : GameObjects)
-	{
-		auto game_object = record.second;
-		auto system = game_object->Properties[this->GetSystemCode()];
-		S2dgeUtil::UpdateSprite(*game_object,*system);
-	}
+//	for(const auto& record : GameObjects)
+//	{
+//		auto game_object = record.second;
+//		auto system = game_object->Properties[this->GetSystemCode()];
+//		S2dgeUtil::UpdateSprite(*game_object,*system);
+//	}
 }
 
 int Simple2DGraphicsEngine::HandleEvent(GameObject &event)

@@ -5,21 +5,21 @@
 #include <functional>
 #include <memory>
 #include "texture-handler.hpp"
+#include "utilities.hpp"
 #include <gamecore.hpp>
 
 namespace SrpgEngine {
 namespace S2dge {
 
-class Sprite;
-class TextureHandler;
-
 using namespace SrpgEngine;
 using namespace Framework;
 using namespace Game;
+using namespace S2dgeUtil;
 
 class Simple2DGraphicsEngine : public Game::GameSystem {
 private:
 	static string SystemName;
+	Vocabulary vocabulary;
 	StateMachine game_state_;
 	Core* game_core_;
 	Vector<GameObject *> drawables_;

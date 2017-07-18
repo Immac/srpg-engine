@@ -71,7 +71,7 @@ int main() {
 
 		for(const auto &object : drawing_system->getDrawables()) {
 			auto& sprite =
-					*static_cast<sf::Sprite *>(object->Data["graphic"]);
+					*static_cast<sf::Sprite *>(object->Properties["graphics"]->Data["graphic"]);
 			window.draw(sprite);
 		}
 		window.display();
