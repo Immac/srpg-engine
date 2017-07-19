@@ -41,17 +41,16 @@ local function AddPiece(root,owner,x,y,z,name,texture_path,facing)
       {"SAS",simple_action_system},
       {"sound_effects",piece_name .. ".sound_effects"},
       {"actions",actions},
-      {"listener",piece_name.."listener"}
+      {"movement",piece_name.."movement"}
     },
   }
 -- LISTENER --
-  root[#root+1] = { Name = piece_name.."listener",
+  root[#root+1] = { Name = piece_name.."movement",
       Properties = {
         {"event","target_select"}
       },
       Dictionary = {
-        {"key","move"},
-        {"type",name}
+        {"type",name.."_movement"}
         }
     }
 -- SFX --

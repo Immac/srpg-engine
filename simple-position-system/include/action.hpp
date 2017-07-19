@@ -15,7 +15,7 @@ private:
 	const Map<string,GameObject*>& world_;
 	GameObject *subject_;
 	GameObject *target_;
-	string type_;
+	string function_name_;
 public:
 	Action(GameObject &event,Map<string,GameObject*>& world);
 };
