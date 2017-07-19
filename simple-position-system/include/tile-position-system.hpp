@@ -18,7 +18,7 @@ class Cursor;
 class TilePositionSystem : public GameSystem {
 private:
 	Map<string, std::function<void(GameObject &)>> _eventMap;
-	StateMachine game_state_;
+	StateMachine context_;
 	UniquePtr<Cursor> _cursor;
 	UniquePtr<Highlight> _highlight;
 
@@ -45,6 +45,7 @@ private:
 	void DeselectObject(GameObject &object);
 	void SelectObject(GameObject &object);
 	void Notify(const string& name, GameObject& subject);
+	void Notify(GameObject& event, GameObject& subject);
 	GameObject *GetObjectUnderCursor();
 };
 

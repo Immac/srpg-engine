@@ -1,4 +1,5 @@
 #include "tile-position-system.hpp"
+#include <action.hpp>
 #include <algorithm>
 
 using namespace SrpgEngine::SimplePositionSystem;
@@ -14,12 +15,13 @@ TilePositionSystem::TilePositionSystem(Core *core)
 void TilePositionSystem::Initialize(GameObject &settings)
 {
 	const auto &system_code = this->GetSystemCode();
-	game_state_.CreateState("global")
+	context_.CreateState("global")
 			.CreateState("nothing_is_selected")
-			.CreateState("something_is_selected");
-	game_state_.Push("nothing_is_selected");
+			.CreateState("something_is_selected")
+			.CreateState("select_range");
+	context_.Push("nothing_is_selected");
 
-	game_state_["nothing_is_selected"]["input_pressed"]
+	context_["nothing_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event)
 	{
 		auto input_key = event.Dictionary["input"];
@@ -31,13 +33,13 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			auto object_under_cursor = this->GetObjectUnderCursor();
 			if(object_under_cursor != nullptr) {
 				this->SelectObject(*object_under_cursor);
-				game_state_.Push("something_is_selected");
+				context_.Push("something_is_selected");
 				this->Notify("selected_object",*object_under_cursor);
 			}
 		}
 	};
 
-	game_state_["something_is_selected"]["input_pressed"]
+	context_["something_is_selected"]["input_pressed"]
 			= [this,system_code](auto &event) {
 		auto input_key = event.Dictionary["input"];
 		auto controller_index = event.Statistics["controller"];
@@ -50,7 +52,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			if(object_under_cursor == selected_object) {
 				this->DeselectObject(*selected_object);
 				this->Notify("deselected_object",*selected_object);
-				game_state_.Pop();
+				context_.Pop();
 			} else if (object_under_cursor != nullptr) {
 				this->DeselectObject(*selected_object);
 				this->Notify("deselected_object",*selected_object);
@@ -63,30 +65,41 @@ void TilePositionSystem::Initialize(GameObject &settings)
 				this->DeselectObject(*object);
 				this->Notify("deselected_object",*object);
 			}
-			game_state_.Pop();
+			context_.Pop();
 		} else if (input_key == "ButtonX") {
 			this->UpdateSelectedObjects();
-			for(auto& game_object : this->_selected_game_objects) {
-				game_object->Properties[system_code]->Statistics["y"] = 3;
-				this->Notify("moved_object",*game_object);
+			for(auto& game_object : this->_selected_game_objects) {		
+				// MOVEt
+				auto select_target = GameObject("select_target");
+				select_target.Dictionary["type"] = "move";
+				this->context_.Push("select_range");
+				this->Notify(select_target,*game_object);
+				//game_object->Properties[system_code]->Statistics["y"] = 3;
+				//this->Notify("moved_object",*game_object);
 			}
 		} else if (input_key == "ButtonY") {
-			//Do something ?
+			//CAPTURE
 		}
 	};
 
-	game_state_["global"]["selected_object"]
+	context_["select_range"]["select_target"]
+			= [this](auto &event) {
+		auto action = Action(event,this->GameObjects);
+		std::cout << "ASDSADSAD" <<std::endl;
+	};
+
+	context_["global"]["selected_object"]
 			= [this](auto &event) {
 		auto& subject = event.Properties["subject"];
 		_highlight->HighlightObject(*subject);
 	};
 
-	game_state_["global"]["deselected_object"]
+	context_["global"]["deselected_object"]
 			= [this](auto &event) {
 		_highlight->Reset();
 	};
 
-	game_state_["global"]["moved_object"]
+	context_["global"]["moved_object"]
 			= [this](auto &event) {
 		auto& subject = event.Properties["subject"];
 		_highlight->HighlightObject(*subject);\
@@ -149,6 +162,12 @@ void TilePositionSystem::Notify(const string& name,GameObject &subject)
 	core_->HandleEvent(notify_deselect);
 }
 
+void TilePositionSystem::Notify(GameObject& event, GameObject& subject)
+{
+	event.Properties["subject"] = &subject;
+	core_->HandleEvent(event);
+}
+
 GameObject *TilePositionSystem::GetObjectUnderCursor()
 {
 	const auto &system_code = this->GetSystemCode();
@@ -192,8 +211,8 @@ void TilePositionSystem::Update()
 
 int TilePositionSystem::HandleEvent(GameObject &event)
 {
-	game_state_["global"].HandleEvent(event);
-	game_state_.HandleEvent(event);
+	context_["global"].HandleEvent(event);
+	context_.HandleEvent(event);
 	string eventKey = event.Name;
 	if(_eventMap.find(eventKey)!=_eventMap.end()) {
 		_eventMap[eventKey](event);

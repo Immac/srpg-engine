@@ -1,6 +1,6 @@
 local Table = {}
 
-local function AddPiece(root,owner,x,y,z,name,texture_path)
+local function AddPiece(root,owner,x,y,z,name,texture_path,facing)
   print("Adding " .. name .. " for: " .. owner .. " at x: " .. x .. " y:" .. y )
   local piece_name = name .. #root+1
   local s2dge = piece_name .. ".S2DGE"
@@ -8,6 +8,8 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
   local simple_sound_system = piece_name .. ".SSS"
   local simple_action_system = piece_name .. ".SAS"
   local actions = piece_name .. ".actions"
+  
+  
   local sprite = {}
 -- PIECE --
   root[#root+1] = { Name = piece_name,
@@ -26,11 +28,11 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
       {"green",255},
       {"blue",255},
       {"textured",1},
-      {"has-moved",0},
-
+      {"has-moved",0}
     },
     Dictionary = {
-      {"owner",owner}
+      {"owner",owner},
+      {"facing",facing},
     },
     Properties = {
       {"S2DGE",s2dge},
@@ -38,10 +40,20 @@ local function AddPiece(root,owner,x,y,z,name,texture_path)
       {"SSS",simple_sound_system},
       {"SAS",simple_action_system},
       {"sound_effects",piece_name .. ".sound_effects"},
-      {"actions",actions}
-    }
+      {"actions",actions},
+      {"listener",piece_name.."listener"}
+    },
   }
-
+-- LISTENER --
+  root[#root+1] = { Name = piece_name.."listener",
+      Properties = {
+        {"event","target_select"}
+      },
+      Dictionary = {
+        {"key","move"},
+        {"type",name}
+        }
+    }
 -- SFX --
   root[#root+1] = { Name = piece_name..".sound_effects",
     Dictionary = {

@@ -78,12 +78,17 @@ Core::Core()
 		const auto& controller = this->Controllers[controller_index];
 		controller->DigitalInputs[input_key] = false;
 	};
+
 }
 
 void Core::HandleEvent(GameObject &event)
 {
+	if(event.Properties.HasAny(event.Name)){
+		std::cout << "listener"	 <<std::endl;
+	}
 	game_state_.HandleEvent(event);
 	game_state_["global"].HandleEvent(event);
+
 	for(const auto& record: this->Systems)
 	{
 		auto system = record.second;
