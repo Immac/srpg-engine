@@ -40,7 +40,7 @@ Root = {
 			{"Video","Video"}
 		},
 		Statistics = {
-			{"vsync",0},
+			{"vsync",1},
 			{"frame_limit",60},
 			{"step_update_time_in_ms",16}
 		},
@@ -51,7 +51,7 @@ Root = {
 	{
 		Name = "Video",
 		Statistics = {
-					{"width",1280},
+					{"width",720},
 					{"height",720},
 				}
 	},

@@ -6,7 +6,7 @@ using namespace SrpgEngine::S2dge;
 bool TextureHandler::LoadTexture(const string& texture_path)
 {
 	auto& textures = (*this);
-	if(!textures.HasAny(texture_path))
+	if(!textures.HasKey(texture_path))
 	{
 		textures[texture_path] = std::make_unique<sf::Texture>();
 

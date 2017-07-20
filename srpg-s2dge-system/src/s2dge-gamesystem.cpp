@@ -35,7 +35,7 @@ void Simple2DGraphicsEngine::InitializeDefaults(GameObject &settings)
 		const auto& s2dge = game_object->Properties[system_code];
 		auto SetDefault = [&s2dge](auto key, auto value)
 		{
-			if(!s2dge->Statistics.HasAny(key)) {
+			if(!s2dge->Statistics.HasKey(key)) {
 				s2dge->Statistics[key] = value;
 			}
 		};

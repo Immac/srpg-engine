@@ -40,31 +40,48 @@ local function AddPiece(root,owner,x,y,z,name,texture_path,facing)
       {"SSS",simple_sound_system},
       {"SAS",simple_action_system},
       {"sound_effects",piece_name .. ".sound_effects"},
-      {"actions",actions},
-      {"movement",piece_name.."movement"}
+      {"actions",piece_name..".actions"},
     },
-  }
--- LISTENER --
-  root[#root+1] = { Name = piece_name.."movement",
-      Properties = {
-        {"event","target_select"}
-      },
-      Dictionary = {
-        {"type",name.."_movement"}
-        }
+    Tags = {
+      "piece"
     }
+  }
+  -- ACTIONS --
+  root[#root+1] = { Name = piece_name..".actions",
+    Properties = {
+      {"move",piece_name.."move"}
+      }
+    }
+-- MOVEMENT --
+  root[#root+1] = { Name = piece_name.."move",
+      Properties = {
+        {"statistics",piece_name..".move_stats"}
+      },
+      Statistics = {
+        {"exclude_specific",1},
+        {"target_specific",0},
+        {"target_position",1}
+        },
+      Dictionary = {
+        {"range",name.."_movement_range"},
+        {"target_type",""},
+        {"target_exclude","piece"},
+        {"direct_object","self"}
+      },
+    }
+    -- STATS AFFECTED BY MOVE --
+    root[#root+1] = { Name = piece_name..".move_stats",
+    Tags = {
+      }
+  }
+    
 -- SFX --
   root[#root+1] = { Name = piece_name..".sound_effects",
     Dictionary = {
       {"select","resources/sound/sfx/generic-select.wav"}
     }
   }
--- ACTIONS --
-  root[#root+1] = { Name = piece_name..".actions",
-    Dictionary = {
-        
-      }
-    }
+
 
 -- S2DGE --
   root[#root+1] = {	Name = s2dge,

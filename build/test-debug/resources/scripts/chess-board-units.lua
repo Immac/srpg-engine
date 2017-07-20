@@ -17,7 +17,7 @@ local white_y = 1
 local black_y = 6
 	
 for x = 0 , 7 do
-	Factory.AddPawn(root,player1,x,white_y,object_layer_index)
+	--Factory.AddPawn(root,player1,x,white_y,object_layer_index)
 	Factory.AddPawn(root,player2,x,black_y,object_layer_index)
 end	
 	Factory.AddRook  (root,player1,0,0,object_layer_index)

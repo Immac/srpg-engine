@@ -31,7 +31,7 @@ public:
 		return _map.end();
 	}
 
-	bool HasAny(string key)
+	bool HasKey(string key)
 	{
 		return _map.find(key) != _map.end();
 	}

@@ -6,6 +6,7 @@
 #include <queue>
 #include <gamecore.hpp>
 #include <state-machine.hpp>
+#include "action.hpp"
 #include "cursor.hpp"
 #include "highlight.hpp"
 
@@ -19,8 +20,9 @@ class TilePositionSystem : public GameSystem {
 private:
 	Map<string, std::function<void(GameObject &)>> _eventMap;
 	StateMachine context_;
-	UniquePtr<Cursor> _cursor;
+	UniquePtr<Cursor> cursor_;
 	UniquePtr<Highlight> _highlight;
+	Action *action_in_progress_;
 
 	Core *core_;
 	Vector<GameObject *> _selected_game_objects;
@@ -47,6 +49,7 @@ private:
 	void Notify(const string& name, GameObject& subject);
 	void Notify(GameObject& event, GameObject& subject);
 	GameObject *GetObjectUnderCursor();
+	void ResetTargets();
 };
 
 enum class Layers : int {

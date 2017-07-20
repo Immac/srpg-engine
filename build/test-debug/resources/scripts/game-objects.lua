@@ -44,6 +44,7 @@ Root[#Root+1] = {	Name = "Cursor.TILEPOS",
     {"y-offset",0}
   }
 }
+
 Root[#Root+1] = {	Name="Highlight",
   Id="Highlight",
   Systems = {
@@ -73,6 +74,42 @@ Root[#Root+1] = {	Name = "Highlight.TILEPOS",
     {"y-offset",0}
   }
 }
+
+for i = 0, 50 do
+  Root[#Root+1] = {	Name="Target"..i,
+  Id="asdasd",
+  Systems = {
+    "S2DGE","TILEPOS"
+  },
+  Properties = {
+    {"S2DGE","Target"..i..".S2DGE"},
+    {"TILEPOS","Target"..i..".TILEPOS"}
+  },
+  Tags = {
+    "ui_target"
+    }
+}
+
+Root[#Root+1] = {	Name = "Target"..i..".S2DGE",
+  Statistics = {
+    {"textured",1}
+  },
+  Dictionary = {
+    {"texture","resources/target.png"}
+  }
+}	
+
+Root[#Root+1] = {	Name = "Target"..i..".TILEPOS",
+  Statistics = {
+    {"x",-1},
+    {"y",-1},
+    {"z",cursor_level},
+    {"x-offset",0},
+    {"y-offset",0}
+  }
+}
+  end
+
 
 --util.concat_table(Root,main_scene)
 --[[

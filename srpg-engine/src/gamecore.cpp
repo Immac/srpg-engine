@@ -83,7 +83,7 @@ Core::Core()
 
 void Core::HandleEvent(GameObject &event)
 {
-	if(event.Properties.HasAny(event.Name)){
+	if(event.Properties.HasKey(event.Name)){
 		std::cout << "listener"	 <<std::endl;
 	}
 	game_state_.HandleEvent(event);
