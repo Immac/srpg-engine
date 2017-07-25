@@ -6,6 +6,8 @@
 #include <queue>
 #include <gamecore.hpp>
 #include <state-machine.hpp>
+#include <list>
+#include <option.hpp>
 #include "action.hpp"
 #include "cursor.hpp"
 #include "highlight.hpp"
@@ -25,7 +27,7 @@ private:
 	Action *action_in_progress_;
 
 	Core *core_;
-	Vector<GameObject *> _selected_game_objects;
+	Vector<GameObject *> selected_game_objects_;
 
 	int _current_cooldown = 0;
 	int _cursor_movement_cooldown = 15;
@@ -38,9 +40,10 @@ public:
 	int HandleEvent(GameObject &event);
 	string GetSystemCode() override;
 	Vector<string> GetDependencies() override;
+	TilePositionSystem (const &TilePositionSystem) = delete;
+	TilePositionSystem& operator=(const &TilePositionSystem) = delete;
 private:
-	TilePositionSystem (const &TilePositionSystem){}
-	TilePositionSystem& operator=(const &TilePositionSystem){}
+
 	void HandleCursorMovement();
 	void HandleHorizontaCursorlMovement();
 	void UpdateSelectedObjects();
@@ -48,7 +51,9 @@ private:
 	void SelectObject(GameObject &object);
 	void Notify(const string& name, GameObject& subject);
 	void Notify(GameObject& event, GameObject& subject);
+	void HighlightActionRange(Action &action);
 	GameObject *GetObjectUnderCursor();
+	Vector<GameObject*> GetObjectsUnderCursor();
 	void ResetTargets();
 };
 
@@ -74,3 +79,4 @@ enum class Facing : int {
 
 
 #endif // SRPG_ACTION_SYSTEM_HPP
+

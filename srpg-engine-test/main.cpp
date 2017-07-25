@@ -43,7 +43,6 @@ int main() {
 	auto video_width = s2dge_settings->Properties["Video"]->Statistics["width"];
 	auto video_height = s2dge_settings->Properties["Video"]->Statistics["height"];
 	auto vsync = static_cast<bool>(s2dge_settings->Statistics["vsync"]);
-	auto frame_limit = s2dge_settings->Statistics["frame_limit"];
 	auto window_title = s2dge_settings->Dictionary["window_title"];
 	auto step_update_time_in_ms = s2dge_settings->Statistics["step_update_time_in_ms"];
 

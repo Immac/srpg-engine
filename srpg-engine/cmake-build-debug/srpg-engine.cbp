@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="srpg-engine"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="srpg-engine">
+				<Option output="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/srpg-engine.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/srpg-engine/lua53/include"/>
+					<Add directory="D:/workspace/proyecto-de-graduacion/srpg-engine/./include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/i686-w64-mingw32"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/backward"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include-fixed"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 srpg-engine"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="srpg-engine/fast">
+				<Option output="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/srpg-engine.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/srpg-engine/lua53/include"/>
+					<Add directory="D:/workspace/proyecto-de-graduacion/srpg-engine/./include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/i686-w64-mingw32"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/backward"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include-fixed"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 srpg-engine/fast"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="srpg-engine-lib">
+				<Option output="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/libsrpg-engine-lib.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/srpg-engine/lua53/include"/>
+					<Add directory="D:/workspace/proyecto-de-graduacion/srpg-engine/./include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/i686-w64-mingw32"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/backward"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include-fixed"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 srpg-engine-lib"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="srpg-engine-lib/fast">
+				<Option output="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/libsrpg-engine-lib.dll" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Program Files (x86)/srpg-engine/lua53/include"/>
+					<Add directory="D:/workspace/proyecto-de-graduacion/srpg-engine/./include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/i686-w64-mingw32"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include/c++/backward"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/include-fixed"/>
+					<Add directory="C:/app/mingw64/mingw32/bin/../lib/gcc/i686-w64-mingw32/6.2.0/../../../../i686-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 srpg-engine-lib/fast"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/app/mingw64/mingw32/bin/mingw32-make.exe -f &quot;D:/workspace/proyecto-de-graduacion/srpg-engine/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/collection.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/common.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/configuration-manager.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/core-vocabulary.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/filter.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/game-controller.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/gamecommon.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/gamecore.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/gameobject.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/gameobjectfactory.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/gameobjectloader.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/gamesystem.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/luautil.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/observer.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/property.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/repository.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/scene.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/sol.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/state-machine.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/state.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/systemgeneral.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/include/vocabulary.hpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/collection.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/configuration-manager.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/core-vocabulary.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/game-controller.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/gamecore.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/gameobject.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/luautil.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/main.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/observer.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/scene.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/state-machine.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/state.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/src/vocabulary.cpp">
+			<Option target="srpg-engine"/>
+			<Option target="srpg-engine-lib"/>
+		</Unit>
+		<Unit filename="D:/workspace/proyecto-de-graduacion/srpg-engine/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

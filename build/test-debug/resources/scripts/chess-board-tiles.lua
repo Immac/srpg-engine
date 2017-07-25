@@ -22,7 +22,10 @@ local function AddTiles(root)
         Properties = {
           {"S2DGE","WhiteTile.S2DGE" .. i .. j},
           {"TILEPOS","WhiteTile.TILEPOS" .. i .. j}
-        }
+        },
+        Tags = {
+          "tile"
+          }
       }
 
       local tile_color;

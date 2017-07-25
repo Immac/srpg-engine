@@ -17,7 +17,7 @@ private:
 public:
 	Sprite(GameObject& system_object);
 	const string& GetTexturePath();
-	bool SetTexture(sf::Texture& texture);
+	void SetTexture(sf::Texture& texture);
 };
 
 

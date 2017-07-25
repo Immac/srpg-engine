@@ -52,26 +52,38 @@ local function AddPiece(root,owner,x,y,z,name,texture_path,facing)
       {"move",piece_name.."move"}
       }
     }
--- MOVEMENT --
+-- MOVEMENT ACTION --
   root[#root+1] = { Name = piece_name.."move",
       Properties = {
-        {"statistics",piece_name..".move_stats"}
+        {"statistics",piece_name..".move_stats"},
+        {"exclude",piece_name..".exclude"}
       },
       Statistics = {
+        {"exclude",1},
         {"exclude_specific",1},
-        {"target_specific",0},
-        {"target_position",1}
+        {"target_specific",1},
+        {"target_position",1},
+        {"targets_max",1}
         },
       Dictionary = {
         {"range",name.."_movement_range"},
-        {"target_type",""},
+        {"target_type","tile"},
         {"target_exclude","piece"},
         {"direct_object","self"}
       },
+      Tags = {
+        "exclude"
+        }
     }
+    -- MOVEMENT ACTION EXCLUDES --
+    root[#root+1] = { Name = piece_name..".exclude",
+        Tags = {
+          "ui","piece"
+          }
+      }
     -- STATS AFFECTED BY MOVE --
     root[#root+1] = { Name = piece_name..".move_stats",
-    Tags = {
+    Tags = { "x","y"
       }
   }
     

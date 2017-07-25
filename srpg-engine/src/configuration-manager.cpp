@@ -49,4 +49,5 @@ SrpgEngine::Game::GameObject *ConfigurationManager::LoadConfigurationFor(SrpgEng
 	{
 		std::cout << e.what() << std::endl;
 	}
+	return nullptr;
 }

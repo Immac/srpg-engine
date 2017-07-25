@@ -9,6 +9,7 @@
 #include <functional>
 #include <memory>
 #include <queue>
+#include <list>
 
 namespace SrpgEngine {
 namespace Framework {
@@ -23,7 +24,7 @@ template<class Key, class Value> using MultiMap = std::multimap<Key,Value>;
 using byte = uint8_t;
 template<class T> using UniquePtr = std::unique_ptr<T>;
 template<class T> using Queue = std::queue<T>;
-
+template<class T> using List = std::list<T>;
 } // Framework
 
 namespace Util {

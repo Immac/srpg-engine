@@ -15,10 +15,11 @@ class SimpleSoundSystem : public GameSystem
 private:
 	Core* game_core_;
 	StateMachine game_state_;
-	SoundEffectHandler sound_effects_;
+	SoundEffectRepository sound_effects_;
 
 public:
 	SimpleSoundSystem(Core& game_core);
+	~SimpleSoundSystem() = default;
 	void Initialize(GameObject& settings) override;
 	void Update() override;
 	string GetSystemCode() override;

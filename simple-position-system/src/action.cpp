@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <list>
 
 using namespace SrpgEngine;
 using namespace Game;
@@ -21,7 +22,7 @@ Action::Action(GameObject& event, Map<string, GameObject*>& world)
 	const auto action = subject_
 						->Properties["actions"]
 						->Properties[action_];
-	options_ = TargetingOptions(action);
+	options_ = ActionTargetOptions(action);
 	auto range = action->Dictionary["range"];
 
 	std::transform(range.begin(), range.end(), range.begin(), ::tolower);
@@ -57,68 +58,84 @@ bool Action::SetTarget(GameObject& target)
 	direct_object_ = &target;
 	//NOT IMPLEMENTED YET
 	std::cout << "SetTarget(GameObject& target) not implemented" << std::endl;
+	return false;
 }
 
 bool Action::SetTarget(Position& position)
 {
-	auto iter = std::find_if(range_.begin(),range_.end(),[&position](auto pos){
-		return pos->x == position.x && pos->y == position.y;
-	});
-	if (iter == range_.end()){
-		return false;
-	}
-	if(options_.direct_object.tag == "self") {
-		direct_object_ = subject_;
-		direct_object_->Statistics["x"] = position.x;
-		direct_object_->Statistics["y"] = position.y;
-	}
-	return true;
+	//	auto iter = std::find_if(range_.begin(),range_.end(),[&position](auto pos){
+	//		return pos->x == position.x && pos->y == position.y;
+	//	});
+
+	//	if (iter == range_.end()){
+	//		return false;
+	//	}
+	std::cout << "SetTarget(Position& position) not implemented" << std::endl;
+	return false;
 }
 
 
 void Action::EvaluateTargets(Map<string,GameObject*> world)
-{
-	Vector<GameObject *> targets;
-	if(options_.ignore) {
-		for(const auto& record : world){
-			const auto& object = record.second;
+{	
+	Collection<GameObject*> objects_in_range;
+	for(const auto& record : world)	{
+		const auto &object = record.second;
+		for(const auto& position : range_) {
 			if(object->Statistics.HasKey("x")
 			   && object->Statistics.HasKey("y")
-			   && object->Statistics.HasKey("z")) {
-				Util::RemoveIf(range_,[&object,this](auto position){
-					return object->Statistics["x"] == position->x
-							&& object->Statistics["y"] == position->y
-							&& Util::HasAnyIterative(object->Tags,options_.ignore.tag);
-				});
+			   && object->Statistics.HasKey("z")
+			   && object->Statistics["x"] == position->x
+			   && object->Statistics["y"] == position->y) {
+				objects_in_range.Add(object);
 			}
 		}
 	}
-	if(options_.can_only_target){
-		for(const auto& record : world){
-			const auto& object = record.second;
-			if(object->Statistics.HasKey("x")
-			   && object->Statistics.HasKey("y")
-			   && object->Statistics.HasKey("z")) {
 
-				Util::RemoveIf(range_,[&object,this](auto position){
-					return object->Statistics["x"] == position->x
-							&& object->Statistics["y"] == position->y
-							&& !Util::HasAnyIterative(object->Tags,options_.can_only_target.tag);
-				});
+	for(const auto& object : objects_in_range) {
+		range_.remove_if([&object,this](auto position) {
+			if(object->Statistics["x"] == position->x
+			   && object->Statistics["y"] == position->y)
+			{
+				auto has_no_excluded_tags
+						= !(options_.excludes
+							&& object->Tags.HasAny(options_.excludes.Tags));
+				auto has_required_tag
+						= options_.can_only_target
+						  ? object->Tags.Has(options_.can_only_target.tag)
+						  : true;
+				if(has_no_excluded_tags && has_required_tag) {
+					targets_.Add(object);
+				} else {
+					return true;
+				}
 			}
-		}
+			return false;
+		});
 	}
+	return;
 }
 
 bool Action::ExecuteAction()
-{
-
+{	
+	if(options_.direct_object.tag == "self") {
+		direct_object_ = subject_;
+		direct_object_->Statistics["x"] = 2;
+		direct_object_->Statistics["y"] = 2;
+	}
+	return true;
 }
 
-TargetingOptions::TargetingOptions(GameObject* action)
+ActionTargetOptions::ActionTargetOptions(GameObject* action)
 {
-	ignore.active = static_cast<bool>(action->Statistics["exclude_specific"]);
-	ignore.tag = action->Dictionary["target_exclude"];
+	if(action->Tags.Has("exclude") && action->Properties.HasKey("exclude")) {
+		excludes.active = true;
+		for(const auto& tag : action->Properties["exclude"]->Tags) {
+			excludes.Tags.Add(tag);
+		}
+	}
+
+	exclude.active = static_cast<bool>(action->Statistics["exclude_specific"]);
+	exclude.tag = action->Dictionary["target_exclude"];
 	can_only_target.active = static_cast<bool>(action->Statistics["target_specific"]);
 	can_only_target.tag = action->Dictionary["target_type"];
 	targets_position.active = static_cast<bool>(action->Statistics["targets_position"]);

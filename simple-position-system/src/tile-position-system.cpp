@@ -30,8 +30,8 @@ void TilePositionSystem::Initialize(GameObject &settings)
 	context_.CreateState("global")
 			.CreateState("nothing_is_selected")
 			.CreateState("something_is_selected")
-			.CreateState("select_range")
-			.CreateState("initiate_move_action");
+			.CreateState("action")
+			.CreateState("initialize_action");
 	context_.Push("nothing_is_selected");
 
 	context_["nothing_is_selected"]["input_pressed"]
@@ -44,6 +44,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		}
 		if(input_key == "ButtonA") {
 			auto object_under_cursor = this->GetObjectUnderCursor();
+			auto ouc = this->GetObjectsUnderCursor();
 			if(object_under_cursor != nullptr) {
 				this->SelectObject(*object_under_cursor);
 				context_.Push("something_is_selected");
@@ -61,7 +62,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 		} else if (input_key == "ButtonA") {
 			this->UpdateSelectedObjects();
 			auto object_under_cursor = this->GetObjectUnderCursor();
-			auto selected_object = _selected_game_objects.at(0);
+			auto selected_object = selected_game_objects_.at(0);
 			if(object_under_cursor == selected_object) {
 				this->DeselectObject(*selected_object);
 				this->Notify("deselected_object",*selected_object);
@@ -74,44 +75,32 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			}
 		} else if (input_key == "ButtonB") {
 			this->UpdateSelectedObjects();
-			for(auto& object : _selected_game_objects) {
+			for(auto& object : selected_game_objects_) {
 				this->DeselectObject(*object);
 				this->Notify("deselected_object",*object);
 			}
 			context_.Pop();
 		} else if (input_key == "ButtonX") {
 			this->UpdateSelectedObjects();
-			for(auto& game_object : this->_selected_game_objects) {
-				// MOVEt
-				auto move_event = GameObject("initiate_move_action");
+			for(auto& game_object : selected_game_objects_) {
+				auto move_event = GameObject("initialize_action");
 				move_event.Dictionary["action"] = "move";
-				this->context_.Push("select_range");
+				this->context_.Push("action");
 				this->Notify(move_event,*game_object);
-				//game_object->Properties[system_code]->Statistics["y"] = 3;
-				//this->Notify("moved_object",*game_object);
 			}
 		} else if (input_key == "ButtonY") {
 			//CAPTURE
 		}
 	};
 
-	context_["select_range"]["initiate_move_action"]
+	context_["action"]["initialize_action"]
 			= [this](auto &event) {
-		action_in_progress_ = new Action(event,this->GameObjects);
+		action_in_progress_ = new Action(event,this->GameObjects); //memory leak?
 		action_in_progress_->EvaluateTargets(this->GameObjects);
-		int i = 0;
-		for(const auto &position:action_in_progress_->Range()) {
-			string target_name = "Target" + std::to_string(i++);
-			const auto& target = this->GameObjects[target_name];
-			auto tilepos = target->Properties["TILEPOS"];
-			tilepos->Statistics["x"] = position->x;
-			tilepos->Statistics["y"] = position->y;
-		}
-		//TEMP
-		//context_.Pop();
+		this->HighlightActionRange(*action_in_progress_);
 	};
 
-	context_["select_range"]["input_pressed"]
+	context_["action"]["input_pressed"]
 			= [this,system_code](auto &event) {
 		auto input_key = event.Dictionary["input"];
 		auto controller_index = event.Statistics["controller"];
@@ -119,23 +108,23 @@ void TilePositionSystem::Initialize(GameObject &settings)
 			return;
 		} else if (input_key == "ButtonA") {
 			auto cursor = static_cast<GameObject>(*(cursor_.get()));
-			auto system = cursor.Properties["TILEPOS"];
-			Position position{
-				system->Statistics["x"],
-				system->Statistics["y"]
+			auto cursor_system = cursor.Properties["TILEPOS"];
+			Position position {
+				cursor_system->Statistics["x"],
+						cursor_system->Statistics["y"]
 			};
 
 			if(action_in_progress_->SetTarget(position))
 			{
 				action_in_progress_->ExecuteAction();
-				this->Notify("moved_object",*action_in_progress_->DirectObject());
+				this->Notify("moved_object",*action_in_progress_->DirectObject()); // move_object? performed_aciton?
 			} else {
-				auto selected_object = _selected_game_objects.at(0);
+				auto selected_object = selected_game_objects_.at(0);
 				this->Notify("cancel_action",*selected_object);
 			}
 			context_.Pop();
 		} else if (input_key == "ButtonB") {
-			auto selected_object = _selected_game_objects.at(0);
+			auto selected_object = selected_game_objects_.at(0);
 			this->Notify("cancel_action",*selected_object);
 			context_.Pop();
 		} else if (input_key == "ButtonX") {
@@ -161,6 +150,7 @@ void TilePositionSystem::Initialize(GameObject &settings)
 	context_["global"]["cancel_action"]
 			= [this](auto &event)
 	{
+		delete action_in_progress_;
 		this->ResetTargets();
 	};
 
@@ -210,7 +200,7 @@ void TilePositionSystem::UpdateSelectedObjects()
 											->Statistics["is-selected"]);
 		return !isSelected;
 	});
-	this->_selected_game_objects = selected_game_objects;
+	this->selected_game_objects_ = selected_game_objects;
 }
 
 void TilePositionSystem::DeselectObject(GameObject &object)
@@ -238,6 +228,18 @@ void TilePositionSystem::Notify(GameObject& event, GameObject& subject)
 	core_->HandleEvent(event);
 }
 
+void TilePositionSystem::HighlightActionRange(Action& action)
+{
+	int i = 0;
+	for(const auto &target : action.Targets()) {
+		string target_name = "Target" + std::to_string(i++);
+		const auto& target_reticle = this->GameObjects[target_name];
+		auto tilepos = target_reticle->Properties["TILEPOS"];
+		tilepos->Statistics["x"] = target->Statistics["x"];
+		tilepos->Statistics["y"] = target->Statistics["y"];
+	}
+}
+
 GameObject *TilePositionSystem::GetObjectUnderCursor()
 {
 	const auto &system_code = this->GetSystemCode();
@@ -260,6 +262,22 @@ GameObject *TilePositionSystem::GetObjectUnderCursor()
 								   ? selected_record_iter->second
 								   : nullptr;
 }
+
+Vector<GameObject*> TilePositionSystem::GetObjectsUnderCursor()
+{
+	const auto &system_code = this->GetSystemCode();
+	auto things = Util::ExtractValues(this->GameObjects);
+	auto cursor_system_stats = static_cast<GameObject>(*this->cursor_).Properties[system_code]->Statistics;
+	Vector<GameObject*> response;
+	std::copy_if(things.begin(), things.end(), std::back_inserter(response), [&cursor_system_stats](GameObject *o)
+	{
+		return o->Statistics["x"] == cursor_system_stats["x"]
+				&& o->Statistics["y"] == cursor_system_stats["y"];
+	});
+	return response;
+}
+
+
 
 void TilePositionSystem::Update()
 {
@@ -287,6 +305,7 @@ int TilePositionSystem::HandleEvent(GameObject &event)
 	if(_eventMap.find(eventKey)!=_eventMap.end()) {
 		_eventMap[eventKey](event);
 	}
+	return 0;
 }
 
 string TilePositionSystem::GetSystemCode()

@@ -32,4 +32,5 @@ Vector<string> MenuSystem::GetDependencies()
 
 int MenuSystem::HandleEvent(GameObject& event)
 {
+	return 0;
 }

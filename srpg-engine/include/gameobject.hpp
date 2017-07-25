@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_HPP
 #define GAMEOBJECT_HPP
 
+#include "collection.hpp"
 #include "gamecommon.hpp"
 
 
@@ -8,6 +9,7 @@ namespace SrpgEngine {
 namespace Game {
 
 using namespace Framework;
+using namespace Utilities;
 
 class GameObject {
 public:
@@ -19,7 +21,7 @@ public:
 	Repository<string> Dictionary;
 	Repository<void*> Data;
 	Vector<GameObject*> Objects;
-	Vector<string> Tags;
+	Collection<string> Tags;
 	Set<string> Systems;
 	Repository<GameObject*> Properties;
 

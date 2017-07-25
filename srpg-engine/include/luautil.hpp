@@ -3,6 +3,7 @@
 #include <lua.hpp>
 #include <common.hpp>
 #include <iostream>
+#include <collection.hpp>
 #include "gameobjectfactory.hpp"
 #include <sol.hpp>
 
@@ -12,14 +13,14 @@ namespace Lua {
 using Game::GameObjectFactory;
 using Game::GameObject;
 using Framework::string;
-
+using namespace Utilities;
 class LuaGameObjectFactory : public GameObjectFactory {
 private:
 	sol::state* sol_state_;
 	Repository<int> getStats(sol::table object);
 	Repository<string> getDictionary(sol::table object);
-	Vector<string> getPropertyNames(sol::table object);
-	Vector<string> getTags(sol::table object);
+	Collection<string> getPropertyNames(sol::table object);
+	Collection<string> getTags(sol::table object);
 	Set<string> getSystems(sol::table object);
 
 public:
@@ -46,11 +47,13 @@ Repository<T> BuildRepository(sol::table root){
 }
 
 template<class T>
-Vector<T> BuildVector(sol::table root){
-	Vector<T> vec;
+
+
+Collection<T> BuildVector(sol::table root){
+	Collection<T> vec;
 	for(int i = 1; root[i]; i++){
 		T cursor = root[i];
-		vec.push_back(cursor);
+		vec.Add(cursor);
 	}
 	return vec;
 }

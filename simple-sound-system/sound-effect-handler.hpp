@@ -9,12 +9,12 @@ namespace Audio {
 using namespace SrpgEngine;
 using namespace Framework;
 
-
-class SoundEffectHandler : public Repository<UniquePtr<sf::SoundBuffer>>
+class SoundEffectRepository : public Repository<UniquePtr<sf::SoundBuffer>>
 {
 private:
 public:
-	SoundEffectHandler() = default;
+	SoundEffectRepository() = default;
+	~SoundEffectRepository() = default;
 	bool LoadSoundEffect(const string& sound_effects_path);
 };
 

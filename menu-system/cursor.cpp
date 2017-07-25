@@ -17,6 +17,7 @@ int Cursor::ParseInput(GameController &input,
 			return input.DigitalInputs[key] ? 1 : 0;
 		} break;
 	}
+	return -1;
 }
 
 Cursor::Cursor(GameObject *cursor)

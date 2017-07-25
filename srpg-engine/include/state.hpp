@@ -9,12 +9,12 @@ class StateMachine;
 class State
 {
 private:
-	string _name;
-	StateMachine *_parent_state_machine;
+	string name_;
+	StateMachine *parent_;
 	HashMap<string,std::function<void(GameObject &)>> _events;
 public:
 	State(StateMachine *parent,const string &name)
-		:_parent_state_machine(parent),_name(name)
+		:name_(name),parent_(parent)
 	{}
 	void AddEvent(string name, std::function<void(GameObject &)> f);
 	void HandleEvent(GameObject &event);
@@ -25,7 +25,7 @@ public:
 	}
 
 	operator string() const{
-		return _name;
+		return name_;
 	}
 };
 

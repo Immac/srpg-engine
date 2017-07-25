@@ -17,6 +17,7 @@ int Cursor::ParseInput(GameController &input,
 			return input.DigitalInputs[key] ? 1 : 0;
 		} break;
 	}
+	throw "out of range";
 }
 
 Cursor::Cursor(GameObject *cursor)

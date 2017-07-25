@@ -30,4 +30,5 @@ Vector<string> SrpgEngine::ActionSystem::SimpleActionSystem::GetDependencies()
 
 int SrpgEngine::ActionSystem::SimpleActionSystem::HandleEvent(GameObject& event)
 {
+	return 0;
 }

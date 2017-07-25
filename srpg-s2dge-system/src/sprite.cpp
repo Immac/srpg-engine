@@ -12,7 +12,7 @@ const string& Sprite::GetTexturePath()
 	return _system_object.Dictionary["texture"];
 }
 
-bool Sprite::SetTexture(sf::Texture& texture)
+void Sprite::SetTexture(sf::Texture& texture)
 {
 	this->setTexture(texture);
 }

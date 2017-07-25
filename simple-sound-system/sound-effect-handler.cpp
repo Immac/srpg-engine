@@ -5,16 +5,18 @@ using namespace SrpgEngine;
 using namespace Framework;
 using namespace Audio;
 
-bool SoundEffectHandler::LoadSoundEffect(const string& sound_effects_path)
+bool SoundEffectRepository::LoadSoundEffect(const string& sound_effects_path)
 {
-	auto &sound_effects = (*this);
-	if(!sound_effects.HasKey(sound_effects_path))
+	auto &sfx_repo = (*this);
+	const auto& path = sound_effects_path;
+	if(!sfx_repo.HasKey(path))
 	{
-		sound_effects[sound_effects_path] = std::make_unique<sf::SoundBuffer>();
-		if(!sound_effects[sound_effects_path]->loadFromFile(sound_effects_path))
+		sfx_repo[path] = std::make_unique<sf::SoundBuffer>();
+		if(!sfx_repo[path]->loadFromFile(path))
 		{
 			std::cout << "Sound effect not found at: "
-					  << sound_effects_path << std::endl;
+					  << path
+					  << std::endl;
 			return false;
 		}
 	}

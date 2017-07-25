@@ -25,20 +25,21 @@ Repository<string> LuaGameObjectFactory::getDictionary(sol::table object)
 	return repo;
 }
 
-Vector<string> LuaGameObjectFactory::getPropertyNames(sol::table object)
+Collection<string> LuaGameObjectFactory::getPropertyNames(sol::table object)
 {
 	sol::table properties_table = object["Properties"];
 	if(!properties_table)
-		return Vector<string>();
-
+		return Collection<string>();
 	return BuildVector<string>(properties_table);
 }
 
-Vector<string> LuaGameObjectFactory::getTags(sol::table object)
+Collection<string> LuaGameObjectFactory::getTags(sol::table object)
 {
 	sol::table tags_table = object["Tags"];
 	if(!tags_table)
-		return Vector<string>();
+
+
+		return Collection<string>();
 
 	return BuildVector<string>(tags_table);
 }

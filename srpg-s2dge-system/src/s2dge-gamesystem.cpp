@@ -110,6 +110,7 @@ int Simple2DGraphicsEngine::HandleEvent(GameObject &event)
 {
 	this->game_state_.HandleEvent(event);
 	this->game_state_["global"].HandleEvent(event);
+	return 0;
 }
 
 string Simple2DGraphicsEngine::GetSystemCode()
