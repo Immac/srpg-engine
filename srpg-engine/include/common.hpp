@@ -7,6 +7,7 @@
 #include <set>
 #include <algorithm>
 #include <functional>
+#include <cstdint>
 
 namespace SrpgEngine {
 namespace Framework {
