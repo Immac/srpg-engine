@@ -12,7 +12,7 @@ include_directories(${CMAKE_INSTALL_PREFIX}/sqlite/include)
 include_directories(include)
 #linking-directory
 link_directories(${CMAKE_INSTALL_PREFIX}/sqlite/bin)
-link_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/bin/)
+link_directories(${CMAKE_INSTALL_PREFIX}/srpg-engine/lib/)
 #targets
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${GENERAL_LIST} ${HEADERS})
 add_library(${PROJECT_NAME}-lib SHARED ${SRC_LIST} ${GENERAL_LIST} ${HEADERS})

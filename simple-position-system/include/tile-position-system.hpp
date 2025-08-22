@@ -36,8 +36,8 @@ public:
 	Vector<string> GetDependencies() override;
 	~TilePositionSystem();
 private:
-	TilePositionSystem (const &TilePositionSystem){}
-	TilePositionSystem& operator=(const &TilePositionSystem){}
+	TilePositionSystem(const TilePositionSystem&){}
+	TilePositionSystem& operator=(const TilePositionSystem&){ return *this; }
 	void HandleCursorMovement();
 	void HandleHorizontaCursorlMovement();
 	void UpdateSelectedObjects();
