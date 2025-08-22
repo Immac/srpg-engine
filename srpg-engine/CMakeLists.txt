@@ -2,6 +2,8 @@
 project(srpg-engine)
 cmake_minimum_required(VERSION 3.1)
 set (CMAKE_CXX_STANDARD 14)
+# Add compiler flags to handle template ambiguity issues in SOL2
+add_compile_options(-Wno-error -fpermissive)
 #sources
 aux_source_directory(. SRC_LIST)
 aux_source_directory(./src GENERAL_LIST)
@@ -12,7 +14,7 @@ include_directories(
     #${CMAKE_INSTALL_PREFIX}/sol2
     ./include)
 #linking dir
-link_directories(${CMAKE_INSTALL_PREFIX}/lua53/bin)
+link_directories(${CMAKE_INSTALL_PREFIX}/lua53/lib)
 #sources
 FILE(GLOB_RECURSE HEADERS
     (*.hpp)
